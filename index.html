@@ -282,23 +282,29 @@ table.t tr:hover td { background: rgba(255,255,255,0.02); }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
 
 /* Lead gate */
-.gated { position: relative; }
+.gated { position: relative; min-height: 600px; }
 .gated.locked > .gated-content {
-  filter: blur(8px) brightness(0.6);
+  filter: blur(10px) brightness(0.5) saturate(0.7);
   pointer-events: none;
   user-select: none;
+  max-height: 1400px;
+  overflow: hidden;
 }
 .gate-overlay {
   display: none;
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.95) 30%, var(--nd-bg) 100%);
+  background: linear-gradient(180deg, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.98) 35%, var(--nd-bg) 100%);
   z-index: 5;
   align-items: flex-start;
   justify-content: center;
-  padding: 4rem 1rem 1rem;
+  padding: 1.5rem 1rem 4rem;
+  overflow-y: auto;
 }
 .gated.locked .gate-overlay { display: flex; }
+@media (max-width: 640px) {
+  .gate-overlay { padding: 1rem 0.5rem 2rem; }
+}
 
 .toast {
   position: fixed;
@@ -513,13 +519,27 @@ table.t tr:hover td { background: rgba(255,255,255,0.02); }
               <input type="number" class="input mt-2 hidden" id="packCustom" placeholder="Inversión personalizada (€)" value="10000" />
             </div>
             <div>
-              <label class="label">Licencias Odoo · usuario/mes</label>
+              <label class="label flex items-center justify-between">
+                <span>Licencias Odoo · €/usuario/mes</span>
+                <a href="https://www.odoo.com/es_ES/pricing" target="_blank" rel="noopener" class="text-[10px] text-nd-primary normal-case tracking-normal font-medium hover:underline">Tarifa oficial ↗</a>
+              </label>
               <select class="select" id="licencia">
-                <option value="0">Community · gratis</option>
-                <option value="0">One App Free · 1 app gratis</option>
-                <option value="31.1" selected>Standard · 31,10 €/u/mes</option>
-                <option value="46.6">Custom · 46,60 €/u/mes</option>
+                <option value="11.9" selected>Standard · 11,90 €/u/mes (anual)</option>
+                <option value="14.9">Standard · 14,90 €/u/mes (mensual)</option>
+                <option value="17.9">Custom · 17,90 €/u/mes (anual)</option>
+                <option value="22.4">Custom · 22,40 €/u/mes (mensual)</option>
+                <option value="custom">Personalizado / negociado…</option>
               </select>
+              <input type="number" class="input mt-2 hidden" id="licenciaCustom" placeholder="€/usuario/mes negociado" value="9.5" min="0" step="0.1" />
+              <div class="text-[11px] text-nd-dim mt-1.5">Precios Odoo 2026 · sin IVA. Si tienes condiciones especiales (volumen, contrato 3 años, partner) introduce el precio real.</div>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="label flex items-center justify-between">
+                <span class="tt" data-tt="Reducción aplicada al coste anual de licencias (ej. 10 % por compromiso 3 años, descuento partner Nextdoo).">Descuento contractual (%)</span>
+                <span class="text-nd-primary font-bold" id="descLbl">0 %</span>
+              </label>
+              <input type="range" id="descuento" min="0" max="40" step="1" value="0" />
+              <div class="text-[11px] text-nd-dim mt-1">Ej.: 10 % por contrato 3 años · 15 % por compromiso 5 años · 20 % volumen partner. Ajusta según tu caso real.</div>
             </div>
           </div>
         </div>
@@ -570,12 +590,12 @@ table.t tr:hover td { background: rgba(255,255,255,0.02); }
           </div>
         </div>
 
-        <!-- Lead-gated preview teaser -->
+        <!-- Lead-gated teaser → scroll al paywall form -->
         <div class="card p-5 text-center" style="border-color: rgba(168,85,247,0.3); background: linear-gradient(180deg, rgba(168,85,247,0.06), transparent);">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2" class="mx-auto mb-2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <h3 class="text-base font-bold text-white">Análisis completo</h3>
-          <p class="text-xs text-nd-dim mt-1.5">Dos formas de recibirlo: básico por email o sesión 1-1 gratuita con Jeanlouis.</p>
-          <button type="button" class="btn-primary mt-3" style="font-size:0.8rem;padding:0.5rem 1rem" onclick="document.getElementById('lead').scrollIntoView({behavior:'smooth'})">Elegir opción</button>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2" class="mx-auto mb-2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          <h3 class="text-base font-bold text-white">Sesión 1-1 con Jeanlouis (CEO)</h3>
+          <p class="text-xs text-nd-dim mt-1.5">Análisis completo, plan 90 días y demo en vivo. Gratis · 30 min · hoy mismo.</p>
+          <button type="button" class="btn-primary mt-3 w-full" style="font-size:0.85rem;padding:0.6rem 1rem" onclick="document.getElementById('detailedResults').scrollIntoView({behavior:'smooth',block:'start'})">Reservar mi sesión</button>
         </div>
 
         <!-- Trust mini -->
@@ -595,140 +615,109 @@ table.t tr:hover td { background: rgba(255,255,255,0.02); }
   </div>
 </section>
 
-<!-- LEAD GATE · EMBUDO DUAL -->
-<section id="lead" class="px-5 sm:px-8 pb-12">
-  <div class="mx-auto max-w-6xl">
+<!-- RESULT PREVIEW · 3 KPIs públicos (anchor del paywall) -->
+<section id="resultPreview" class="px-5 sm:px-8 pb-8">
+  <div class="mx-auto max-w-5xl text-center">
+    <div class="badge badge-ok mb-3"><span class="glow-dot">●</span> Tu análisis está listo</div>
+    <h2 class="text-3xl sm:text-4xl font-extrabold">Estos son <span class="gradient-text">tus números</span></h2>
+    <p class="text-nd-dim mt-2 max-w-xl mx-auto text-sm">Benchmarks Forrester · Aberdeen · Nucleus aplicados a tu sector y volumen.</p>
 
-    <div class="text-center mb-8">
-      <div class="badge badge-ok mb-3"><span class="glow-dot">●</span> Tu análisis está listo</div>
-      <h2 class="text-3xl sm:text-4xl font-extrabold">Elige cómo quieres <span class="gradient-text">recibirlo</span></h2>
-      <p class="text-nd-dim mt-3 max-w-2xl mx-auto">Análisis básico al instante por email o estudio profesional 1-1 con Jeanlouis adaptado a tu caso real. Elige según tu nivel de interés.</p>
-    </div>
-
-    <div class="grid md:grid-cols-2 gap-5 items-stretch">
-
-      <!-- TIER A · EMAIL (low friction) -->
-      <div class="card p-7 flex flex-col" id="tierEmail">
-        <div class="flex items-center justify-between mb-3">
-          <span class="badge badge-info">Opción rápida</span>
-          <span class="text-xs text-nd-dim">~30 segundos</span>
-        </div>
-        <h3 class="text-xl font-bold text-white">Análisis básico por email</h3>
-        <p class="text-sm text-nd-dim mt-1.5 mb-4">PDF resumen con KPIs principales y proyección. Para revisar internamente sin compromiso.</p>
-
-        <ul class="space-y-2 mb-5 text-sm">
-          <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> ROI año 1 + payback + ahorro anual</li>
-          <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> Proyección 5 años en PDF</li>
-          <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> Coeficiente sector aplicado</li>
-          <li class="flex items-start gap-2 text-nd-dim"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" class="flex-shrink-0 mt-0.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Sin sesión 1-1 con Jeanlouis</li>
-          <li class="flex items-start gap-2 text-nd-dim"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" class="flex-shrink-0 mt-0.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Sin plan de implementación</li>
-        </ul>
-
-        <form id="leadFormEmail" class="space-y-3 mt-auto">
-          <div>
-            <label class="label">Email profesional</label>
-            <input class="input" name="email" type="email" required placeholder="tu@empresa.com" />
-          </div>
-          <div>
-            <label class="label">Nombre</label>
-            <input class="input" name="nombre" required placeholder="Tu nombre" />
-          </div>
-          <div class="flex items-start gap-2 text-xs text-nd-dim">
-            <input type="checkbox" required class="accent-nd-primary mt-0.5" id="gdprEmail" />
-            <label for="gdprEmail">Acepto <a href="https://www.nextdoo.cloud/politica-privacidad" class="text-nd-primary underline">política de privacidad</a> · sin spam</label>
-          </div>
-          <button type="submit" class="btn-ghost w-full" id="emailSubmit" style="border-color: rgba(168,85,247,0.4)">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            Enviarme el análisis básico
-          </button>
-        </form>
+    <div class="grid grid-cols-3 gap-4 mt-7 max-w-4xl mx-auto">
+      <div class="card p-6">
+        <div class="kpi-label">ROI año 1</div>
+        <div class="kpi-value gradient-text" id="kpiRoi1Big">—</div>
+        <div class="text-xs text-nd-dim mt-1">vs inversión inicial</div>
       </div>
-
-      <!-- TIER B · SESIÓN 1-1 (high value) -->
-      <div class="card card-glow p-7 flex flex-col relative" id="tierMeeting" style="border-color: rgba(168,85,247,0.45);">
-        <div class="absolute -top-3 left-1/2 -translate-x-1/2">
-          <span class="badge badge-spec" style="font-size: 0.7rem; padding: 0.3rem 0.8rem;">★ Recomendado · gratis</span>
-        </div>
-        <div class="flex items-center justify-between mb-3">
-          <span class="badge" style="background: rgba(168,85,247,0.12); color: #c4b5fd; border:1px solid rgba(168,85,247,0.45)">Análisis profesional</span>
-          <span class="text-xs text-nd-dim">30 min · gratis</span>
-        </div>
-        <h3 class="text-xl font-bold text-white">Sesión 1-1 con Jeanlouis (CEO)</h3>
-        <p class="text-sm text-nd-dim mt-1.5 mb-4">Revisión personal del business case + plan de implementación adaptado a tu empresa real. Donde un humano lee tus números.</p>
-
-        <ul class="space-y-2 mb-5 text-sm">
-          <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> <strong class="text-white">Todo lo del básico</strong></li>
-          <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> Validación de cifras con tu equipo</li>
-          <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> Plan de implementación a 90 días</li>
-          <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> Benchmarks de 3 clientes de tu sector</li>
-          <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> Demo en vivo de los módulos clave</li>
-        </ul>
-
-        <form id="leadFormMeeting" class="space-y-3 mt-auto">
-          <div class="grid sm:grid-cols-2 gap-3">
-            <div>
-              <label class="label">Nombre</label>
-              <input class="input" name="nombre" required placeholder="Tu nombre" />
-            </div>
-            <div>
-              <label class="label">Empresa</label>
-              <input class="input" name="empresa" required placeholder="Razón social" />
-            </div>
-            <div>
-              <label class="label">Email profesional</label>
-              <input class="input" name="email" type="email" required placeholder="tu@empresa.com" />
-            </div>
-            <div>
-              <label class="label">WhatsApp / Tlf</label>
-              <input class="input" name="telefono" required placeholder="+34 600 000 000" />
-            </div>
-            <div>
-              <label class="label">Cargo</label>
-              <input class="input" name="cargo" placeholder="CEO · Director · CTO…" />
-            </div>
-            <div>
-              <label class="label">Cuándo empezarías</label>
-              <select class="select" name="urgencia">
-                <option value="3m">&lt; 3 meses</option>
-                <option value="6m" selected>3–6 meses</option>
-                <option value="12m">6–12 meses</option>
-                <option value="explorar">Solo exploro</option>
-              </select>
-            </div>
-          </div>
-          <div class="flex items-start gap-2 text-xs text-nd-dim">
-            <input type="checkbox" required class="accent-nd-primary mt-0.5" id="gdprMeet" />
-            <label for="gdprMeet">Acepto <a href="https://www.nextdoo.cloud/politica-privacidad" class="text-nd-primary underline">política de privacidad</a> y que me contactéis para reservar la sesión</label>
-          </div>
-          <button type="submit" class="btn-primary w-full" id="meetingSubmit">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            Reservar sesión 1-1 con Jeanlouis
-          </button>
-          <p class="text-center text-xs text-nd-dim">Te llamamos hoy · sin compromiso · sin tarjeta</p>
-        </form>
+      <div class="card p-6" style="border-color: rgba(16,185,129,0.30); background: linear-gradient(180deg, rgba(16,185,129,0.05), transparent);">
+        <div class="kpi-label">Ahorro 1er año</div>
+        <div class="kpi-value text-nd-ok" id="kpiAhorroBig" style="font-size:2rem">—</div>
+        <div class="text-xs text-nd-dim mt-1">recurrente cada año</div>
       </div>
-
-    </div>
-
-    <!-- Trust row -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 text-center text-xs text-nd-dim">
-      <div class="flex flex-col items-center gap-1.5"><svg width="20" height="20" stroke="#A855F7" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Datos cifrados RGPD</div>
-      <div class="flex flex-col items-center gap-1.5"><svg width="20" height="20" stroke="#A855F7" fill="none" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Contacto en el día</div>
-      <div class="flex flex-col items-center gap-1.5"><svg width="20" height="20" stroke="#A855F7" fill="none" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> 22+ clientes activos</div>
-      <div class="flex flex-col items-center gap-1.5"><svg width="20" height="20" stroke="#A855F7" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Sin compromiso</div>
+      <div class="card p-6">
+        <div class="kpi-label">Payback</div>
+        <div class="kpi-value" id="kpiPaybackBig" style="font-size:2rem">—</div>
+        <div class="text-xs text-nd-dim mt-1">meses para recuperar</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- DETAILED RESULTS — GATED -->
+<!-- DETAILED RESULTS · BLURRED + INLINE FORM ON TOP -->
 <section class="px-5 sm:px-8 pb-20 gated locked" id="detailedResults">
 
   <div class="gate-overlay">
-    <div class="text-center max-w-md">
-      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2" class="mx-auto mb-3"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      <h3 class="text-xl font-bold text-white">Análisis detallado disponible</h3>
-      <p class="text-sm text-nd-dim mt-2 mb-4">Para ver proyección 5 años, escenarios, sensibilidad y desglose por área, elige una de las dos opciones de arriba (email o sesión 1-1).</p>
-      <a href="#lead" class="btn-primary">Ver opciones</a>
+    <div class="card card-glow p-6 sm:p-8 max-w-2xl w-full slide-in" style="margin-top: 2rem;">
+      <div class="flex items-center justify-between mb-4">
+        <span class="badge badge-spec">★ Gratis · 30 min</span>
+        <div class="flex items-center gap-2 text-xs text-nd-dim">
+          <span class="glow-dot text-nd-ok">●</span> Jeanlouis está disponible hoy
+        </div>
+      </div>
+
+      <h3 class="text-2xl sm:text-3xl font-extrabold text-white leading-tight">
+        Ve el <span class="gradient-text">análisis completo</span><br/>en una sesión 1-1 con Jeanlouis (CEO)
+      </h3>
+      <p class="text-sm text-nd-dim mt-2.5">Validamos tus cifras, te entregamos un plan personalizado y desbloqueamos el detalle completo on-screen ahora mismo.</p>
+
+      <ul class="grid sm:grid-cols-2 gap-x-4 gap-y-2 mt-5 mb-6 text-sm">
+        <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> <span>Proyección 5 años + VAN + TIR</span></li>
+        <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> <span>Plan implementación a 90 días</span></li>
+        <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> <span>Demo en vivo de los módulos</span></li>
+        <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> <span>Recomendación de paquete</span></li>
+        <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> <span>Validación de cifras con tu equipo</span></li>
+        <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> <span>Fecha y hora en tu calendar</span></li>
+      </ul>
+
+      <form id="leadForm" class="grid sm:grid-cols-2 gap-3">
+        <div>
+          <label class="label">Nombre</label>
+          <input class="input" name="nombre" required placeholder="Tu nombre" autocomplete="given-name" />
+        </div>
+        <div>
+          <label class="label">Empresa</label>
+          <input class="input" name="empresa" required placeholder="Razón social" autocomplete="organization" />
+        </div>
+        <div>
+          <label class="label">Email profesional</label>
+          <input class="input" name="email" type="email" required placeholder="tu@empresa.com" autocomplete="email" />
+        </div>
+        <div>
+          <label class="label">WhatsApp / Tlf</label>
+          <input class="input" name="telefono" required placeholder="+34 600 000 000" autocomplete="tel" />
+        </div>
+        <div>
+          <label class="label">Cargo (opcional)</label>
+          <input class="input" name="cargo" placeholder="CEO · Director · CTO…" autocomplete="organization-title" />
+        </div>
+        <div>
+          <label class="label">Cuándo empezarías</label>
+          <select class="select" name="urgencia">
+            <option value="3m">&lt; 3 meses</option>
+            <option value="6m" selected>3–6 meses</option>
+            <option value="12m">6–12 meses</option>
+            <option value="explorar">Solo exploro</option>
+          </select>
+        </div>
+        <div class="sm:col-span-2 flex items-start gap-2 text-xs text-nd-dim mt-1">
+          <input type="checkbox" required class="accent-nd-primary mt-0.5" id="gdprForm" />
+          <label for="gdprForm">Acepto la <a href="https://www.nextdoo.cloud/politica-privacidad" class="text-nd-primary underline">política de privacidad</a> y que Nextdoo me contacte para agendar la sesión.</label>
+        </div>
+        <div class="sm:col-span-2 mt-2">
+          <button type="submit" class="btn-primary w-full" id="leadSubmit" style="font-size:1rem;padding:1rem 1.4rem">
+            Reservar mi análisis 1-1
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <p class="text-center text-xs text-nd-dim mt-2">Sin tarjeta · sin compromiso · respuesta en el día</p>
+        </div>
+      </form>
+
+      <!-- Trust mini-row -->
+      <div class="grid grid-cols-4 gap-2 mt-5 pt-4 border-t border-nd-border text-center text-[10px] text-nd-dim uppercase tracking-wider">
+        <span>Odoo Ready Partner</span>
+        <span>22+ clientes</span>
+        <span>RGPD</span>
+        <span>22 años exp.</span>
+      </div>
     </div>
   </div>
 
@@ -1026,7 +1015,10 @@ function showStep(n) {
   }
 
   if (n === 4) {
-    setTimeout(() => document.getElementById('lead').scrollIntoView({ behavior: 'smooth' }), 400);
+    setTimeout(() => {
+      const target = document.getElementById('resultPreview') || document.getElementById('detailedResults');
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 400);
   }
 }
 
@@ -1057,9 +1049,12 @@ function calc() {
   const horasReps   = +document.getElementById('horasReps').value || 0;
   const wacc        = +document.getElementById('wacc').value / 100;
   const adop1       = +document.getElementById('adop').value / 100;
-  const packVal     = document.getElementById('pack').value;
-  const packCustom  = +document.getElementById('packCustom').value || 0;
-  const licencia    = +document.getElementById('licencia').value;
+  const packVal       = document.getElementById('pack').value;
+  const packCustom    = +document.getElementById('packCustom').value || 0;
+  const licenciaVal   = document.getElementById('licencia').value;
+  const licenciaCustom = +document.getElementById('licenciaCustom').value || 0;
+  const licencia      = licenciaVal === 'custom' ? licenciaCustom : +licenciaVal;
+  const descuento     = (+document.getElementById('descuento').value || 0) / 100;
 
   const coef = sectorObj ? sectorObj.coef : 1;
   const sedeMult = 1 + Math.min(sedes - 1, 24) * 0.03;
@@ -1085,7 +1080,9 @@ function calc() {
   const horasBudget = packBase / 75;
   const horasExtra = Math.max(0, horasImpl - horasBudget);
   const inversion = packBase + horasExtra * 75;
-  const recurrente = (licencia * usuarios * 12) + costeActual * 0.1;
+  // Licencias anuales con descuento contractual aplicado + mantenimiento estimado.
+  const licenciasAnual = licencia * usuarios * 12 * (1 - descuento);
+  const recurrente = licenciasAnual + costeActual * 0.1;
 
   const adop = [adop1, Math.min(1, adop1 + 0.25), Math.min(1, adop1 + 0.35), 0.95, 0.95];
 
@@ -1151,7 +1148,7 @@ function calc() {
   const reliability = Math.round(inputs.filter(Boolean).length / inputs.length * 100);
 
   return { sector, coef, sysMult, sedeMult, facturacion, empleados, usuarios, sistema, costeActual,
-    saving, horasAhorro, areaSavings, horasImpl, inversion, recurrente, adop,
+    saving, horasAhorro, areaSavings, horasImpl, inversion, recurrente, adop, licencia, descuento,
     years, paybackMonth, paybackDM, roi1, roi5, vanSum, tir, tcoActual, tcoOdoo, tcoSave,
     inaccion7, inaccionOp, inaccionErr, inaccionMes, reliability, wacc, crecimiento };
 }
@@ -1172,10 +1169,22 @@ function recalc() {
     vEl.innerHTML = '<strong class="text-nd-warn">Caso ajustado.</strong> Considera ampliar módulos. Lo revisamos en una llamada.';
   }
 
-  document.getElementById('kpiRoi1').textContent = state.selectedMods.size ? fmtPct(r.roi1, 0) : '—';
-  document.getElementById('kpiAhorro').textContent = state.selectedMods.size ? fmt.format(r.years[0]?.ahorro || 0) : '—';
-  document.getElementById('kpiPayback').textContent = r.paybackMonth ? Math.round(r.paybackMonth) + ' m' : '—';
+  const roi1Text = state.selectedMods.size ? fmtPct(r.roi1, 0) : '—';
+  const ahorroText = state.selectedMods.size ? fmt.format(r.years[0]?.ahorro || 0) : '—';
+  const paybackText = r.paybackMonth ? Math.round(r.paybackMonth) + ' m' : '—';
+
+  document.getElementById('kpiRoi1').textContent = roi1Text;
+  document.getElementById('kpiAhorro').textContent = ahorroText;
+  document.getElementById('kpiPayback').textContent = paybackText;
   document.getElementById('kpiPaybackD').textContent = r.paybackDM ? Math.round(r.paybackDM) + ' m dto.' : '—';
+
+  // Result preview (post-wizard, public)
+  const kpiRoiBig = document.getElementById('kpiRoi1Big');
+  const kpiAhorroBig = document.getElementById('kpiAhorroBig');
+  const kpiPaybackBig = document.getElementById('kpiPaybackBig');
+  if (kpiRoiBig) kpiRoiBig.textContent = roi1Text;
+  if (kpiAhorroBig) kpiAhorroBig.textContent = ahorroText;
+  if (kpiPaybackBig) kpiPaybackBig.textContent = paybackText;
   document.getElementById('kpiRoi5').textContent = state.selectedMods.size ? 'ROI 5 años: ' + fmtPct(r.roi5, 0) : '—';
   document.getElementById('kpiVan').textContent = state.selectedMods.size ? fmt.format(r.vanSum) : '—';
   document.getElementById('kpiTir').textContent = state.selectedMods.size ? fmtPct(r.tir, 1) : '—';
@@ -1202,6 +1211,8 @@ function recalc() {
 
   document.getElementById('waccLbl').textContent = (r.wacc*100).toFixed(0) + ' %';
   document.getElementById('adopLbl').textContent = Math.round(r.adop[0]*100) + ' %';
+  const descLbl = document.getElementById('descLbl');
+  if (descLbl) descLbl.textContent = Math.round((r.descuento || 0) * 100) + ' %';
 }
 
 // CHARTS (idénticos a v1, abreviados)
@@ -1391,10 +1402,9 @@ function submitLead(e, tier) {
     timestamp: new Date().toISOString()
   };
 
-  const btnId = tier === 'meeting' ? 'meetingSubmit' : 'emailSubmit';
-  const btn = document.getElementById(btnId);
+  const btn = document.getElementById('leadSubmit');
   btn.disabled = true;
-  btn.innerHTML = 'Enviando…';
+  btn.innerHTML = 'Reservando…';
 
   // 1. Desbloquear resultados YA — el usuario ve el premio sin esperar (optimistic UI).
   handleLeadSuccess(tier, data);
@@ -1431,35 +1441,21 @@ function submitLead(e, tier) {
   });
 }
 
-function handleLeadSuccess(tier, data, offline) {
+function handleLeadSuccess(tier, data) {
   state.unlocked = true;
   document.getElementById('detailedResults').classList.remove('locked');
 
-  // Toast
-  const msg = tier === 'meeting'
-    ? `Reservado · Jeanlouis te llama hoy al ${data.telefono || data.email}`
-    : `Análisis enviado a ${data.email}. Revisa tu bandeja en minutos.`;
-  toast(msg);
+  toast(`Reservado · Jeanlouis te llama hoy al ${data.telefono || data.email}`);
 
-  // Adapt final CTA based on tier
-  const finalCta = document.getElementById('finalCta');
-  if (tier === 'meeting') {
-    document.getElementById('finalCtaBadge').textContent = '✓ Sesión reservada';
-    document.getElementById('finalCtaTitle').innerHTML = '¡Listo! Jeanlouis te llama <span class="gradient-text">hoy</span>';
-    document.getElementById('finalCtaText').textContent = 'Mientras tanto, puedes elegir un hueco exacto en su agenda si quieres concretarlo:';
-  } else {
-    document.getElementById('finalCtaBadge').textContent = 'Hacer el siguiente paso';
-    document.getElementById('finalCtaTitle').innerHTML = '¿Quieres validarlo con <span class="gradient-text">un experto</span>?';
-    document.getElementById('finalCtaText').textContent = 'Has recibido el análisis básico. Para revisarlo en sesión 1-1 con Jeanlouis (CEO) y obtener plan de implementación a 90 días, reserva aquí — sigue siendo gratis:';
-  }
+  // Final CTA post-unlock
+  const finalCtaBadge = document.getElementById('finalCtaBadge');
+  const finalCtaTitle = document.getElementById('finalCtaTitle');
+  const finalCtaText = document.getElementById('finalCtaText');
+  if (finalCtaBadge) finalCtaBadge.textContent = '✓ Sesión reservada';
+  if (finalCtaTitle) finalCtaTitle.innerHTML = '¡Listo! Jeanlouis te llama <span class="gradient-text">hoy</span>';
+  if (finalCtaText) finalCtaText.textContent = 'Para concretar fecha exacta, elige tu hueco preferido en su calendario:';
 
-  // Hide the other tier card to focus
-  if (tier === 'meeting') {
-    document.getElementById('tierEmail').style.opacity = '0.4';
-    document.getElementById('tierEmail').style.pointerEvents = 'none';
-  }
-
-  setTimeout(() => document.getElementById('detailedResults').scrollIntoView({ behavior: 'smooth' }), 500);
+  setTimeout(() => document.getElementById('detailedResults').scrollIntoView({ behavior: 'smooth', block: 'start' }), 500);
 }
 
 function buildDescription(data, r, sectorObj, tier) {
@@ -1513,6 +1509,11 @@ function bind() {
     recalc();
   });
 
+  document.getElementById('licencia').addEventListener('change', e => {
+    document.getElementById('licenciaCustom').classList.toggle('hidden', e.target.value !== 'custom');
+    recalc();
+  });
+
   document.querySelectorAll('[data-pain]').forEach(el => {
     el.addEventListener('click', e => {
       e.preventDefault();
@@ -1537,8 +1538,7 @@ function bind() {
     if (state.currentStep > 1) showStep(state.currentStep - 1);
   });
 
-  document.getElementById('leadFormEmail').addEventListener('submit', (e) => submitLead(e, 'email'));
-  document.getElementById('leadFormMeeting').addEventListener('submit', (e) => submitLead(e, 'meeting'));
+  document.getElementById('leadForm').addEventListener('submit', (e) => submitLead(e, 'meeting'));
 }
 
 document.addEventListener('DOMContentLoaded', () => {
