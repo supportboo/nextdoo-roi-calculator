@@ -33,6 +33,8 @@ Lead magnets soportados (campo `source`):
         # usa QWeb (es un report técnico, no una mail.template).
         "report/checklist_migracion_report.xml",
         "report/checklist_migracion_template.xml",
+        "report/retail_guide_report.xml",
+        "report/retail_guide_template.xml",
     ],
     "installable": True,
     "application": False,

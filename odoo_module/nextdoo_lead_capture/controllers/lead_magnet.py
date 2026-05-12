@@ -36,7 +36,13 @@ ASSIGNEE_BY_SOURCE = {
 
 # Sales team al que se asignan TODOS los leads de marketing inbound.
 # Si no existe se cae al primer team de la compañía.
-INBOUND_TEAM_NAME = "BOO NUEVO"
+INBOUND_TEAM_NAME = "Nextdoo"
+
+# Stage destino para todo lead inbound recién capturado.
+INBOUND_STAGE_NAME = "Lead Inbound"
+
+# Tag automático de línea de negocio (se añade en todos los inbound).
+INBOUND_LINEA_TAG = "Línea: Nextdoo"
 
 # Sources que requieren generar y adjuntar un PDF al lead + email.
 # El HTML del email lo genera _html_<source>() en Python (Odoo 19 no soporta
@@ -45,6 +51,10 @@ ATTACHMENT_BY_SOURCE = {
     "migration-checklist": {
         "report_xmlid": "nextdoo_lead_capture.action_report_checklist_migracion",
         "filename":     "Checklist_Migracion_Odoo_Nextdoo.pdf",
+    },
+    "retail-guide": {
+        "report_xmlid": "nextdoo_lead_capture.action_report_retail_guide",
+        "filename":     "Guia_Odoo_Retail_Nextdoo.pdf",
     },
 }
 
@@ -147,8 +157,9 @@ class LeadMagnetController(http.Controller):
             if not assignee:
                 assignee = env["res.users"].search([("share", "=", False)], limit=1)
 
-            # 2. Resolve/create tags (añadimos tag por tier)
+            # 2. Resolve/create tags (añadimos tag por tier + tag de línea)
             tag_names = list(SOURCE_TAGS.get(source, ["Lead Magnet"]))
+            tag_names.append(INBOUND_LINEA_TAG)  # clasificación de línea de negocio
             if tier == "meeting":
                 tag_names.append("Meeting Request")
                 tag_names.append("Hot Lead")
@@ -178,20 +189,13 @@ class LeadMagnetController(http.Controller):
                 priority_map = {"3m": "2", "6m": "1", "12m": "1", "explorar": "0"}
                 priority = priority_map.get(timeline, "1")
 
-            # 5. Resolve stage · queremos que el lead aparezca en el Pipeline
-            #    (no en Leads escondidos). Buscamos la stage del team o, en su
-            #    defecto, una stage "Nuevo" no plegada con sequence baja.
-            stage = None
-            if team:
-                stage = env["crm.stage"].search(
-                    [("name", "=ilike", team.name)], limit=1
-                )
+            # 5. Resolve stage · todo inbound aterriza en "Lead Inbound"
+            #    (stage canónica del pipeline unificado).
+            stage = env["crm.stage"].search(
+                [("name", "=", INBOUND_STAGE_NAME)], limit=1,
+            )
             if not stage:
-                stage = env["crm.stage"].search(
-                    [("fold", "=", False), ("name", "=ilike", "Nuevo")],
-                    order="sequence asc", limit=1,
-                )
-            if not stage:
+                # Fallback: primera stage no plegada (Nuevo, Lead Inbound…)
                 stage = env["crm.stage"].search(
                     [("fold", "=", False)],
                     order="sequence asc", limit=1,
@@ -370,6 +374,8 @@ class LeadMagnetController(http.Controller):
 
         if source == "migration-checklist":
             subject, body_html, from_addr = LeadMagnetController._html_checklist(lead)
+        elif source == "retail-guide":
+            subject, body_html, from_addr = LeadMagnetController._html_retail_guide(lead)
         elif source == "roi-calculator" and tier == "email":
             subject, body_html, from_addr = LeadMagnetController._html_roi_summary(lead)
         else:
@@ -432,6 +438,55 @@ class LeadMagnetController(http.Controller):
       Un saludo,<br/>
       <strong style="color:#fff">Gabriel Rodes Maganto</strong><br/>
       Comercial · Nextdoo Cloud<br/>
+      <a href="tel:+34622891192" style="color:#A855F7">+34 622 891 192</a> · <a href="mailto:gabrielrm@nextdoo.cloud" style="color:#A855F7">gabrielrm@nextdoo.cloud</a>
+    </p>
+  </div>
+  <div style="padding:16px 24px;background:#0A0A0A;color:#6b7280;font-size:11px;text-align:center">
+    Nextdoo Cloud · Odoo Ready Partner · Valencia, España ·
+    <a href="https://www.nextdoo.cloud/politica-privacidad" style="color:#6b7280">Política de privacidad</a>
+  </div>
+</div>
+""".strip()
+        return subject, body, from_addr
+
+    @staticmethod
+    def _html_retail_guide(lead):
+        contact = lead.contact_name or ""
+        subject = "Tu Guía Odoo Retail · 36 decisiones clave"
+        from_addr = '"Gabriel · Nextdoo" <gabrielrm@nextdoo.cloud>'
+        body = f"""
+<div style="font-family:'Inter',Arial,sans-serif;max-width:600px;margin:0 auto;background:#0A0A0A;color:#fff">
+  <div style="background:linear-gradient(135deg,#A855F7 0%,#EC4899 100%);padding:28px 24px">
+    <h1 style="margin:0;font-size:24px;font-weight:800;color:#fff">Tu Guía Odoo Retail</h1>
+    <p style="margin:6px 0 0;color:rgba(255,255,255,0.85);font-size:14px">36 decisiones clave para retail España · adjunto en PDF</p>
+  </div>
+  <div style="padding:28px 24px;background:#111114">
+    <p style="font-size:16px;color:#fff;margin:0 0 16px">Hola {contact},</p>
+    <p style="font-size:14px;color:rgba(255,255,255,0.78);line-height:1.65;margin:0 0 16px">
+      Aquí tienes la guía completa de <strong style="color:#fff">implantación Odoo para retail</strong>:
+      TPV, inventario multi-tienda, e-commerce sincronizado, contabilidad VeriFactu lista para 2026,
+      fidelización y reporting. Las 36 decisiones que aplicamos en cada proyecto, organizadas en 6 áreas.
+    </p>
+    <p style="font-size:14px;color:rgba(255,255,255,0.78);line-height:1.65;margin:0 0 16px">
+      <strong style="color:#fff">→ Adjunta a este email en PDF (~5 páginas).</strong>
+    </p>
+    <div style="background:rgba(168,85,247,0.10);border:1px solid rgba(168,85,247,0.3);border-radius:12px;padding:18px;margin:20px 0">
+      <h3 style="margin:0 0 8px;font-size:15px;color:#fff">¿La aplicamos a tu retail?</h3>
+      <p style="font-size:13px;color:rgba(255,255,255,0.78);margin:0 0 12px;line-height:1.6">
+        Soy Gabriel del equipo Nextdoo. Si quieres, en 20 minutos revisamos juntos qué decisiones
+        de la guía son críticas para tu negocio (moda, deportes, hogar, alimentación, electrónica…),
+        tu volumen y tu plazo. Sin compromiso.
+      </p>
+      <a href="https://www.nextdoo.cloud/appointment/2" style="display:inline-block;background:linear-gradient(135deg,#A855F7,#EC4899);color:#fff;padding:11px 22px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px">Reservar 20 min con Gabriel →</a>
+    </div>
+    <p style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;margin:24px 0 0">
+      Si prefieres respondemos por email — cuéntame tu situación (cuántas tiendas, sistema actual,
+      objetivo) y te preparo recomendación personalizada.
+    </p>
+    <p style="font-size:13px;color:rgba(255,255,255,0.65);margin:8px 0 0">
+      Un saludo,<br/>
+      <strong style="color:#fff">Gabriel Rodes Maganto</strong><br/>
+      Comercial · Nextdoo Cloud · Partner Odoo Retail España<br/>
       <a href="tel:+34622891192" style="color:#A855F7">+34 622 891 192</a> · <a href="mailto:gabrielrm@nextdoo.cloud" style="color:#A855F7">gabrielrm@nextdoo.cloud</a>
     </p>
   </div>

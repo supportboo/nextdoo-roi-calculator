@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Guía Odoo Retail · 36 decisiones · Nextdoo</title>
+<meta name="description" content="Guía gratis con las 36 decisiones clave para implantar Odoo en retail España. TPV, inventario multi-tienda, ecommerce, VeriFactu, fidelización. PDF al email." />
+<meta name="theme-color" content="#0A0A0A" />
+<base target="_top" />
+<meta property="og:title" content="Guía Odoo Retail · 36 decisiones clave" />
+<meta property="og:description" content="La guía que usamos en cada implantación retail. Gratis en tu email." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="es_ES" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  colors: { nd: { bg:'#0A0A0A', card:'rgba(255,255,255,0.03)', border:'rgba(255,255,255,0.08)', text:'rgba(255,255,255,0.78)', dim:'#9ca3af', primary:'#A855F7', secondary:'#EC4899', ok:'#10B981' } },
+  fontFamily: { body:['Inter','system-ui','sans-serif'], head:['"Plus Jakarta Sans"','Inter','sans-serif'] }
+} } }
+</script>
+
+<style>
+:root {
+  --nd-primary: #A855F7;
+  --nd-secondary: #EC4899;
+  --nd-bg: #0A0A0A;
+  --nd-card-bg: rgba(255,255,255,0.03);
+  --nd-border: rgba(255,255,255,0.08);
+  --nd-gradient: linear-gradient(135deg, #A855F7 0%, #EC4899 100%);
+}
+* { box-sizing: border-box; }
+html, body {
+  background: var(--nd-bg);
+  color: rgba(255,255,255,0.78);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+body {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(168,85,247,0.18), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 90% 30%, rgba(236,72,153,0.12), transparent 70%),
+    var(--nd-bg);
+  min-height: 100vh;
+}
+h1, h2, h3 { font-family: 'Plus Jakarta Sans', sans-serif; color: #fff; letter-spacing: -0.02em; }
+h1 { font-weight: 800; letter-spacing: -0.04em; }
+.gradient-text { background: var(--nd-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.card {
+  background: var(--nd-card-bg);
+  border: 1px solid var(--nd-border);
+  border-radius: 1rem;
+  backdrop-filter: blur(20px) saturate(140%);
+}
+.card-glow {
+  background: linear-gradient(180deg, rgba(168,85,247,0.10), rgba(236,72,153,0.05) 60%, transparent);
+  border: 1px solid rgba(168,85,247,0.25);
+  box-shadow: 0 0 60px -10px rgba(168,85,247,0.30);
+}
+.btn-primary {
+  background: var(--nd-gradient);
+  color: #fff;
+  padding: 0.95rem 1.8rem;
+  border-radius: 0.75rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  border: 1px solid rgba(255,255,255,0.15);
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .25s ease, filter .2s ease;
+  box-shadow: 0 8px 30px -10px rgba(168,85,247,0.6);
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%;
+}
+.btn-primary:hover { transform: translateY(-1px); filter: brightness(1.06); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.input, .select {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--nd-border);
+  border-radius: 0.7rem;
+  color: #fff;
+  font-size: 0.95rem;
+  padding: 0.75rem 0.95rem;
+  font-family: 'Inter', sans-serif;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.input:focus, .select:focus { outline: none; border-color: var(--nd-primary); background: rgba(168,85,247,0.06); }
+.input::placeholder { color: rgba(255,255,255,0.35); }
+.select {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23A855F7' d='M1 1l5 5 5-5'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  padding-right: 2.2rem;
+  cursor: pointer;
+}
+.select option { background: #18181b !important; color: #fff !important; }
+.label { font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.6); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.06em; display: block; }
+.badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; }
+.badge-info { background: rgba(168,85,247,0.10); color: #c4b5fd; border: 1px solid rgba(168,85,247,0.3); }
+.section-card {
+  background: var(--nd-card-bg);
+  border: 1px solid var(--nd-border);
+  border-radius: 0.85rem;
+  padding: 1.1rem 1.2rem;
+}
+.section-num {
+  width: 32px; height: 32px;
+  border-radius: 0.55rem;
+  display: grid; place-items: center;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+.success-card { display: none; }
+.success-card.show { display: block; animation: fadeUp .5s ease both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.toast {
+  position: fixed; bottom: 1.5rem; right: 1.5rem;
+  background: #18181b; color: #fff;
+  padding: 1rem 1.2rem; border-radius: 0.7rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  border: 1px solid rgba(16,185,129,0.4);
+  z-index: 100; display: none;
+}
+.toast.show { display: flex; align-items: center; gap: 0.6rem; animation: fadeUp .35s ease both; }
+.toast.err { border-color: rgba(239,68,68,0.4); }
+</style>
+</head>
+
+<body class="antialiased">
+
+<section class="px-5 sm:px-8 pt-12 pb-8">
+  <div class="mx-auto max-w-3xl text-center">
+    <div class="badge badge-info mb-5">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      Guía sectorial · PDF al instante
+    </div>
+    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05]">
+      <span class="gradient-text">36 decisiones</span> para llevar<br/>tu retail a Odoo bien
+    </h1>
+    <p class="mt-5 text-base sm:text-lg text-nd-dim max-w-2xl mx-auto leading-relaxed">
+      La guía que aplicamos en <strong class="text-white">cada implantación retail</strong>: TPV, inventario multi-tienda,
+      e-commerce, contabilidad VeriFactu 2026, fidelización y reporting. Sin humo.
+    </p>
+  </div>
+</section>
+
+<section class="px-5 sm:px-8 pb-20">
+  <div class="mx-auto max-w-6xl grid lg:grid-cols-[1.15fr_1fr] gap-7 items-start">
+
+    <div class="space-y-3">
+      <div class="section-card">
+        <div class="flex items-start gap-3">
+          <div class="section-num" style="background:#A855F7">1</div>
+          <div>
+            <div class="text-xs uppercase tracking-widest text-nd-dim mb-1">8 decisiones</div>
+            <h3 class="text-lg font-bold">TPV moderno y compliant</h3>
+            <p class="text-sm mt-1">Hardware, métodos de pago (Bizum, Redsys, Stripe), tickets simplificados VeriFactu, modo offline, devoluciones, promociones, cierres con arqueo.</p>
+          </div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="flex items-start gap-3">
+          <div class="section-num" style="background:#EC4899">2</div>
+          <div>
+            <div class="text-xs uppercase tracking-widest text-nd-dim mb-1">7 decisiones</div>
+            <h3 class="text-lg font-bold">Inventario multi-tienda</h3>
+            <p class="text-sm mt-1">Almacenes y ubicaciones, stock disponible vs reservado, transferencias inter-tienda, variantes (talla/color), inventarios cíclicos, reposición automática.</p>
+          </div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="flex items-start gap-3">
+          <div class="section-num" style="background:#3B82F6">3</div>
+          <div>
+            <div class="text-xs uppercase tracking-widest text-nd-dim mb-1">6 decisiones</div>
+            <h3 class="text-lg font-bold">E-commerce sincronizado</h3>
+            <p class="text-sm mt-1">Catálogo único web+tienda, stock real-time, Click &amp; Collect, pasarelas (Redsys/Stripe/Bizum), integración Correos/MRW/GLS, SEO base.</p>
+          </div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="flex items-start gap-3">
+          <div class="section-num" style="background:#10B981">4</div>
+          <div>
+            <div class="text-xs uppercase tracking-widest text-nd-dim mb-1">6 decisiones</div>
+            <h3 class="text-lg font-bold">Contabilidad y fiscalidad ES</h3>
+            <p class="text-sm mt-1">VeriFactu listo 2026, SII, recargo equivalencia, PGC PYMES, conciliación bancaria N43, modelos 303/390/347/349.</p>
+          </div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="flex items-start gap-3">
+          <div class="section-num" style="background:#F59E0B">5</div>
+          <div>
+            <div class="text-xs uppercase tracking-widest text-nd-dim mb-1">5 decisiones</div>
+            <h3 class="text-lg font-bold">Marketing y fidelización</h3>
+            <p class="text-sm mt-1">Tarjeta cliente con puntos, email automatizado (bienvenida/carrito/cumpleaños), cupones y vales regalo, wishlist, segmentación RFM.</p>
+          </div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="flex items-start gap-3">
+          <div class="section-num" style="background:#A855F7">6</div>
+          <div>
+            <div class="text-xs uppercase tracking-widest text-nd-dim mb-1">4 decisiones</div>
+            <h3 class="text-lg font-bold">KPIs y reporting retail</h3>
+            <p class="text-sm mt-1">Dashboard tienda diario, ranking productos/categorías, sell-through por temporada, rotación SKU.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-5 grid grid-cols-3 gap-3 text-center text-xs text-nd-dim">
+        <div class="flex flex-col items-center gap-1"><svg width="20" height="20" stroke="#10B981" fill="none" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Listo VeriFactu</div>
+        <div class="flex flex-col items-center gap-1"><svg width="20" height="20" stroke="#10B981" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> 22 años retail</div>
+        <div class="flex flex-col items-center gap-1"><svg width="20" height="20" stroke="#10B981" fill="none" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> PDF en 5 min</div>
+      </div>
+    </div>
+
+    <div class="card card-glow p-6 sm:p-7" style="position: sticky; top: 1rem;">
+      <div id="formBlock">
+        <div class="flex items-center justify-between mb-4">
+          <span class="badge badge-info">Descarga gratis</span>
+          <span class="text-xs text-nd-dim">~20 segundos</span>
+        </div>
+        <h2 class="text-2xl font-extrabold leading-tight">Recibe la guía en tu email</h2>
+        <p class="text-sm text-nd-dim mt-1.5 mb-5">PDF con las 36 decisiones aplicadas a retail España.</p>
+
+        <form id="leadForm" class="space-y-3">
+          <div>
+            <label class="label">Nombre</label>
+            <input class="input" name="nombre" required placeholder="Tu nombre" autocomplete="given-name" />
+          </div>
+          <div>
+            <label class="label">Email profesional</label>
+            <input class="input" name="email" type="email" required placeholder="tu@empresa.com" autocomplete="email" />
+          </div>
+          <div>
+            <label class="label">Empresa <span class="text-nd-dim normal-case">· opcional</span></label>
+            <input class="input" name="empresa" placeholder="Razón social" autocomplete="organization" />
+          </div>
+          <div>
+            <label class="label">Tipo de retail <span class="text-nd-dim normal-case">· opcional</span></label>
+            <select class="select" name="segmento">
+              <option value="">Selecciona</option>
+              <option value="moda">Moda y complementos</option>
+              <option value="deportes">Deportes y outdoor</option>
+              <option value="hogar">Hogar y decoración</option>
+              <option value="alimentacion">Alimentación / gourmet</option>
+              <option value="electro">Electrónica</option>
+              <option value="motor">Motor (motos, recambios)</option>
+              <option value="salud">Salud y belleza</option>
+              <option value="hosteleria">Hostelería retail</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+          <div class="flex items-start gap-2 text-xs text-nd-dim pt-1">
+            <input type="checkbox" required class="accent-nd-primary mt-0.5" id="gdpr" />
+            <label for="gdpr">Acepto la <a href="https://www.nextdoo.cloud/politica-privacidad" class="text-nd-primary underline">política de privacidad</a> y recibir la guía en mi email. Sin spam.</label>
+          </div>
+          <button type="submit" class="btn-primary mt-3" id="leadSubmit">
+            Enviarme la guía
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <p class="text-center text-xs text-nd-dim">Te llega en menos de 5 minutos · Gabriel te escribe esta semana</p>
+        </form>
+      </div>
+
+      <div id="successBlock" class="success-card text-center">
+        <div class="w-12 h-12 rounded-full grid place-items-center mx-auto mb-3" style="background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <p class="text-sm text-nd-dim">Guía enviada a <strong class="text-white" id="successEmail">tu email</strong></p>
+
+        <hr class="my-5 border-nd-border" />
+
+        <div class="inline-flex items-center gap-2 mb-3">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+          <span class="badge badge-info" style="background:rgba(168,85,247,0.12);border-color:rgba(168,85,247,0.4)">Regalo de bienvenida</span>
+        </div>
+        <h3 class="text-2xl font-extrabold text-white leading-tight">Tu primera consultoría<br/><span class="gradient-text">te invitamos nosotros</span></h3>
+        <p class="text-sm text-nd-dim mt-3">30 minutos con Gabriel para adaptar la guía a tu retail real. Sin tarjeta, sin compromiso.</p>
+
+        <a href="https://www.nextdoo.cloud/appointment/2" id="bookingCta" class="btn-primary mt-5" style="font-size:1rem;padding:1rem 1.4rem">
+          Reservar mi consultoría gratis
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <p class="text-xs text-nd-dim mt-3">Te llevamos al calendario en <span id="redirectCountdown" class="text-white font-bold">5</span> s · <button type="button" id="cancelRedirect" class="underline hover:text-white">no quiero ahora</button></p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+const LEAD_ENDPOINT = window.NEXTDOO_LEAD_ENDPOINT || 'https://www.nextdoo.cloud/api/lead-magnet';
+
+function toast(msg, err) {
+  const t = document.getElementById('toast');
+  t.innerHTML = (err
+    ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg>'
+    : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>') + ' ' + msg;
+  t.className = 'toast show' + (err ? ' err' : '');
+  setTimeout(() => t.className = 'toast', 5000);
+}
+
+function showSuccess(email) {
+  document.getElementById('formBlock').style.display = 'none';
+  document.getElementById('successEmail').textContent = email;
+  document.getElementById('successBlock').classList.add('show');
+
+  const BOOKING_URL = 'https://www.nextdoo.cloud/appointment/2';
+  const countdownEl = document.getElementById('redirectCountdown');
+  const cancelBtn = document.getElementById('cancelRedirect');
+  let seconds = 5;
+  let cancelled = false;
+
+  const tick = setInterval(() => {
+    seconds -= 1;
+    if (countdownEl) countdownEl.textContent = seconds;
+    if (seconds <= 0) {
+      clearInterval(tick);
+      if (!cancelled) window.top.location.href = BOOKING_URL;
+    }
+  }, 1000);
+
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', () => {
+      cancelled = true;
+      clearInterval(tick);
+      cancelBtn.parentElement.innerHTML = 'Ok, te dejamos · revisa tu bandeja del email';
+    });
+  }
+}
+
+document.getElementById('leadForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(e.target));
+  const payload = {
+    name: data.nombre,
+    partner_name: data.empresa || (data.email || '').split('@')[1] || 'Sin empresa',
+    email_from: data.email,
+    function: '',
+    phone: '',
+    source: 'retail-guide',
+    tier: 'email',
+    tags: [
+      'Retail Guide',
+      'Lead Magnet',
+      'Web',
+      data.segmento ? `Segmento: ${data.segmento}` : 'Segmento: sin especificar'
+    ],
+    urgency: 'explorar',
+    timeline: 'explorar',
+    timestamp: new Date().toISOString()
+  };
+
+  const btn = document.getElementById('leadSubmit');
+  btn.disabled = true;
+  btn.innerHTML = 'Enviando…';
+
+  showSuccess(data.email);
+  toast('Guía enviada a ' + data.email);
+
+  try {
+    const queue = JSON.parse(localStorage.getItem('nextdoo_leads_queue') || '[]');
+    queue.push(payload);
+    localStorage.setItem('nextdoo_leads_queue', JSON.stringify(queue.slice(-20)));
+  } catch (e) {}
+
+  fetch(LEAD_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+    mode: 'cors',
+    keepalive: true
+  }).then(res => {
+    if (!res.ok) throw new Error('http ' + res.status);
+    return res.json().catch(() => ({ ok: true }));
+  }).then(() => {
+    try {
+      const queue = JSON.parse(localStorage.getItem('nextdoo_leads_queue') || '[]');
+      const filtered = queue.filter(p => p.timestamp !== payload.timestamp);
+      localStorage.setItem('nextdoo_leads_queue', JSON.stringify(filtered));
+    } catch (e) {}
+  }).catch(err => {
+    console.warn('[nextdoo retail-guide] queued in localStorage:', err.message);
+  });
+});
+</script>
+
+</body>
+</html>

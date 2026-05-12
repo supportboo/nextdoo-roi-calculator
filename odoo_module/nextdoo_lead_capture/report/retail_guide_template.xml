@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<template id="retail_guide_template">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.external_layout">
+                <div class="page" style="font-family: 'Inter', Helvetica, Arial, sans-serif; color: #111;">
+
+                    <!-- Cover -->
+                    <div style="text-align: center; padding: 30px 0 20px;">
+                        <div style="display: inline-block; padding: 6px 14px; background: linear-gradient(135deg, #A855F7 0%, #EC4899 100%); color: white; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px;">
+                            Guía sectorial · Nextdoo
+                        </div>
+                        <h1 style="font-size: 28px; font-weight: 800; margin: 0 0 6px; letter-spacing: -0.02em;">
+                            Odoo para retail en España
+                        </h1>
+                        <p style="font-size: 14px; color: #6b7280; margin: 0;">
+                            Implantación moderna · cumplimiento 2026 · stack probado
+                            (<t t-out="o.partner_name or o.contact_name or ''"/>)
+                        </p>
+                    </div>
+
+                    <p style="font-size: 13px; line-height: 1.7; color: #374151; margin: 16px 0 24px;">
+                        Esta guía recoge las 36 decisiones clave que tomamos en cada implantación
+                        Odoo retail: TPV, inventario multi-tienda, e-commerce sincronizado,
+                        contabilidad VeriFactu, fidelización y reporting.
+                        Si lo aplicas en orden, llegas al go-live <strong>en 30-45 días</strong>
+                        sin parar la operativa.
+                    </p>
+
+                    <!-- 1. TPV / POS -->
+                    <h2 style="background: rgba(168,85,247,0.10); color: #6B21A8; padding: 10px 14px; border-left: 4px solid #A855F7; font-size: 16px; font-weight: 700; margin: 24px 0 12px;">
+                        1 · Punto de venta (TPV) — 8 decisiones
+                    </h2>
+                    <ol style="padding-left: 20px; font-size: 12.5px; line-height: 1.85; color: #1f2937;">
+                        <li><strong>Hardware compatible</strong>: lector de código de barras USB, impresora térmica ESC/POS, cajón portamonedas, datáfono integrado (Redsys / Stripe Terminal).</li>
+                        <li><strong>Métodos de pago</strong>: tarjeta (Redsys o Stripe), Bizum, efectivo y transferencia. Vale regalo y devolución como métodos contables propios.</li>
+                        <li><strong>Multi-sesión y multi-cajero</strong>: una sesión por cajero/turno, cierre individual con arqueo.</li>
+                        <li><strong>Tickets simplificados</strong>: VeriFactu-compatibles desde diciembre 2026 (modelo F2). Factura completa bajo petición.</li>
+                        <li><strong>Devoluciones y cambios</strong>: ticket original obligatorio, devolución parcial soportada, refund directo al método original.</li>
+                        <li><strong>Promociones</strong>: 2x1, descuento %, cupón importe, X gratis por compra ≥ Y. Programadas por fecha/franja.</li>
+                        <li><strong>Modo offline</strong>: caja sigue facturando sin internet; sincroniza al reconectar.</li>
+                        <li><strong>Cierres de caja</strong>: arqueo X/Z, exportación contable diaria, conciliación con datáfono.</li>
+                    </ol>
+
+                    <!-- 2. Inventario multi-tienda -->
+                    <h2 style="background: rgba(236,72,153,0.10); color: #9D174D; padding: 10px 14px; border-left: 4px solid #EC4899; font-size: 16px; font-weight: 700; margin: 24px 0 12px;">
+                        2 · Inventario multi-tienda — 7 decisiones
+                    </h2>
+                    <ol start="9" style="padding-left: 20px; font-size: 12.5px; line-height: 1.85; color: #1f2937;">
+                        <li><strong>Almacenes y ubicaciones</strong>: un almacén por tienda física + uno virtual para ecommerce.</li>
+                        <li><strong>Stock disponible vs reservado</strong>: ecommerce solo "vende lo disponible", reservas POS bloquean unidades en tiempo real.</li>
+                        <li><strong>Transferencias inter-tienda</strong>: flujo recepción/envío con doble validación. Stock en tránsito visible.</li>
+                        <li><strong>Variantes</strong>: talla, color, modelo, capacidad. Cada combinación con su SKU y EAN.</li>
+                        <li><strong>Atributos extra</strong>: temporada, marca, género, material, certificaciones. Filtrables en ecommerce.</li>
+                        <li><strong>Inventarios cíclicos</strong>: conteo parcial semanal por categoría, conteo total trimestral.</li>
+                        <li><strong>Reposición automática</strong>: stock mínimo por SKU por tienda, sugerencias de pedido al proveedor.</li>
+                    </ol>
+
+                    <!-- 3. Ecommerce -->
+                    <h2 style="background: rgba(59,130,246,0.10); color: #1E40AF; padding: 10px 14px; border-left: 4px solid #3B82F6; font-size: 16px; font-weight: 700; margin: 24px 0 12px;">
+                        3 · E-commerce sincronizado — 6 decisiones
+                    </h2>
+                    <ol start="16" style="padding-left: 20px; font-size: 12.5px; line-height: 1.85; color: #1f2937;">
+                        <li><strong>Catálogo único</strong>: una sola ficha producto sirve a web, TPV, marketplace y B2B. Sin duplicidades.</li>
+                        <li><strong>Stock real-time</strong>: web muestra solo lo disponible neto de reservas, evita overselling.</li>
+                        <li><strong>Click &amp; Collect</strong>: el cliente compra online y recoge en la tienda elegida; stock bloqueado al confirmar.</li>
+                        <li><strong>Pasarelas de pago</strong>: Redsys, Stripe, Bizum vía pasarela, PayPal, transferencia. Cobro 100 % online.</li>
+                        <li><strong>Logística</strong>: integración con Correos Express, MRW, GLS o SEUR; etiquetas automáticas y tracking al cliente.</li>
+                        <li><strong>SEO base</strong>: meta-title/description por ficha, OG image, breadcrumbs, schema Product, sitemap.</li>
+                    </ol>
+
+                    <!-- 4. Caja y fiscal -->
+                    <h2 style="background: rgba(16,185,129,0.10); color: #065F46; padding: 10px 14px; border-left: 4px solid #10B981; font-size: 16px; font-weight: 700; margin: 24px 0 12px;">
+                        4 · Contabilidad y fiscalidad — 6 decisiones
+                    </h2>
+                    <ol start="22" style="padding-left: 20px; font-size: 12.5px; line-height: 1.85; color: #1f2937;">
+                        <li><strong>VeriFactu</strong>: obligatorio empresas en España desde 2026. Odoo lo certifica y envía a la AEAT en tiempo real.</li>
+                        <li><strong>SII / Suministro Inmediato de Información</strong>: si tu facturación supera el umbral, envío automático de IVA repercutido/soportado.</li>
+                        <li><strong>Recargo de equivalencia</strong>: configuración correcta para clientes minoristas autónomos.</li>
+                        <li><strong>Plan contable PGC PYMES</strong>: configurado por defecto, con cuentas analíticas por tienda y por categoría.</li>
+                        <li><strong>Conciliación bancaria</strong>: norma 43 / CSB43 importado automáticamente, reconciliación asistida con IA.</li>
+                        <li><strong>Modelos AEAT</strong>: 303 trimestral, 390 anual, 347 operaciones &gt; 3 005,06 €, 349 intracomunitarias. Pre-rellenados.</li>
+                    </ol>
+
+                    <!-- 5. Fidelización -->
+                    <h2 style="background: rgba(245,158,11,0.10); color: #92400E; padding: 10px 14px; border-left: 4px solid #F59E0B; font-size: 16px; font-weight: 700; margin: 24px 0 12px;">
+                        5 · Marketing y fidelización — 5 decisiones
+                    </h2>
+                    <ol start="28" style="padding-left: 20px; font-size: 12.5px; line-height: 1.85; color: #1f2937;">
+                        <li><strong>Tarjeta cliente / programa de puntos</strong>: identificación en TPV, ratio canje configurable, expiración de puntos.</li>
+                        <li><strong>Email marketing automatizado</strong>: bienvenida, carrito abandonado, postventa, cumpleaños, reactivación 90 d.</li>
+                        <li><strong>Cupones y vales regalo</strong>: digitales con QR, físicos con código rasca, expiración, restricciones (categoría / mínimo).</li>
+                        <li><strong>Wishlist y favoritos</strong>: el cliente guarda productos sin stock y se le avisa cuando vuelven.</li>
+                        <li><strong>Segmentación clientes</strong>: ticket medio, frecuencia, RFM, categorías compradas. Para campañas dirigidas.</li>
+                    </ol>
+
+                    <!-- 6. KPIs -->
+                    <h2 style="background: rgba(168,85,247,0.10); color: #6B21A8; padding: 10px 14px; border-left: 4px solid #A855F7; font-size: 16px; font-weight: 700; margin: 24px 0 12px;">
+                        6 · KPIs y reporting retail — 4 decisiones
+                    </h2>
+                    <ol start="33" style="padding-left: 20px; font-size: 12.5px; line-height: 1.85; color: #1f2937;">
+                        <li><strong>Dashboard tienda diario</strong>: tickets, ticket medio, unidades por ticket, conversión, ventas vs objetivo.</li>
+                        <li><strong>Ranking productos / categorías</strong>: top sellers y bottom sellers por tienda, por semana.</li>
+                        <li><strong>Sell-through</strong>: % vendido sobre comprado por temporada y por categoría.</li>
+                        <li><strong>Rotación de SKU</strong>: días de stock, productos lentos, candidatos a outlet o devolución a proveedor.</li>
+                    </ol>
+
+                    <!-- CTA final -->
+                    <div style="margin-top: 28px; padding: 18px 20px; background: linear-gradient(135deg, rgba(168,85,247,0.08), rgba(236,72,153,0.05)); border: 1px solid rgba(168,85,247,0.30); border-radius: 10px;">
+                        <p style="font-size: 13px; font-weight: 700; color: #111; margin: 0 0 6px;">
+                            ¿Aplicamos esto a tu retail?
+                        </p>
+                        <p style="font-size: 12px; color: #4b5563; margin: 0 0 10px; line-height: 1.7;">
+                            En 30 minutos revisamos contigo qué decisiones de la guía son críticas para
+                            tu sector (moda, deportes, electro, alimentación…), tu volumen y tu calendario.
+                            Sin compromiso, invitamos nosotros.
+                        </p>
+                        <p style="font-size: 12px; margin: 0;">
+                            <a href="https://www.nextdoo.cloud/appointment/2" style="color: #A855F7; font-weight: 700; text-decoration: none;">
+                                Reservar sesión gratuita →
+                            </a>
+                            &amp;nbsp;·&amp;nbsp;
+                            <a href="tel:+34622891192" style="color: #6b7280; text-decoration: none;">+34 622 891 192</a>
+                            &amp;nbsp;·&amp;nbsp;
+                            <a href="mailto:info@nextdoo.cloud" style="color: #6b7280; text-decoration: none;">info@nextdoo.cloud</a>
+                        </p>
+                    </div>
+
+                    <p style="font-size: 10px; color: #9ca3af; margin-top: 24px; text-align: center;">
+                        © Nextdoo Cloud · Odoo Ready Partner · Valencia, España · Guía Retail v1.0 ·
+                        <span t-out="o.create_date and o.create_date.strftime('%d/%m/%Y') or ''"/>
+                    </p>
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+</odoo>

@@ -67,6 +67,21 @@ PAGES = {
             "website_meta_keywords": "checklist migracion odoo, guia odoo, migrar odoo, 42 puntos odoo, Nextdoo partner",
         },
     },
+    "retail-guide": {
+        "url": "/guia-odoo-retail",
+        "name": "Guía Odoo Retail · 36 decisiones",
+        "template_key": "website.guia_odoo_retail",
+        "iframe_src": f"{GH_PAGES_BASE}/retail-guide/",
+        "html_relpath": "retail-guide/index.html",
+        "meta": {
+            "website_meta_title": "Guía Odoo Retail · 36 decisiones clave · Nextdoo",
+            "website_meta_description": (
+                "Descarga gratis la guía con 36 decisiones para implantar Odoo en "
+                "retail España. TPV, inventario, ecommerce, VeriFactu 2026. PDF al email."
+            ),
+            "website_meta_keywords": "odoo retail, tpv odoo, verifactu, ecommerce odoo, partner odoo retail España",
+        },
+    },
 }
 
 

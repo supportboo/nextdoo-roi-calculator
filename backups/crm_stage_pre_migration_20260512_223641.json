@@ -1,0 +1,163 @@
+[
+  {
+    "id": 29,
+    "name": "BOO NUEVO",
+    "sequence": 0,
+    "fold": false,
+    "is_won": false
+  },
+  {
+    "id": 21,
+    "name": "INICIATIVA",
+    "sequence": 0,
+    "fold": false,
+    "is_won": false
+  },
+  {
+    "id": 8,
+    "name": "NUEVOS PEDIDOS",
+    "sequence": 0,
+    "fold": false,
+    "is_won": false
+  },
+  {
+    "id": 1,
+    "name": "Nuevo",
+    "sequence": 0,
+    "fold": false,
+    "is_won": false
+  },
+  {
+    "id": 13,
+    "name": "Nuevo",
+    "sequence": 0,
+    "fold": false,
+    "is_won": false
+  },
+  {
+    "id": 33,
+    "name": "BOO CUALIFICADO",
+    "sequence": 1,
+    "fold": false,
+    "is_won": false
+  },
+  {
+    "id": 24,
+    "name": "FOLDER CONTACTADO",
+    "sequence": 1,
+    "fold": false,
+    "is_won": false
+  },
+  {
+    "id": 9,
+    "name": "LEADS CUALIFICADOS",
+    "sequence": 1,
+    "fold": false,
+    "is_won": false
+  },
+  {
+    "id": 11,
+    "name": "MODEKA PROFORMAS",
+    "sequence": 1,
+    "fold": false,
+    "is_won": false
+  },
+  {
+    "id": 30,
+    "name": "BOO PROTOTIPADO",
+    "sequence": 2,
+    "fold": false,
+    "is_won": false
+  },
+  {
+    "id": 14,
+    "name": "Contactado",
+    "sequence": 2,
+    "fold": false,
+    "is_won": false
+  },
+  {
+    "id": 25,
+    "name": "FOLDER PROPUESTA",
+    "sequence": 2,
+    "fold": false,
+    "is_won": false
+  },
+  {
+    "id": 27,
+    "name": "NEXTDOO SPONSOR",
+    "sequence": 2,
+    "fold": false,
+    "is_won": false
+  },
+  {
+    "id": 31,
+    "name": "BOO PRESUPUESTADO",
+    "sequence": 3,
+    "fold": false,
+    "is_won": false
+  },
+  {
+    "id": 26,
+    "name": "FOLDER GANADO",
+    "sequence": 3,
+    "fold": false,
+    "is_won": true
+  },
+  {
+    "id": 7,
+    "name": "Negociación",
+    "sequence": 3,
+    "fold": false,
+    "is_won": false
+  },
+  {
+    "id": 32,
+    "name": "BOO GANADO",
+    "sequence": 4,
+    "fold": false,
+    "is_won": false
+  },
+  {
+    "id": 28,
+    "name": "NEXTDOO NEGOCIACION",
+    "sequence": 4,
+    "fold": false,
+    "is_won": false
+  },
+  {
+    "id": 23,
+    "name": "GANADO",
+    "sequence": 5,
+    "fold": false,
+    "is_won": true
+  },
+  {
+    "id": 18,
+    "name": "Ganado",
+    "sequence": 6,
+    "fold": false,
+    "is_won": true
+  },
+  {
+    "id": 10,
+    "name": "PROPUESTA ENVIADA",
+    "sequence": 6,
+    "fold": true,
+    "is_won": false
+  },
+  {
+    "id": 6,
+    "name": "Iniciativa",
+    "sequence": 7,
+    "fold": true,
+    "is_won": false
+  },
+  {
+    "id": 4,
+    "name": "Ganado",
+    "sequence": 9,
+    "fold": false,
+    "is_won": true
+  }
+]

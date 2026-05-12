@@ -1,0 +1,667 @@
+[
+  {
+    "id": 1,
+    "name": "web",
+    "color": 2
+  },
+  {
+    "id": 2,
+    "name": "redes sociales",
+    "color": 1
+  },
+  {
+    "id": 3,
+    "name": "ppc",
+    "color": 8
+  },
+  {
+    "id": 4,
+    "name": "seo",
+    "color": 11
+  },
+  {
+    "id": 8,
+    "name": "Modeka",
+    "color": 10
+  },
+  {
+    "id": 9,
+    "name": "Más de 50 usuarios",
+    "color": 1
+  },
+  {
+    "id": 10,
+    "name": "Odoo",
+    "color": 5
+  },
+  {
+    "id": 11,
+    "name": "3 usuarios",
+    "color": 8
+  },
+  {
+    "id": 12,
+    "name": "Punto de Venta",
+    "color": 1
+  },
+  {
+    "id": 13,
+    "name": "Ventas",
+    "color": 8
+  },
+  {
+    "id": 14,
+    "name": "Inventario",
+    "color": 5
+  },
+  {
+    "id": 15,
+    "name": "Compras",
+    "color": 9
+  },
+  {
+    "id": 16,
+    "name": "Multiempresa",
+    "color": 5
+  },
+  {
+    "id": 17,
+    "name": "Sincronización stock",
+    "color": 5
+  },
+  {
+    "id": 18,
+    "name": "Lead Odoo 🧐",
+    "color": 8
+  },
+  {
+    "id": 19,
+    "name": "Licencias",
+    "color": 6
+  },
+  {
+    "id": 20,
+    "name": "ecommerce",
+    "color": 11
+  },
+  {
+    "id": 21,
+    "name": "% VENTAS",
+    "color": 8
+  },
+  {
+    "id": 22,
+    "name": "CRM",
+    "color": 10
+  },
+  {
+    "id": 23,
+    "name": "CONTABILIDAD",
+    "color": 10
+  },
+  {
+    "id": 24,
+    "name": "B2B",
+    "color": 9
+  },
+  {
+    "id": 25,
+    "name": "4 USUARIOS",
+    "color": 9
+  },
+  {
+    "id": 26,
+    "name": "ODOO.SH",
+    "color": 10
+  },
+  {
+    "id": 27,
+    "name": "Portal Odoo Partner",
+    "color": 2
+  },
+  {
+    "id": 28,
+    "name": "Folder Papeleria",
+    "color": 1
+  },
+  {
+    "id": 29,
+    "name": "Motodoo",
+    "color": 11
+  },
+  {
+    "id": 30,
+    "name": "leads Marc",
+    "color": 5
+  },
+  {
+    "id": 31,
+    "name": "Importado",
+    "color": 4
+  },
+  {
+    "id": 32,
+    "name": "Prueba Gratis",
+    "color": 10
+  },
+  {
+    "id": 33,
+    "name": "Helstons",
+    "color": 11
+  },
+  {
+    "id": 34,
+    "name": "Hedon",
+    "color": 3
+  },
+  {
+    "id": 35,
+    "name": "Deus Ex Machina",
+    "color": 8
+  },
+  {
+    "id": 36,
+    "name": "Overlap",
+    "color": 2
+  },
+  {
+    "id": 37,
+    "name": "By City",
+    "color": 3
+  },
+  {
+    "id": 38,
+    "name": "Forma",
+    "color": 7
+  },
+  {
+    "id": 39,
+    "name": "Bell",
+    "color": 4
+  },
+  {
+    "id": 40,
+    "name": "Fox",
+    "color": 5
+  },
+  {
+    "id": 41,
+    "name": "Icon",
+    "color": 6
+  },
+  {
+    "id": 42,
+    "name": "RST",
+    "color": 6
+  },
+  {
+    "id": 43,
+    "name": "Shad",
+    "color": 8
+  },
+  {
+    "id": 44,
+    "name": "Stormer",
+    "color": 10
+  },
+  {
+    "id": 45,
+    "name": "Highway Hawk",
+    "color": 11
+  },
+  {
+    "id": 46,
+    "name": "K&N",
+    "color": 6
+  },
+  {
+    "id": 47,
+    "name": "Segura",
+    "color": 3
+  },
+  {
+    "id": 48,
+    "name": "DMD",
+    "color": 4
+  },
+  {
+    "id": 49,
+    "name": "Invictus",
+    "color": 4
+  },
+  {
+    "id": 50,
+    "name": "Origine",
+    "color": 10
+  },
+  {
+    "id": 51,
+    "name": "Premier",
+    "color": 1
+  },
+  {
+    "id": 52,
+    "name": "Rouille",
+    "color": 11
+  },
+  {
+    "id": 53,
+    "name": "Alpinestars",
+    "color": 1
+  },
+  {
+    "id": 54,
+    "name": "Dainese",
+    "color": 4
+  },
+  {
+    "id": 55,
+    "name": "Shoei",
+    "color": 10
+  },
+  {
+    "id": 56,
+    "name": "Arai",
+    "color": 3
+  },
+  {
+    "id": 57,
+    "name": "HJC",
+    "color": 6
+  },
+  {
+    "id": 58,
+    "name": "LS2",
+    "color": 4
+  },
+  {
+    "id": 59,
+    "name": "Rev'it",
+    "color": 10
+  },
+  {
+    "id": 60,
+    "name": "Garibaldi",
+    "color": 2
+  },
+  {
+    "id": 61,
+    "name": "Schuberth",
+    "color": 9
+  },
+  {
+    "id": 62,
+    "name": "Five",
+    "color": 1
+  },
+  {
+    "id": 63,
+    "name": "Goldtop",
+    "color": 11
+  },
+  {
+    "id": 64,
+    "name": "Davida",
+    "color": 4
+  },
+  {
+    "id": 65,
+    "name": "Norton",
+    "color": 9
+  },
+  {
+    "id": 66,
+    "name": "Belstaff",
+    "color": 4
+  },
+  {
+    "id": 67,
+    "name": "Givi",
+    "color": 4
+  },
+  {
+    "id": 68,
+    "name": "Nolan",
+    "color": 10
+  },
+  {
+    "id": 69,
+    "name": "AGV",
+    "color": 1
+  },
+  {
+    "id": 70,
+    "name": "Lampa",
+    "color": 9
+  },
+  {
+    "id": 71,
+    "name": "MT Helmets",
+    "color": 8
+  },
+  {
+    "id": 72,
+    "name": "NZI",
+    "color": 11
+  },
+  {
+    "id": 73,
+    "name": "Puig",
+    "color": 6
+  },
+  {
+    "id": 74,
+    "name": "Scorpion",
+    "color": 10
+  },
+  {
+    "id": 75,
+    "name": "Seventy",
+    "color": 7
+  },
+  {
+    "id": 76,
+    "name": "Shark",
+    "color": 8
+  },
+  {
+    "id": 77,
+    "name": "SW-Motech",
+    "color": 2
+  },
+  {
+    "id": 78,
+    "name": "Thor",
+    "color": 10
+  },
+  {
+    "id": 79,
+    "name": "Simpson",
+    "color": 6
+  },
+  {
+    "id": 80,
+    "name": "Stylmartin",
+    "color": 5
+  },
+  {
+    "id": 81,
+    "name": "Schott NYC",
+    "color": 9
+  },
+  {
+    "id": 82,
+    "name": "Knox",
+    "color": 2
+  },
+  {
+    "id": 83,
+    "name": "Pando Moto",
+    "color": 4
+  },
+  {
+    "id": 84,
+    "name": "Rokker",
+    "color": 4
+  },
+  {
+    "id": 85,
+    "name": "RSD",
+    "color": 2
+  },
+  {
+    "id": 86,
+    "name": "John Doe",
+    "color": 1
+  },
+  {
+    "id": 87,
+    "name": "CAST",
+    "color": 8
+  },
+  {
+    "id": 88,
+    "name": "Roeg",
+    "color": 6
+  },
+  {
+    "id": 89,
+    "name": "Burly Brand",
+    "color": 2
+  },
+  {
+    "id": 90,
+    "name": "Tucano Urbano",
+    "color": 9
+  },
+  {
+    "id": 91,
+    "name": "Biltwell",
+    "color": 8
+  },
+  {
+    "id": 92,
+    "name": "GPA",
+    "color": 11
+  },
+  {
+    "id": 93,
+    "name": "Bering",
+    "color": 10
+  },
+  {
+    "id": 94,
+    "name": "Furygan",
+    "color": 4
+  },
+  {
+    "id": 95,
+    "name": "Macna",
+    "color": 2
+  },
+  {
+    "id": 96,
+    "name": "Spidi",
+    "color": 10
+  },
+  {
+    "id": 97,
+    "name": "Holy Freedom",
+    "color": 4
+  },
+  {
+    "id": 98,
+    "name": "Richa",
+    "color": 6
+  },
+  {
+    "id": 99,
+    "name": "Airoh",
+    "color": 9
+  },
+  {
+    "id": 100,
+    "name": "Acerbis",
+    "color": 11
+  },
+  {
+    "id": 101,
+    "name": "Caberg",
+    "color": 10
+  },
+  {
+    "id": 102,
+    "name": "Cardo",
+    "color": 9
+  },
+  {
+    "id": 103,
+    "name": "Hevik",
+    "color": 4
+  },
+  {
+    "id": 104,
+    "name": "Interphone",
+    "color": 3
+  },
+  {
+    "id": 105,
+    "name": "Ixon",
+    "color": 4
+  },
+  {
+    "id": 106,
+    "name": "Rukka",
+    "color": 5
+  },
+  {
+    "id": 107,
+    "name": "Sena",
+    "color": 4
+  },
+  {
+    "id": 108,
+    "name": "Sidi",
+    "color": 3
+  },
+  {
+    "id": 109,
+    "name": "TCX",
+    "color": 9
+  },
+  {
+    "id": 110,
+    "name": "Tucano",
+    "color": 11
+  },
+  {
+    "id": 111,
+    "name": "Held",
+    "color": 10
+  },
+  {
+    "id": 112,
+    "name": "Holyfreedom",
+    "color": 6
+  },
+  {
+    "id": 113,
+    "name": "Merlin",
+    "color": 7
+  },
+  {
+    "id": 114,
+    "name": "Roland Sands Design",
+    "color": 5
+  },
+  {
+    "id": 115,
+    "name": "70's Helmets",
+    "color": 9
+  },
+  {
+    "id": 116,
+    "name": "Blauer HT",
+    "color": 10
+  },
+  {
+    "id": 117,
+    "name": "Age of Glory",
+    "color": 1
+  },
+  {
+    "id": 118,
+    "name": "Baruffaldi",
+    "color": 11
+  },
+  {
+    "id": 119,
+    "name": "Boo My Business",
+    "color": 1
+  },
+  {
+    "id": 120,
+    "name": "Boo Seo",
+    "color": 8
+  },
+  {
+    "id": 121,
+    "name": "Motodoo Sync",
+    "color": 8
+  },
+  {
+    "id": 122,
+    "name": "Papeleria",
+    "color": 3
+  },
+  {
+    "id": 123,
+    "name": "Revisar",
+    "color": 3
+  },
+  {
+    "id": 124,
+    "name": "Leads Claude",
+    "color": 7
+  },
+  {
+    "id": 125,
+    "name": "Problem",
+    "color": 9
+  },
+  {
+    "id": 126,
+    "name": "Guia Retail",
+    "color": 6
+  },
+  {
+    "id": 127,
+    "name": "Boo Growth",
+    "color": 6
+  },
+  {
+    "id": 128,
+    "name": "Boo Web",
+    "color": 2
+  },
+  {
+    "id": 129,
+    "name": "Boo Performancer",
+    "color": 4
+  },
+  {
+    "id": 130,
+    "name": "6 usuarios",
+    "color": 9
+  },
+  {
+    "id": 191,
+    "name": "Migration Checklist",
+    "color": 10
+  },
+  {
+    "id": 192,
+    "name": "Lead Magnet",
+    "color": 8
+  },
+  {
+    "id": 193,
+    "name": "Email-only",
+    "color": 3
+  },
+  {
+    "id": 194,
+    "name": "Cold Lead",
+    "color": 10
+  },
+  {
+    "id": 195,
+    "name": "Sector: retail",
+    "color": 4
+  },
+  {
+    "id": 196,
+    "name": "boo-leads:probe-deep",
+    "color": 4
+  }
+]

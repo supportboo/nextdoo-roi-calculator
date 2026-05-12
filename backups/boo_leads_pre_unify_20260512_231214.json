@@ -1,0 +1,377 @@
+[
+  {
+    "id": 3517,
+    "name": "The Loco Polo Company",
+    "contact_name": "Oier",
+    "partner_name": "The Loco Polo Company",
+    "email_from": "oier@thelocopolo.com",
+    "stage_id": [
+      33,
+      "BOO CUALIFICADO"
+    ],
+    "team_id": [
+      8,
+      "Boo"
+    ],
+    "tag_ids": [],
+    "company_id": [
+      2,
+      "BOOMATIK S.C.P."
+    ],
+    "active": true,
+    "type": "opportunity"
+  },
+  {
+    "id": 53,
+    "name": "OUTLETBIKER",
+    "contact_name": false,
+    "partner_name": "OUTLETBIKER SL.",
+    "email_from": "outletbikersl@gmail.com",
+    "stage_id": [
+      32,
+      "BOO GANADO"
+    ],
+    "team_id": [
+      8,
+      "Boo"
+    ],
+    "tag_ids": [
+      20,
+      21,
+      120,
+      129
+    ],
+    "company_id": [
+      2,
+      "BOOMATIK S.C.P."
+    ],
+    "active": true,
+    "type": "opportunity"
+  },
+  {
+    "id": 1,
+    "name": "WIWU EUROPE INNOVATION SL.",
+    "contact_name": "Rocio Chen",
+    "partner_name": "WIWU EUROPE INNOVATION SL.",
+    "email_from": "rocio@wiwub2b.com",
+    "stage_id": [
+      32,
+      "BOO GANADO"
+    ],
+    "team_id": [
+      8,
+      "Boo"
+    ],
+    "tag_ids": [
+      1
+    ],
+    "company_id": [
+      2,
+      "BOOMATIK S.C.P."
+    ],
+    "active": true,
+    "type": "opportunity"
+  },
+  {
+    "id": 3252,
+    "name": "MOTOBIKE ALBACETE",
+    "contact_name": "MARÍA NIEVES BLÁZQUEZ GARCÍA",
+    "partner_name": false,
+    "email_from": "info@outletdelmotoristaalbacete.es",
+    "stage_id": [
+      31,
+      "BOO PRESUPUESTADO"
+    ],
+    "team_id": [
+      8,
+      "Boo"
+    ],
+    "tag_ids": [
+      119,
+      120
+    ],
+    "company_id": [
+      2,
+      "BOOMATIK S.C.P."
+    ],
+    "active": true,
+    "type": "opportunity"
+  },
+  {
+    "id": 3525,
+    "name": "DOBROMOTO S.L.",
+    "contact_name": false,
+    "partner_name": "Oportunidad de DOBROMOTO S.L.",
+    "email_from": false,
+    "stage_id": [
+      33,
+      "BOO CUALIFICADO"
+    ],
+    "team_id": [
+      8,
+      "Boo"
+    ],
+    "tag_ids": [
+      21,
+      120,
+      129
+    ],
+    "company_id": [
+      2,
+      "BOOMATIK S.C.P."
+    ],
+    "active": true,
+    "type": "opportunity"
+  },
+  {
+    "id": 3523,
+    "name": "MONTAZH SERVICE SL.",
+    "contact_name": "Nazari",
+    "partner_name": "MONTAZH SERVICE SL.",
+    "email_from": "narariy@montahzservice.com",
+    "stage_id": [
+      33,
+      "BOO CUALIFICADO"
+    ],
+    "team_id": [
+      8,
+      "Boo"
+    ],
+    "tag_ids": [],
+    "company_id": [
+      2,
+      "BOOMATIK S.C.P."
+    ],
+    "active": true,
+    "type": "opportunity"
+  },
+  {
+    "id": 3522,
+    "name": "Oportunidad de TSI VALENCIA",
+    "contact_name": "PACO",
+    "partner_name": "TSI VALENCIA",
+    "email_from": false,
+    "stage_id": [
+      31,
+      "BOO PRESUPUESTADO"
+    ],
+    "team_id": [
+      8,
+      "Boo"
+    ],
+    "tag_ids": [
+      20,
+      120
+    ],
+    "company_id": [
+      2,
+      "BOOMATIK S.C.P."
+    ],
+    "active": true,
+    "type": "opportunity"
+  },
+  {
+    "id": 3521,
+    "name": "KUM MOTO LINE SOCIEDAD LIMITADA.",
+    "contact_name": "Jordi Samañego",
+    "partner_name": "KUM MOTO LINE SOCIEDAD LIMITADA.",
+    "email_from": "zonatres@telefonica.net",
+    "stage_id": [
+      29,
+      "BOO NUEVO"
+    ],
+    "team_id": [
+      8,
+      "Boo"
+    ],
+    "tag_ids": [],
+    "company_id": [
+      2,
+      "BOOMATIK S.C.P."
+    ],
+    "active": true,
+    "type": "opportunity"
+  },
+  {
+    "id": 3520,
+    "name": "NORPIEL",
+    "contact_name": "Alfonso",
+    "partner_name": "NORPIEL Y OUTLET DE MOTO CORUÑA, S.L.",
+    "email_from": "norpiel@yahoo.es",
+    "stage_id": [
+      29,
+      "BOO NUEVO"
+    ],
+    "team_id": [
+      8,
+      "Boo"
+    ],
+    "tag_ids": [],
+    "company_id": [
+      2,
+      "BOOMATIK S.C.P."
+    ],
+    "active": true,
+    "type": "opportunity"
+  },
+  {
+    "id": 3519,
+    "name": "CABITO PIEL SL",
+    "contact_name": "Luis",
+    "partner_name": "CABITO PIEL SL",
+    "email_from": "cabitopiel@yahoo.es",
+    "stage_id": [
+      29,
+      "BOO NUEVO"
+    ],
+    "team_id": [
+      8,
+      "Boo"
+    ],
+    "tag_ids": [],
+    "company_id": [
+      2,
+      "BOOMATIK S.C.P."
+    ],
+    "active": true,
+    "type": "opportunity"
+  },
+  {
+    "id": 3518,
+    "name": "GORLIZ BIKER SL",
+    "contact_name": "Emmauel",
+    "partner_name": "GORLIZ BIKER SL",
+    "email_from": "gorlizbiker@gmail.com",
+    "stage_id": [
+      29,
+      "BOO NUEVO"
+    ],
+    "team_id": [
+      8,
+      "Boo"
+    ],
+    "tag_ids": [],
+    "company_id": [
+      2,
+      "BOOMATIK S.C.P."
+    ],
+    "active": true,
+    "type": "opportunity"
+  },
+  {
+    "id": 3516,
+    "name": "OUTLET MOTOSTORE VALENCIA SOCIEDAD LIMITADA.",
+    "contact_name": "David Pérez Martínez",
+    "partner_name": "OUTLET MOTOSTORE VALENCIA SOCIEDAD LIMITADA.",
+    "email_from": "motostorevalencia@gmail.com",
+    "stage_id": [
+      32,
+      "BOO GANADO"
+    ],
+    "team_id": [
+      8,
+      "Boo"
+    ],
+    "tag_ids": [
+      20,
+      21,
+      120,
+      129
+    ],
+    "company_id": [
+      2,
+      "BOOMATIK S.C.P."
+    ],
+    "active": true,
+    "type": "opportunity"
+  },
+  {
+    "id": 3400,
+    "name": "TUFANO",
+    "contact_name": "Felice",
+    "partner_name": "TUFANO",
+    "email_from": false,
+    "stage_id": [
+      30,
+      "BOO PROTOTIPADO"
+    ],
+    "team_id": [
+      8,
+      "Boo"
+    ],
+    "tag_ids": [],
+    "company_id": [
+      2,
+      "BOOMATIK S.C.P."
+    ],
+    "active": true,
+    "type": "opportunity"
+  },
+  {
+    "id": 3397,
+    "name": "DA NININA",
+    "contact_name": "Davide",
+    "partner_name": "Da Ninina",
+    "email_from": false,
+    "stage_id": [
+      29,
+      "BOO NUEVO"
+    ],
+    "team_id": [
+      8,
+      "Boo"
+    ],
+    "tag_ids": [],
+    "company_id": [
+      2,
+      "BOOMATIK S.C.P."
+    ],
+    "active": false,
+    "type": "opportunity"
+  },
+  {
+    "id": 3355,
+    "name": "PABLO SOTELO",
+    "contact_name": "Pablo Sotelo",
+    "partner_name": "SOTELO CREATIVE SOLUTIONS SL.",
+    "email_from": false,
+    "stage_id": [
+      30,
+      "BOO PROTOTIPADO"
+    ],
+    "team_id": [
+      8,
+      "Boo"
+    ],
+    "tag_ids": [
+      120,
+      127,
+      128
+    ],
+    "company_id": [
+      2,
+      "BOOMATIK S.C.P."
+    ],
+    "active": true,
+    "type": "opportunity"
+  },
+  {
+    "id": 3263,
+    "name": "Oportunidad de TSI VALENCIA",
+    "contact_name": false,
+    "partner_name": "TSI VALENCIA",
+    "email_from": false,
+    "stage_id": [
+      29,
+      "BOO NUEVO"
+    ],
+    "team_id": false,
+    "tag_ids": [],
+    "company_id": [
+      2,
+      "BOOMATIK S.C.P."
+    ],
+    "active": true,
+    "type": "opportunity"
+  }
+]

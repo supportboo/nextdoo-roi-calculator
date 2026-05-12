@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "name": "Sales",
+    "user_id": [
+      2,
+      "Jean-Louis Boulanger"
+    ],
+    "sequence": 0,
+    "active": true
+  },
+  {
+    "id": 9,
+    "name": "BOO NUEVO",
+    "user_id": [
+      2,
+      "Jean-Louis Boulanger"
+    ],
+    "sequence": 1,
+    "active": true
+  },
+  {
+    "id": 8,
+    "name": "Boo",
+    "user_id": false,
+    "sequence": 10,
+    "active": true
+  },
+  {
+    "id": 6,
+    "name": "Folder Manager",
+    "user_id": [
+      2,
+      "Jean-Louis Boulanger"
+    ],
+    "sequence": 10,
+    "active": true
+  },
+  {
+    "id": 5,
+    "name": "Motodoo",
+    "user_id": [
+      2,
+      "Jean-Louis Boulanger"
+    ],
+    "sequence": 10,
+    "active": true
+  },
+  {
+    "id": 4,
+    "name": "Modeka",
+    "user_id": [
+      2,
+      "Jean-Louis Boulanger"
+    ],
+    "sequence": 10,
+    "active": true
+  },
+  {
+    "id": 2,
+    "name": "Website",
+    "user_id": false,
+    "sequence": 10,
+    "active": true
+  }
+]
