@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <data>
 
     <record id="mail_template_lead_notification" model="mail.template">
         <field name="name">Nextdoo · Notificación lead magnet (interno)</field>
@@ -179,4 +180,5 @@
 ]]></field>
     </record>
 
+    </data>
 </odoo>

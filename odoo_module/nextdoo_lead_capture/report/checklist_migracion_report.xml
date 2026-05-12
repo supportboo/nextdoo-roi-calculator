@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <data>
 
     <!-- Report definition · Checklist Migración Odoo 42 puntos -->
     <record id="action_report_checklist_migracion" model="ir.actions.report">
@@ -12,4 +13,5 @@
         <field name="paperformat_id" ref="base.paperformat_euro"/>
     </record>
 
+    </data>
 </odoo>

@@ -34,6 +34,10 @@ ASSIGNEE_BY_SOURCE = {
     "consultation-request":"jeanlouis",
 }
 
+# Sales team al que se asignan TODOS los leads de marketing inbound.
+# Si no existe se cae al primer team de la compañía.
+INBOUND_TEAM_NAME = "BOO NUEVO"
+
 # Sources que requieren generar y adjuntar un PDF al lead + email.
 # Mapeo source → xmlid del report y del mail template para el envío.
 ATTACHMENT_BY_SOURCE = {
@@ -157,8 +161,14 @@ class LeadMagnetController(http.Controller):
                         tag_names.append(t)
             tag_ids = self._upsert_tags(env, tag_names)
 
-            # 3. Resolve sales team (Nextdoo default)
-            team = env["crm.team"].search([("company_id", "=", env.company.id)], limit=1)
+            # 3. Resolve sales team · inbound marketing va a "BOO NUEVO".
+            team = env["crm.team"].search(
+                [("name", "=ilike", INBOUND_TEAM_NAME)], limit=1
+            )
+            if not team:
+                team = env["crm.team"].search(
+                    [("company_id", "=", env.company.id)], limit=1
+                )
 
             # 4. Priority — tier meeting siempre 3★ (lead caliente),
             #    tier email se rige por urgencia declarada (suele ser baja).
