@@ -1,27 +1,31 @@
 # Calculadora ROI Odoo · Nextdoo
 
-> Calculadora interactiva de retorno de inversión para empresas que evalúan migrar a Odoo.
-> Inspirada en [roierp.com](https://roierp.com), reescrita con datos reales y estilo Nextdoo.
+> Lead magnet de Nextdoo Cloud — Partner Odoo especialista en **retail y servicios** (Valencia, España).
+> Calculadora ROI multi-paso con captura automática a CRM Odoo + actividad al comercial.
 
-[![Odoo](https://img.shields.io/badge/Odoo-19-purple)](https://www.odoo.com) [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![Status](https://img.shields.io/badge/status-production--ready-success)]()
+[![Odoo](https://img.shields.io/badge/Odoo-19-purple)](https://www.odoo.com) [![Lead Magnet](https://img.shields.io/badge/lead--magnet-gated-A855F7)]() [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 ---
 
-## Qué hace
+## Qué entrega
 
-Devuelve, en menos de 2 minutos y sin email obligatorio, los KPIs financieros de migrar a Odoo:
+### Para el visitante
+- Wizard de **4 pasos guiados** (empresa · situación actual · módulos · ajustes financieros).
+- KPIs en vivo visibles desde el primer paso (ROI año 1, ahorro, payback).
+- **Iconos oficiales Odoo** de cada módulo (servidos desde nextdoo.cloud).
+- Selector de sector con **especialidad Nextdoo destacada** (★ Retail · ★ Servicios).
+- Análisis detallado bloqueado tras registro: proyección 5 años, escenarios, VAN, TIR, sensibilidad, desglose por área, coste de inacción.
 
-- **ROI año 1** y ROI acumulado 5 años.
-- **Ahorro anual** por área funcional (finanzas, ventas, inventario, producción…).
-- **Payback** simple y descontado.
-- **VAN** y **TIR** a 5 años con WACC ajustable.
-- **TCO** comparado a 7 años (sistema actual vs Odoo).
-- **Análisis de sensibilidad** (matriz WACC × crecimiento).
-- **Escenarios** conservador / base / optimista.
-- **Coste de inacción** mensual y a 7 años.
-- **Captura de lead** con resumen al equipo Nextdoo.
-
-Todos los cálculos están documentados y son auditables. Fuentes en [`docs/BENCHMARKS.md`](docs/BENCHMARKS.md), fórmulas en [`docs/FORMULAS.md`](docs/FORMULAS.md).
+### Para Nextdoo (CRM)
+- POST a `/api/lead-magnet` cuando el visitante envía sus datos.
+- **`crm.lead`** creado con:
+  - Tags semánticos: `ROI Calculator`, `Lead Magnet`, `Sector: Retail`…
+  - Asignado a **Jeanlouis Rodes** (CEO) por defecto.
+  - Prioridad alta (3 ★) si urgencia ≤ 3 meses.
+  - Descripción completa con análisis financiero.
+- **Actividad de llamada** con deadline **HOY**.
+- **Email HTML** al asignado con paleta Nextdoo y botón directo al lead.
+- Mensaje en chatter del lead para trazabilidad.
 
 ---
 
@@ -29,94 +33,111 @@ Todos los cálculos están documentados y son auditables. Fuentes en [`docs/BENC
 
 ```
 nextdoo-roi-calculator/
-├── index.html              ← Calculadora completa (single-file, sin build step)
+├── index.html                      ← Calculadora (single-file, sin build)
+├── odoo_module/
+│   └── nextdoo_lead_capture/       ← Endpoint /api/lead-magnet
+│       ├── __manifest__.py
+│       ├── controllers/lead_magnet.py
+│       ├── data/crm_tag_data.xml
+│       ├── data/mail_template_data.xml
+│       └── README.md
 ├── docs/
-│   ├── BENCHMARKS.md       ← Fuentes (Forrester, Nucleus, Aberdeen…) y coeficientes
-│   └── FORMULAS.md         ← Fórmulas ROI, VAN, TIR, payback, sensibilidad
+│   ├── BENCHMARKS.md               ← Fuentes Forrester, Nucleus, Aberdeen…
+│   └── FORMULAS.md                 ← ROI, VAN, TIR, payback, sensibilidad
 ├── scripts/
-│   └── deploy_to_odoo.py   ← Embed en Odoo Nextdoo via XML-RPC
-├── assets/                 ← Logos y recursos opcionales
-├── LICENSE                 ← MIT
+│   └── deploy_to_odoo.py           ← Despliega como página Odoo
 └── README.md
 ```
 
 ---
 
-## Uso rápido
+## Arranque rápido
 
-### 1. Abrir local (sin servidor)
-
+### 1. Probar local (sin nada)
 ```bash
 git clone https://github.com/supportboo/nextdoo-roi-calculator.git
 cd nextdoo-roi-calculator
-# Doble click en index.html
+python -m http.server 8000          # → http://localhost:8000
 ```
 
-Funciona offline. Tailwind se carga desde CDN; cae al sistema de fuentes si no hay red.
+> En modo local el POST a `/api/lead-magnet` fallará (CORS contra dominio inexistente). El formulario activa el **fallback automático**: guarda en `localStorage` y abre mailto al CEO. El detalle se desbloquea igualmente.
 
-### 2. Servir como página estática
-
-Cualquier hosting de archivos estáticos funciona:
-
-```bash
-python -m http.server 8000
-# → http://localhost:8000
+### 2. Configurar endpoint propio
+```html
+<script>window.NEXTDOO_LEAD_ENDPOINT = 'https://tu-dominio.com/api/lead-magnet';</script>
 ```
 
-Compatible con: GitHub Pages, Cloudflare Pages, Vercel, Netlify, Hostinger, IONOS, Odoo Website.
+### 3. Producción · Nextdoo Cloud
 
-### 3. Embeber en Odoo (Nextdoo o cualquier instancia)
-
-Dos opciones:
-
-**A. Vista QWeb dedicada** (recomendado para SEO):
+#### 3.1 Desplegar la calculadora
 ```bash
 cd scripts
-export NEXTDOO_API_KEY="tu_api_key"
-python deploy_to_odoo.py
-# → Crea/actualiza la página /calculadora-roi-pro en nextdoo.cloud
+export NEXTDOO_API_KEY="..."                # brain/API-KEYS.md
+python deploy_to_odoo.py                    # iframe a GitHub Pages
+# o
+python deploy_to_odoo.py --inline           # mejor SEO
 ```
 
-**B. Iframe en página existente**:
-```html
-<iframe src="https://www.nextdoo.cloud/calculator/" width="100%" height="2200" frameborder="0"></iframe>
+Crea `https://www.nextdoo.cloud/calculadora-roi-pro` y la indexa.
+
+#### 3.2 Instalar el módulo de captura
+```bash
+# Copiar a custom addons
+scp -r odoo_module/nextdoo_lead_capture user@vps:/opt/odoo/custom/
+
+# En Odoo:
+# Apps → Update Apps List → buscar "Nextdoo Lead Capture" → Install
+```
+
+#### 3.3 Verificar endpoint
+```bash
+curl -X POST https://www.nextdoo.cloud/api/lead-magnet \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Test","email_from":"test@ex.com","partner_name":"ACME"}'
+# → {"ok": true, "lead_id": ...}
 ```
 
 ---
 
-## Configuración
+## Personalización
 
-### Endpoint de lead (formulario final)
-
-Por defecto el formulario hace `POST` a `https://www.nextdoo.cloud/website/form/crm.lead`. Si quieres otro endpoint, define antes de `<script>`:
-
-```html
-<script>window.NEXTDOO_LEAD_ENDPOINT = 'https://mi-crm.com/leads';</script>
-```
-
-Como fallback (si la petición CORS falla en producción standalone) abre el cliente de email con el resumen prerellenado al destinatario `jeanlouis@nextdoo.cloud`.
-
-### Datos por defecto
-
-Editables sin tocar JS — modifica los `<select>` y `<input>` en `index.html`. Pre-selección de módulos por sector está en la constante `DEFAULT_MODS` del script.
-
-### Personalizar branding
-
-Toda la paleta vive en `:root` (líneas 24-35 del CSS):
-
+### Paleta (si se reutiliza para otra marca)
+Bloque `:root` (líneas 24–35 de `index.html`):
 ```css
---nd-primary: #A855F7;   /* violeta principal */
---nd-secondary: #EC4899; /* rosa secundario */
---nd-bg: #0A0A0A;        /* fondo dark */
+--nd-primary:   #A855F7;
+--nd-secondary: #EC4899;
+--nd-bg:        #0A0A0A;
 ```
 
-Cambia esos 3 valores y la calculadora se adapta a otra marca (Boomatik usaría `#875A7B / #FFD700`).
+### Asignado / CEO
+En `odoo_module/nextdoo_lead_capture/controllers/lead_magnet.py`:
+```python
+DEFAULT_ASSIGNEE_LOGIN = "jeanlouis"
+```
+
+### Sectores destacados
+En `index.html` constante `SECTORS`, propiedad `spec: true` marca con badge "★ Especialidad":
+```js
+{ id:'retail',    name:'Retail · ecommerce',  spec:true,  coef:1.15, … },
+{ id:'servicios', name:'Servicios profesionales', spec:true, coef:0.85, … },
+```
+
+### Otras landings de recursos
+Replica el patrón: cualquier landing puede enviar el JSON a `/api/lead-magnet` con un `source` distinto y se etiqueta automáticamente:
+```js
+fetch('/api/lead-magnet', { method:'POST', headers:{'Content-Type':'application/json'},
+  body: JSON.stringify({
+    source: 'migration-checklist',    // se etiqueta como Migration Checklist + Lead Magnet
+    name: '...', email_from: '...', partner_name: '...', urgency: '3m'
+  })
+});
+```
+
+Sources soportadas: `roi-calculator`, `cost-calculator`, `migration-checklist`, `retail-guide`, `demo-request`, `consultation-request`. Cualquier valor nuevo recibe tag `Lead Magnet` y se puede ampliar editando `SOURCE_TAGS` en el controller.
 
 ---
 
 ## Datos y benchmarks
-
-Cada porcentaje de ahorro que aparece en la calculadora está respaldado por estudios públicos del sector ERP:
 
 | Métrica | Fuente | Año |
 |---|---|---|
@@ -124,56 +145,45 @@ Cada porcentaje de ahorro que aparece en la calculadora está respaldado por est
 | Payback típico | Panorama Consulting | 2024 |
 | Reducción inventario | Aberdeen Group | 2023 |
 | Reducción coste admin | Deloitte | 2023 |
-| Mejora DSO | PwC Working Capital Survey | 2024 |
+| Mejora DSO | PwC Working Capital | 2024 |
 | Productividad usuario | IDC | 2023 |
 
-Tabla completa en [`docs/BENCHMARKS.md`](docs/BENCHMARKS.md).
+Doc completa: [`docs/BENCHMARKS.md`](docs/BENCHMARKS.md). Fórmulas: [`docs/FORMULAS.md`](docs/FORMULAS.md).
 
 ---
 
-## Iconografía Odoo
+## Iconos Odoo oficiales
 
-Cada módulo Odoo se representa con su SVG propio y color corporativo del módulo:
+Cada módulo usa su icono oficial Odoo:
+```
+https://www.nextdoo.cloud/{module_name}/static/description/icon.png
+```
 
-- **Ventas** `#714B67` · **CRM** `#C8385A` · **Contabilidad** `#0E6537`
-- **Inventario** `#017E84` · **Compras** `#8E44AD` · **Fabricación** `#7C3AED`
-- **Ecommerce** `#ED7D31` · **TPV** `#5B8FB9` · **Website** `#017E84`
-- **Proyectos** `#3B82F6` · **RR. HH.** `#F59E0B` · **Marketing** `#EC4899`
-- **Helpdesk** `#10B981` · **Barcode** `#71717A` · **Firma** `#A855F7`
-
-Los iconos SVG están inline en el `<defs>` al inicio de `index.html` (id `ic-*`).
+18 módulos cubiertos en `MODULES` (sale_management, crm, account_accountant, stock, purchase, mrp, website_sale, point_of_sale, website, project, hr, hr_timesheet, mass_mailing, helpdesk, sale_subscription, stock_barcode, sign, documents).
 
 ---
 
 ## Roadmap
 
-- [x] v1.0 — Calculadora single-file con benchmarks reales
-- [x] v1.0 — Captura de lead con resumen
-- [x] v1.0 — Iconos oficiales Odoo
-- [x] v1.0 — Charts SVG nativos (break-even, radar, sensibilidad)
-- [ ] v1.1 — Export PDF business case (jsPDF)
-- [ ] v1.1 — Compartir resultado por enlace (estado en URL)
-- [ ] v1.2 — Comparativa contra SAP / Sage / Microsoft Dynamics
-- [ ] v1.2 — Versión en/fr/pt
-- [ ] v1.3 — Integración Calendly para reserva directa
+- [x] v1.0 — Single-file con KPIs en vivo
+- [x] v2.0 — Wizard real 4 pasos · iconos Odoo oficiales · lead gate · módulo CRM
+- [ ] v2.1 — Export PDF business case (jsPDF)
+- [ ] v2.2 — Estado en URL (compartir resultado por enlace)
+- [ ] v2.3 — Comparativa contra SAP / Sage / MS Dynamics
+- [ ] v2.4 — Versión inglés y francés
+- [ ] v2.5 — Variante Boomatik (mismo motor, paleta `#875A7B / #FFD700`)
 
 ---
 
-## Despliegue actual
+## Otras landings de recursos Nextdoo a integrar
 
-| Entorno | URL | Estado |
-|---|---|---|
-| Producción Nextdoo | https://www.nextdoo.cloud/calculadora-roi-pro | Pendiente deploy |
-| GitHub Pages | https://supportboo.github.io/nextdoo-roi-calculator/ | Opcional |
-| Local | `file:///.../index.html` | Funciona ✓ |
+El mismo módulo `nextdoo_lead_capture` ya soporta:
+- `/calculadora-odoo` (cost calculator existente) — añadir POST con `source: 'cost-calculator'`
+- `/checklist-migracion-odoo` — `source: 'migration-checklist'`
+- `/guia-odoo-retail` — `source: 'retail-guide'`
+- `/prueba-gratis` (trial) — `source: 'demo-request'`
 
----
-
-## Contribuir
-
-Pull requests bienvenidos. Para cambios grandes abre primero un issue.
-
-Para ajustar fórmulas o coeficientes: edita el bloque `MODULES`, `AREA_PCT` y `SECTOR_COEF` al inicio del `<script>` de `index.html`.
+Todas las landings de recursos tienen que ser lead magnet · cero descargas sin registro.
 
 ---
 
@@ -183,5 +193,5 @@ Para ajustar fórmulas o coeficientes: edita el bloque `MODULES`, `AREA_PCT` y `
 
 ---
 
-**Hecho por** [Nextdoo](https://www.nextdoo.cloud) — Partner Odoo Ready en Valencia.
-Mantenido junto a [Boomatik](https://www.boomatik.com), ecosistema de agentes IA para Odoo Partners.
+**Hecho por** [Nextdoo](https://www.nextdoo.cloud) — Partner Odoo Ready Retail Valencia.
++34 622 891 192 · info@nextdoo.cloud

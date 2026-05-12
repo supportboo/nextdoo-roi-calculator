@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="tag_lead_magnet" model="crm.tag">
+        <field name="name">Lead Magnet</field>
+        <field name="color">4</field>
+    </record>
+
+    <record id="tag_roi_calculator" model="crm.tag">
+        <field name="name">ROI Calculator</field>
+        <field name="color">10</field>
+    </record>
+
+    <record id="tag_cost_calculator" model="crm.tag">
+        <field name="name">Cost Calculator</field>
+        <field name="color">11</field>
+    </record>
+
+    <record id="tag_migration_checklist" model="crm.tag">
+        <field name="name">Migration Checklist</field>
+        <field name="color">6</field>
+    </record>
+
+    <record id="tag_retail_guide" model="crm.tag">
+        <field name="name">Retail Guide</field>
+        <field name="color">2</field>
+    </record>
+
+    <record id="tag_web" model="crm.tag">
+        <field name="name">Web</field>
+        <field name="color">3</field>
+    </record>
+
+</odoo>
