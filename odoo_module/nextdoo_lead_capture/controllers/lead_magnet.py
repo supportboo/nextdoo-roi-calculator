@@ -101,6 +101,12 @@ class LeadMagnetController(http.Controller):
         description = data.get("description") or self._format_description(data)
         source = (data.get("source") or "lead-magnet").strip()
         timeline = (data.get("urgency") or data.get("timeline") or "6m").strip()
+        # Tier del lead magnet:
+        #   meeting  → sesión 1-1 con CEO (lead caliente, contacto HOY)
+        #   email    → solo análisis por email (lead exploratorio, follow-up 48 h)
+        tier = (data.get("tier") or "meeting").strip().lower()
+        if tier not in ("meeting", "email"):
+            tier = "meeting"
 
         env = request.env(su=True)
         try:
@@ -113,8 +119,14 @@ class LeadMagnetController(http.Controller):
             if not assignee:
                 assignee = env["res.users"].search([("share", "=", False)], limit=1)
 
-            # 2. Resolve/create tags
+            # 2. Resolve/create tags (añadimos tag por tier)
             tag_names = list(SOURCE_TAGS.get(source, ["Lead Magnet"]))
+            if tier == "meeting":
+                tag_names.append("Meeting Request")
+                tag_names.append("Hot Lead")
+            else:
+                tag_names.append("Email-only")
+                tag_names.append("Cold Lead")
             if data.get("tags"):
                 for t in data["tags"]:
                     if t and t not in tag_names:
@@ -124,13 +136,18 @@ class LeadMagnetController(http.Controller):
             # 3. Resolve sales team (Nextdoo default)
             team = env["crm.team"].search([("company_id", "=", env.company.id)], limit=1)
 
-            # 4. Priority based on urgency
-            priority_map = {"3m": "3", "6m": "2", "12m": "1", "explorar": "0"}
-            priority = priority_map.get(timeline, "2")
+            # 4. Priority — tier meeting siempre 3★ (lead caliente),
+            #    tier email se rige por urgencia declarada (suele ser baja).
+            if tier == "meeting":
+                priority = "3" if timeline in ("3m", "6m") else "2"
+            else:
+                priority_map = {"3m": "2", "6m": "1", "12m": "1", "explorar": "0"}
+                priority = priority_map.get(timeline, "1")
 
-            # 5. Create lead
+            # 5. Create lead — nombre prefijado con tier para que se vea en el listado CRM
+            tier_label = "[1-1] " if tier == "meeting" else "[email] "
             lead_vals = {
-                "name": f"[{source}] {empresa}",
+                "name": f"{tier_label}{source} · {empresa}",
                 "contact_name": name,
                 "partner_name": empresa,
                 "email_from": email,
@@ -147,37 +164,60 @@ class LeadMagnetController(http.Controller):
             }
             lead = env["crm.lead"].create(lead_vals)
 
-            # 6. Create activity (call) with TODAY deadline
-            activity_type = env.ref(
-                "mail.mail_activity_data_call", raise_if_not_found=False
-            ) or env.ref(
-                "mail.mail_activity_data_todo", raise_if_not_found=False
-            )
+            # 6. Create activity diferenciada por tier
+            if tier == "meeting":
+                # Lead caliente: LLAMADA hoy mismo
+                activity_type = env.ref(
+                    "mail.mail_activity_data_call", raise_if_not_found=False
+                ) or env.ref(
+                    "mail.mail_activity_data_todo", raise_if_not_found=False
+                )
+                summary = f"[HOY · 1-1] Llamar a {name} ({empresa}) — sesión solicitada"
+                note = (
+                    f"<p><b>Lead caliente · solicita sesión 1-1 con CEO.</b></p>"
+                    f"<p>Tlf: <b>{phone}</b> · Email: {email}</p>"
+                    f"<p>Urgencia: <b>{timeline}</b></p>"
+                    f"<p>Acción: confirmar hueco hoy mismo y enviar invite de calendar.</p>"
+                )
+                deadline = fields.Date.context_today(env["mail.activity"])
+            else:
+                # Lead frío: enviar email primero, follow-up 48 h
+                activity_type = env.ref(
+                    "mail.mail_activity_data_email", raise_if_not_found=False
+                ) or env.ref(
+                    "mail.mail_activity_data_todo", raise_if_not_found=False
+                )
+                summary = f"[Follow-up] Email {email} · ofrecer upgrade a sesión 1-1"
+                note = (
+                    f"<p>Lead descargó análisis básico por email.</p>"
+                    f"<p>Enviar PDF con KPIs + invitación a sesión 1-1 con CEO.</p>"
+                    f"<p>Si no responde en 48 h, marcar como lost o reactivar con caso de éxito sector.</p>"
+                )
+                deadline = fields.Date.add(
+                    fields.Date.context_today(env["mail.activity"]), days=2
+                )
+
             if activity_type:
                 env["mail.activity"].create({
                     "res_model_id": env["ir.model"]._get("crm.lead").id,
                     "res_id": lead.id,
                     "activity_type_id": activity_type.id,
-                    "summary": f"[HOY] Contactar lead {source}: {empresa}",
-                    "note": (
-                        f"<p>Lead recibido vía <b>{source}</b>.</p>"
-                        f"<p>Urgencia declarada: <b>{timeline}</b>.</p>"
-                        f"<p>Llamar HOY en horario comercial.</p>"
-                    ),
-                    "date_deadline": fields.Date.context_today(env["mail.activity"]),
+                    "summary": summary,
+                    "note": note,
+                    "date_deadline": deadline,
                     "user_id": assignee.id if assignee else env.user.id,
                 })
 
             # 7. Post message in lead chatter (visible in CRM)
             lead.message_post(
                 body=(
-                    f"<p><b>Nuevo lead capturado vía {source}.</b></p>"
+                    f"<p><b>Nuevo lead {tier} vía {source}.</b></p>"
                     f"<pre style='font-family:monospace;white-space:pre-wrap'>{description}</pre>"
                 ),
                 subtype_xmlid="mail.mt_note",
             )
 
-            # 8. Send email notification to CEO
+            # 8. Send email notification to CEO (interno)
             try:
                 template = env.ref(
                     "nextdoo_lead_capture.mail_template_lead_notification",
@@ -187,12 +227,25 @@ class LeadMagnetController(http.Controller):
                     template.with_context(
                         lead_source=source,
                         lead_urgency=timeline,
+                        lead_tier=tier,
                     ).send_mail(lead.id, force_send=True)
             except Exception as e:
                 _logger.warning("lead-magnet: email notif failed: %s", e)
 
+            # 9. Enviar análisis básico al lead (solo tier email)
+            if tier == "email":
+                try:
+                    customer_tpl = env.ref(
+                        "nextdoo_lead_capture.mail_template_roi_summary_customer",
+                        raise_if_not_found=False,
+                    )
+                    if customer_tpl:
+                        customer_tpl.send_mail(lead.id, force_send=True)
+                except Exception as e:
+                    _logger.warning("lead-magnet: customer email failed: %s", e)
+
             return _json_response(
-                {"ok": True, "lead_id": lead.id, "source": source}, 200, origin
+                {"ok": True, "lead_id": lead.id, "source": source, "tier": tier}, 200, origin
             )
 
         except Exception as e:

@@ -31,4 +31,24 @@
         <field name="color">3</field>
     </record>
 
+    <record id="tag_hot_lead" model="crm.tag">
+        <field name="name">Hot Lead</field>
+        <field name="color">1</field>
+    </record>
+
+    <record id="tag_cold_lead" model="crm.tag">
+        <field name="name">Cold Lead</field>
+        <field name="color">8</field>
+    </record>
+
+    <record id="tag_meeting_request" model="crm.tag">
+        <field name="name">Meeting Request</field>
+        <field name="color">10</field>
+    </record>
+
+    <record id="tag_email_only" model="crm.tag">
+        <field name="name">Email-only</field>
+        <field name="color">5</field>
+    </record>
+
 </odoo>

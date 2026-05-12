@@ -333,34 +333,8 @@ table.t tr:hover td { background: rgba(255,255,255,0.02); }
 
 <body class="font-body antialiased">
 
-<!-- HEADER -->
-<header class="relative z-20 border-b border-nd-border/60 bg-nd-bg/80 backdrop-blur">
-  <div class="mx-auto max-w-7xl px-5 sm:px-8 py-4 flex items-center justify-between">
-    <a href="https://www.nextdoo.cloud" class="flex items-center gap-3 group">
-      <img src="https://www.nextdoo.cloud/web/image/website/1/logo/Nextdoo" alt="Nextdoo"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
-           class="h-9 w-auto" />
-      <div class="w-9 h-9 rounded-lg place-items-center hidden" style="background: var(--nd-gradient);">
-        <span class="font-head text-white font-extrabold text-lg">N</span>
-      </div>
-      <div class="flex flex-col leading-tight">
-        <span class="font-head font-extrabold text-white text-base">Nextdoo</span>
-        <span class="text-[0.65rem] uppercase tracking-widest text-nd-dim">Partner Odoo Retail · Valencia</span>
-      </div>
-    </a>
-    <nav class="hidden md:flex items-center gap-7 text-sm">
-      <a href="https://www.nextdoo.cloud" class="text-nd-text hover:text-white transition">Inicio</a>
-      <a href="https://www.nextdoo.cloud#modulos" class="text-nd-text hover:text-white transition">Módulos</a>
-      <a href="https://www.nextdoo.cloud/prueba-gratis" class="text-nd-text hover:text-white transition">Prueba 15 días</a>
-      <a href="https://www.nextdoo.cloud/ayuda" class="text-nd-text hover:text-white transition">Recursos</a>
-      <a href="#lead" class="btn-primary" style="padding: 0.55rem 1.1rem; font-size: 0.85rem;">Reservar análisis</a>
-    </nav>
-    <a href="tel:+34622891192" class="md:hidden text-sm text-nd-primary font-bold">+34 622 891 192</a>
-  </div>
-</header>
-
-<!-- HERO -->
-<section class="relative pt-12 pb-8 px-5 sm:px-8">
+<!-- HERO (compacto: el header viene del website.layout de Nextdoo) -->
+<section class="relative pt-10 pb-8 px-5 sm:px-8">
   <div class="mx-auto max-w-5xl text-center">
     <div class="flex items-center justify-center gap-2 flex-wrap mb-5">
       <span class="badge badge-info">
@@ -599,9 +573,9 @@ table.t tr:hover td { background: rgba(255,255,255,0.02); }
         <!-- Lead-gated preview teaser -->
         <div class="card p-5 text-center" style="border-color: rgba(168,85,247,0.3); background: linear-gradient(180deg, rgba(168,85,247,0.06), transparent);">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2" class="mx-auto mb-2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <h3 class="text-base font-bold text-white">Análisis completo bloqueado</h3>
-          <p class="text-xs text-nd-dim mt-1.5">Proyección 5 años, VAN, TIR, sensibilidad y desglose por área se desbloquean tras registro (gratis).</p>
-          <button type="button" class="btn-primary mt-3" style="font-size:0.8rem;padding:0.5rem 1rem" onclick="document.getElementById('lead').scrollIntoView({behavior:'smooth'})">Desbloquear análisis</button>
+          <h3 class="text-base font-bold text-white">Análisis completo</h3>
+          <p class="text-xs text-nd-dim mt-1.5">Dos formas de recibirlo: básico por email o sesión 1-1 gratuita con Jeanlouis.</p>
+          <button type="button" class="btn-primary mt-3" style="font-size:0.8rem;padding:0.5rem 1rem" onclick="document.getElementById('lead').scrollIntoView({behavior:'smooth'})">Elegir opción</button>
         </div>
 
         <!-- Trust mini -->
@@ -621,62 +595,127 @@ table.t tr:hover td { background: rgba(255,255,255,0.02); }
   </div>
 </section>
 
-<!-- LEAD GATE FORM -->
+<!-- LEAD GATE · EMBUDO DUAL -->
 <section id="lead" class="px-5 sm:px-8 pb-12">
-  <div class="mx-auto max-w-4xl">
-    <div class="card card-glow p-8 sm:p-10">
-      <div class="text-center mb-6">
-        <div class="badge badge-info mb-3">Desbloquea tu análisis</div>
-        <h2 class="text-3xl sm:text-4xl font-extrabold">Tu business case completo en <span class="gradient-text">24 horas</span></h2>
-        <p class="text-nd-dim mt-3 max-w-2xl mx-auto">Recibe en email: proyección 5 años, escenarios, VAN/TIR, desglose por módulo y un PDF resumen. Jeanlouis lo revisa y te llama hoy mismo.</p>
+  <div class="mx-auto max-w-6xl">
+
+    <div class="text-center mb-8">
+      <div class="badge badge-ok mb-3"><span class="glow-dot">●</span> Tu análisis está listo</div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold">Elige cómo quieres <span class="gradient-text">recibirlo</span></h2>
+      <p class="text-nd-dim mt-3 max-w-2xl mx-auto">Análisis básico al instante por email o estudio profesional 1-1 con Jeanlouis adaptado a tu caso real. Elige según tu nivel de interés.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-5 items-stretch">
+
+      <!-- TIER A · EMAIL (low friction) -->
+      <div class="card p-7 flex flex-col" id="tierEmail">
+        <div class="flex items-center justify-between mb-3">
+          <span class="badge badge-info">Opción rápida</span>
+          <span class="text-xs text-nd-dim">~30 segundos</span>
+        </div>
+        <h3 class="text-xl font-bold text-white">Análisis básico por email</h3>
+        <p class="text-sm text-nd-dim mt-1.5 mb-4">PDF resumen con KPIs principales y proyección. Para revisar internamente sin compromiso.</p>
+
+        <ul class="space-y-2 mb-5 text-sm">
+          <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> ROI año 1 + payback + ahorro anual</li>
+          <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> Proyección 5 años en PDF</li>
+          <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> Coeficiente sector aplicado</li>
+          <li class="flex items-start gap-2 text-nd-dim"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" class="flex-shrink-0 mt-0.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Sin sesión 1-1 con Jeanlouis</li>
+          <li class="flex items-start gap-2 text-nd-dim"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2" class="flex-shrink-0 mt-0.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Sin plan de implementación</li>
+        </ul>
+
+        <form id="leadFormEmail" class="space-y-3 mt-auto">
+          <div>
+            <label class="label">Email profesional</label>
+            <input class="input" name="email" type="email" required placeholder="tu@empresa.com" />
+          </div>
+          <div>
+            <label class="label">Nombre</label>
+            <input class="input" name="nombre" required placeholder="Tu nombre" />
+          </div>
+          <div class="flex items-start gap-2 text-xs text-nd-dim">
+            <input type="checkbox" required class="accent-nd-primary mt-0.5" id="gdprEmail" />
+            <label for="gdprEmail">Acepto <a href="https://www.nextdoo.cloud/politica-privacidad" class="text-nd-primary underline">política de privacidad</a> · sin spam</label>
+          </div>
+          <button type="submit" class="btn-ghost w-full" id="emailSubmit" style="border-color: rgba(168,85,247,0.4)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Enviarme el análisis básico
+          </button>
+        </form>
       </div>
 
-      <form id="leadForm" class="grid sm:grid-cols-2 gap-4">
-        <div>
-          <label class="label">Nombre y apellidos</label>
-          <input class="input" name="nombre" required placeholder="Marc Herrero" />
+      <!-- TIER B · SESIÓN 1-1 (high value) -->
+      <div class="card card-glow p-7 flex flex-col relative" id="tierMeeting" style="border-color: rgba(168,85,247,0.45);">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2">
+          <span class="badge badge-spec" style="font-size: 0.7rem; padding: 0.3rem 0.8rem;">★ Recomendado · gratis</span>
         </div>
-        <div>
-          <label class="label">Empresa</label>
-          <input class="input" name="empresa" required placeholder="Razón social" />
+        <div class="flex items-center justify-between mb-3">
+          <span class="badge" style="background: rgba(168,85,247,0.12); color: #c4b5fd; border:1px solid rgba(168,85,247,0.45)">Análisis profesional</span>
+          <span class="text-xs text-nd-dim">30 min · gratis</span>
         </div>
-        <div>
-          <label class="label">Email profesional</label>
-          <input class="input" name="email" type="email" required placeholder="tu@empresa.com" />
-        </div>
-        <div>
-          <label class="label">Teléfono · WhatsApp</label>
-          <input class="input" name="telefono" required placeholder="+34 600 000 000" />
-        </div>
-        <div>
-          <label class="label">Cargo</label>
-          <input class="input" name="cargo" placeholder="Director · Gerente · CTO…" />
-        </div>
-        <div>
-          <label class="label">¿Cuándo empezarías?</label>
-          <select class="select" name="urgencia">
-            <option value="3m">En menos de 3 meses</option>
-            <option value="6m" selected>3–6 meses</option>
-            <option value="12m">6–12 meses</option>
-            <option value="explorar">Solo explorando</option>
-          </select>
-        </div>
-        <div class="sm:col-span-2 flex items-center gap-2 text-xs text-nd-dim">
-          <input type="checkbox" id="gdpr" required class="accent-nd-primary" />
-          <label for="gdpr">Acepto la <a href="https://www.nextdoo.cloud/politica-privacidad" class="text-nd-primary underline">política de privacidad</a> y recibir el análisis por email. Sin spam.</label>
-        </div>
-        <div class="sm:col-span-2 mt-2">
-          <button type="submit" class="btn-primary w-full" id="leadSubmit">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            Desbloquear mi análisis completo
+        <h3 class="text-xl font-bold text-white">Sesión 1-1 con Jeanlouis (CEO)</h3>
+        <p class="text-sm text-nd-dim mt-1.5 mb-4">Revisión personal del business case + plan de implementación adaptado a tu empresa real. Donde un humano lee tus números.</p>
+
+        <ul class="space-y-2 mb-5 text-sm">
+          <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> <strong class="text-white">Todo lo del básico</strong></li>
+          <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> Validación de cifras con tu equipo</li>
+          <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> Plan de implementación a 90 días</li>
+          <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> Benchmarks de 3 clientes de tu sector</li>
+          <li class="flex items-start gap-2"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5" class="flex-shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg> Demo en vivo de los módulos clave</li>
+        </ul>
+
+        <form id="leadFormMeeting" class="space-y-3 mt-auto">
+          <div class="grid sm:grid-cols-2 gap-3">
+            <div>
+              <label class="label">Nombre</label>
+              <input class="input" name="nombre" required placeholder="Tu nombre" />
+            </div>
+            <div>
+              <label class="label">Empresa</label>
+              <input class="input" name="empresa" required placeholder="Razón social" />
+            </div>
+            <div>
+              <label class="label">Email profesional</label>
+              <input class="input" name="email" type="email" required placeholder="tu@empresa.com" />
+            </div>
+            <div>
+              <label class="label">WhatsApp / Tlf</label>
+              <input class="input" name="telefono" required placeholder="+34 600 000 000" />
+            </div>
+            <div>
+              <label class="label">Cargo</label>
+              <input class="input" name="cargo" placeholder="CEO · Director · CTO…" />
+            </div>
+            <div>
+              <label class="label">Cuándo empezarías</label>
+              <select class="select" name="urgencia">
+                <option value="3m">&lt; 3 meses</option>
+                <option value="6m" selected>3–6 meses</option>
+                <option value="12m">6–12 meses</option>
+                <option value="explorar">Solo exploro</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex items-start gap-2 text-xs text-nd-dim">
+            <input type="checkbox" required class="accent-nd-primary mt-0.5" id="gdprMeet" />
+            <label for="gdprMeet">Acepto <a href="https://www.nextdoo.cloud/politica-privacidad" class="text-nd-primary underline">política de privacidad</a> y que me contactéis para reservar la sesión</label>
+          </div>
+          <button type="submit" class="btn-primary w-full" id="meetingSubmit">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Reservar sesión 1-1 con Jeanlouis
           </button>
-        </div>
-        <div class="sm:col-span-2 grid grid-cols-3 gap-4 mt-3 pt-4 border-t border-nd-border text-center text-xs text-nd-dim">
-          <span class="flex flex-col items-center gap-1"><svg width="18" height="18" stroke="#10B981" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Datos cifrados</span>
-          <span class="flex flex-col items-center gap-1"><svg width="18" height="18" stroke="#10B981" fill="none" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Contacto en el día</span>
-          <span class="flex flex-col items-center gap-1"><svg width="18" height="18" stroke="#10B981" fill="none" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 0 spam</span>
-        </div>
-      </form>
+          <p class="text-center text-xs text-nd-dim">Te llamamos hoy · sin compromiso · sin tarjeta</p>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- Trust row -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 text-center text-xs text-nd-dim">
+      <div class="flex flex-col items-center gap-1.5"><svg width="20" height="20" stroke="#A855F7" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Datos cifrados RGPD</div>
+      <div class="flex flex-col items-center gap-1.5"><svg width="20" height="20" stroke="#A855F7" fill="none" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Contacto en el día</div>
+      <div class="flex flex-col items-center gap-1.5"><svg width="20" height="20" stroke="#A855F7" fill="none" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> 22+ clientes activos</div>
+      <div class="flex flex-col items-center gap-1.5"><svg width="20" height="20" stroke="#A855F7" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Sin compromiso</div>
     </div>
   </div>
 </section>
@@ -687,9 +726,9 @@ table.t tr:hover td { background: rgba(255,255,255,0.02); }
   <div class="gate-overlay">
     <div class="text-center max-w-md">
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2" class="mx-auto mb-3"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      <h3 class="text-xl font-bold text-white">Análisis detallado bloqueado</h3>
-      <p class="text-sm text-nd-dim mt-2 mb-4">Completa el formulario de arriba para ver: proyección 5 años, escenarios, sensibilidad VAN, desglose por área y coste de inacción.</p>
-      <a href="#lead" class="btn-primary">Ir al formulario</a>
+      <h3 class="text-xl font-bold text-white">Análisis detallado disponible</h3>
+      <p class="text-sm text-nd-dim mt-2 mb-4">Para ver proyección 5 años, escenarios, sensibilidad y desglose por área, elige una de las dos opciones de arriba (email o sesión 1-1).</p>
+      <a href="#lead" class="btn-primary">Ver opciones</a>
     </div>
   </div>
 
@@ -777,12 +816,13 @@ table.t tr:hover td { background: rgba(255,255,255,0.02); }
         </div>
       </div>
 
-      <!-- Final CTA -->
-      <div class="card card-glow p-8 sm:p-12 text-center">
-        <h2 class="text-3xl sm:text-4xl font-extrabold">¿Listo para empezar?</h2>
-        <p class="text-nd-dim mt-3 max-w-xl mx-auto">Jeanlouis Rodes te llama hoy mismo para revisar el análisis y proponer próximos pasos. Sin compromiso.</p>
+      <!-- Final CTA — upgrade prompt if user came via email tier -->
+      <div class="card card-glow p-8 sm:p-12 text-center" id="finalCta">
+        <div class="badge badge-info mb-3" id="finalCtaBadge">Siguiente paso</div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold" id="finalCtaTitle">¿Quieres validar estas cifras con un experto?</h2>
+        <p class="text-nd-dim mt-3 max-w-xl mx-auto" id="finalCtaText">Jeanlouis Rodes revisa contigo el análisis y te entrega un plan de implementación a 90 días adaptado a tu sector. Gratis, sin tarjeta.</p>
         <div class="mt-6 flex items-center justify-center gap-3 flex-wrap">
-          <a href="https://www.nextdoo.cloud/appointment" class="btn-primary">Agendar videollamada</a>
+          <a href="https://www.nextdoo.cloud/appointment" class="btn-primary" target="_blank" rel="noopener">Reservar sesión 1-1 ahora</a>
           <a href="tel:+34622891192" class="btn-ghost">+34 622 891 192</a>
           <a href="mailto:info@nextdoo.cloud" class="btn-ghost">info@nextdoo.cloud</a>
         </div>
@@ -824,21 +864,7 @@ table.t tr:hover td { background: rgba(255,255,255,0.02); }
   </div>
 </section>
 
-<footer class="border-t border-nd-border py-8 px-5 sm:px-8 text-xs text-nd-dim">
-  <div class="max-w-7xl mx-auto grid sm:grid-cols-3 gap-4 items-center">
-    <div>© 2026 Nextdoo Cloud · Odoo Ready Partner · Valencia, España</div>
-    <div class="flex items-center gap-3 justify-center">
-      <a href="tel:+34622891192" class="hover:text-white transition">+34 622 891 192</a>
-      <span class="text-nd-border">·</span>
-      <a href="mailto:info@nextdoo.cloud" class="hover:text-white transition">info@nextdoo.cloud</a>
-    </div>
-    <div class="flex items-center gap-4 justify-end">
-      <a href="https://www.nextdoo.cloud/politica-privacidad" class="hover:text-white transition">Privacidad</a>
-      <a href="https://www.nextdoo.cloud/aviso-legal" class="hover:text-white transition">Aviso legal</a>
-      <a href="https://github.com/supportboo/nextdoo-roi-calculator" class="hover:text-white transition">Open source</a>
-    </div>
-  </div>
-</footer>
+<!-- Sin footer: el website.layout de Nextdoo ya incluye footer oficial -->
 
 <div class="toast" id="toast"></div>
 
@@ -1312,26 +1338,39 @@ function toast(msg, err) {
   setTimeout(() => t.className = 'toast', 5000);
 }
 
-function submitLead(e) {
+function submitLead(e, tier) {
   e.preventDefault();
   const data = Object.fromEntries(new FormData(e.target));
   const r = calc();
   const sectorObj = SECTORS.find(s => s.id === state.selectedSector);
 
+  // Defaults para tier email (sin empresa/teléfono/cargo)
+  data.empresa  = data.empresa  || (data.email || '').split('@')[1] || 'Sin empresa';
+  data.telefono = data.telefono || '';
+  data.cargo    = data.cargo    || '';
+  data.urgencia = data.urgencia || (tier === 'meeting' ? '6m' : 'explorar');
+
+  const tierTag = tier === 'meeting' ? 'Meeting Request' : 'Email-only';
+  const tierBadge = tier === 'meeting' ? 'TIER B · 1-1 con CEO' : 'TIER A · email';
+
   const payload = {
-    // Datos contacto
     name: data.nombre,
     partner_name: data.empresa,
     email_from: data.email,
     phone: data.telefono,
-    function: data.cargo || '',
-    description: buildDescription(data, r, sectorObj),
-    // Metadata para etiquetado Odoo
+    function: data.cargo,
+    description: buildDescription(data, r, sectorObj, tier),
     source: 'roi-calculator',
-    tags: ['ROI Calculator', 'Lead Magnet', 'Web', `Sector: ${sectorObj?.name || state.selectedSector}`],
+    tier: tier,
+    tags: [
+      'ROI Calculator',
+      'Lead Magnet',
+      'Web',
+      `Sector: ${sectorObj?.name || state.selectedSector}`,
+      tierTag,
+    ],
     urgency: data.urgencia,
     timeline: data.urgencia,
-    // Análisis
     analysis: {
       sector: state.selectedSector,
       facturacion: r.facturacion,
@@ -1346,12 +1385,15 @@ function submitLead(e) {
       van: r.vanSum,
       tir: r.tir,
       tco_save_7y: r.tcoSave,
-      reliability: r.reliability
+      reliability: r.reliability,
+      tier_badge: tierBadge,
     },
     timestamp: new Date().toISOString()
   };
 
-  const btn = document.getElementById('leadSubmit');
+  const btnId = tier === 'meeting' ? 'meetingSubmit' : 'emailSubmit';
+  const btn = document.getElementById(btnId);
+  const originalLabel = btn.innerHTML;
   btn.disabled = true;
   btn.innerHTML = 'Enviando…';
 
@@ -1364,30 +1406,62 @@ function submitLead(e) {
     if (!res.ok) throw new Error('http ' + res.status);
     return res.json().catch(() => ({ ok: true }));
   }).then(() => {
-    unlockResults();
-    toast('Análisis desbloqueado. Jeanlouis te contactará hoy mismo.');
-    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Desbloqueado · revisa tu email';
+    handleLeadSuccess(tier, data);
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Recibido';
   }).catch(err => {
     console.warn('Lead POST fallback', err);
-    // Fallback: localStorage + abrir detalle igualmente + mailto al CEO
     try { localStorage.setItem('nextdoo_pending_lead', JSON.stringify(payload)); } catch(e) {}
-    unlockResults();
-    toast('Análisis desbloqueado. Si no nos llega tu solicitud, escríbenos a info@nextdoo.cloud', true);
+    handleLeadSuccess(tier, data, true);
     btn.disabled = false;
-    btn.innerHTML = '✓ Desbloqueado (envío offline)';
-    // mailto secundario para garantizar contacto
-    const sub = encodeURIComponent('Lead ROI Calculator · ' + data.empresa);
-    const body = encodeURIComponent(buildDescription(data, r, sectorObj));
+    btn.innerHTML = '✓ Enviado (modo offline)';
+    const sub = encodeURIComponent(`[${tier}] Lead ROI Calculator · ${data.empresa}`);
+    const body = encodeURIComponent(buildDescription(data, r, sectorObj, tier));
     setTimeout(() => { window.open(`mailto:jeanlouis@nextdoo.cloud?subject=${sub}&body=${body}`, '_blank'); }, 800);
   });
 }
 
-function buildDescription(data, r, sectorObj) {
+function handleLeadSuccess(tier, data, offline) {
+  state.unlocked = true;
+  document.getElementById('detailedResults').classList.remove('locked');
+
+  // Toast
+  const msg = tier === 'meeting'
+    ? `Reservado · Jeanlouis te llama hoy al ${data.telefono || data.email}`
+    : `Análisis enviado a ${data.email}. Revisa tu bandeja en minutos.`;
+  toast(msg);
+
+  // Adapt final CTA based on tier
+  const finalCta = document.getElementById('finalCta');
+  if (tier === 'meeting') {
+    document.getElementById('finalCtaBadge').textContent = '✓ Sesión reservada';
+    document.getElementById('finalCtaTitle').innerHTML = '¡Listo! Jeanlouis te llama <span class="gradient-text">hoy</span>';
+    document.getElementById('finalCtaText').textContent = 'Mientras tanto, puedes elegir un hueco exacto en su agenda si quieres concretarlo:';
+  } else {
+    document.getElementById('finalCtaBadge').textContent = 'Hacer el siguiente paso';
+    document.getElementById('finalCtaTitle').innerHTML = '¿Quieres validarlo con <span class="gradient-text">un experto</span>?';
+    document.getElementById('finalCtaText').textContent = 'Has recibido el análisis básico. Para revisarlo en sesión 1-1 con Jeanlouis (CEO) y obtener plan de implementación a 90 días, reserva aquí — sigue siendo gratis:';
+  }
+
+  // Hide the other tier card to focus
+  if (tier === 'meeting') {
+    document.getElementById('tierEmail').style.opacity = '0.4';
+    document.getElementById('tierEmail').style.pointerEvents = 'none';
+  }
+
+  setTimeout(() => document.getElementById('detailedResults').scrollIntoView({ behavior: 'smooth' }), 500);
+}
+
+function buildDescription(data, r, sectorObj, tier) {
+  const tierLine = tier === 'meeting'
+    ? 'TIER B · Solicita sesión 1-1 con CEO · LEAD CALIENTE · contactar HOY'
+    : 'TIER A · Solo email · LEAD EXPLORATORIO · seguimiento email 48 h y upgrade a sesión';
   return `=== ROI CALCULATOR LEAD ===
+${tierLine}
+
 Empresa: ${data.empresa}
 Contacto: ${data.nombre} (${data.cargo || 'sin cargo'})
 Email: ${data.email}
-Teléfono: ${data.telefono}
+Teléfono: ${data.telefono || 'no proporcionado'}
 Urgencia: ${data.urgencia}
 
 --- ANÁLISIS ---
@@ -1411,16 +1485,11 @@ TCO 7 años ahorrado: ${fmt.format(r.tcoSave)}
 Fiabilidad: ${r.reliability}%
 
 === ACCIÓN ===
-Contactar HOY. Llamada o videoconf en 24 h.
+${tier === 'meeting' ? 'Llamar HOY · reservar videoconf en 24 h' : 'Enviar análisis PDF por email · seguimiento 48 h pidiendo sesión'}
 Fuente: calculadora-roi-pro
 `;
 }
 
-function unlockResults() {
-  state.unlocked = true;
-  document.getElementById('detailedResults').classList.remove('locked');
-  setTimeout(() => document.getElementById('detailedResults').scrollIntoView({ behavior: 'smooth' }), 400);
-}
 
 // ============================================================
 // BIND + INIT
@@ -1457,7 +1526,8 @@ function bind() {
     if (state.currentStep > 1) showStep(state.currentStep - 1);
   });
 
-  document.getElementById('leadForm').addEventListener('submit', submitLead);
+  document.getElementById('leadFormEmail').addEventListener('submit', (e) => submitLead(e, 'email'));
+  document.getElementById('leadFormMeeting').addEventListener('submit', (e) => submitLead(e, 'meeting'));
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -2,15 +2,17 @@
 <odoo>
 
     <record id="mail_template_lead_notification" model="mail.template">
-        <field name="name">Nextdoo · Notificación lead magnet</field>
+        <field name="name">Nextdoo · Notificación lead magnet (interno)</field>
         <field name="model_id" ref="crm.model_crm_lead"/>
-        <field name="subject">[Lead Magnet] {{ object.partner_name }} · {{ ctx.get('lead_source') }}</field>
+        <field name="subject">[{{ ctx.get('lead_tier','meeting')|upper }}] {{ object.partner_name }} · {{ ctx.get('lead_source') }}</field>
         <field name="email_from">{{ object.team_id.alias_email or 'info@nextdoo.cloud' }}</field>
         <field name="email_to">{{ object.user_id.email or 'jeanlouis@nextdoo.cloud' }}</field>
         <field name="auto_delete" eval="False"/>
         <field name="body_html" type="html"><![CDATA[
 <div style="font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f7f7f8; padding: 0;">
-  <div style="background: linear-gradient(135deg, #A855F7 0%, #EC4899 100%); padding: 24px; color: white;">
+  <div t-attf-style="background: linear-gradient(135deg, {{ '#EF4444' if ctx.get('lead_tier') == 'meeting' else '#6b7280' }} 0%, #EC4899 100%); padding: 24px; color: white;">
+    <div style="display:inline-block;background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px"
+         t-out="'HOT LEAD · sesión 1-1' if ctx.get('lead_tier') == 'meeting' else 'COLD LEAD · solo email'"/>
     <h1 style="margin: 0; font-size: 22px; font-weight: 800;">Nuevo lead capturado</h1>
     <p style="margin: 4px 0 0; opacity: 0.9; font-size: 14px;">Fuente: <strong t-out="ctx.get('lead_source') or '—'"/> · Urgencia: <strong t-out="ctx.get('lead_urgency') or '—'"/></p>
   </div>
@@ -32,8 +34,9 @@
 <t t-out="object.description"/>
     </div>
 
-    <div style="margin-top: 24px; padding: 16px; background: #fef3c7; border-radius: 8px; color: #92400e; font-size: 14px;">
-      <strong>Acción requerida HOY:</strong> contactar en menos de 24 horas. La actividad ya está creada en el lead.
+    <div t-attf-style="margin-top: 24px; padding: 16px; background: {{ '#fee2e2' if ctx.get('lead_tier') == 'meeting' else '#fef3c7' }}; border-radius: 8px; color: {{ '#991b1b' if ctx.get('lead_tier') == 'meeting' else '#92400e' }}; font-size: 14px;">
+      <strong t-out="'Acción HOY: ' if ctx.get('lead_tier') == 'meeting' else 'Follow-up en 48 h: '"/>
+      <span t-out="'llamar inmediatamente, lead solicitó sesión 1-1.' if ctx.get('lead_tier') == 'meeting' else 'enviar PDF + ofrecer upgrade a sesión 1-1.'"/>
     </div>
 
     <a t-att-href="'%s/odoo/action-crm.crm_lead_all_leads/%d' % (object.get_base_url(), object.id)"
@@ -44,6 +47,71 @@
 
   <div style="padding: 16px 24px; background: #111; color: #9ca3af; font-size: 11px; text-align: center;">
     Nextdoo Cloud · Lead Magnet Engine · Generado automáticamente
+  </div>
+</div>
+]]></field>
+    </record>
+
+    <!-- Email que recibe el lead tier email con su análisis básico -->
+    <record id="mail_template_roi_summary_customer" model="mail.template">
+        <field name="name">Nextdoo · Análisis ROI básico (cliente)</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="subject">Tu análisis ROI Odoo — Nextdoo</field>
+        <field name="email_from">"Jeanlouis · Nextdoo" &lt;jeanlouis@nextdoo.cloud&gt;</field>
+        <field name="email_to">{{ object.email_from }}</field>
+        <field name="reply_to">jeanlouis@nextdoo.cloud</field>
+        <field name="auto_delete" eval="False"/>
+        <field name="body_html" type="html"><![CDATA[
+<div style="font-family:'Inter',Arial,sans-serif;max-width:600px;margin:0 auto;background:#0A0A0A;color:#fff">
+  <div style="background:linear-gradient(135deg,#A855F7 0%,#EC4899 100%);padding:28px 24px;">
+    <h1 style="margin:0;font-size:24px;font-weight:800;color:#fff">Tu análisis ROI Odoo</h1>
+    <p style="margin:6px 0 0;color:rgba(255,255,255,0.85);font-size:14px">Resumen automático · Nextdoo Cloud · Partner Odoo Retail España</p>
+  </div>
+
+  <div style="padding:28px 24px;background:#111114">
+    <p style="font-size:16px;color:#fff;margin:0 0 16px">Hola <strong t-out="object.contact_name or ''"/>,</p>
+
+    <p style="font-size:14px;color:rgba(255,255,255,0.78);line-height:1.65;margin:0 0 20px">
+      Gracias por usar nuestra calculadora ROI. Aquí tienes el resumen automático con tus números.
+      Los benchmarks aplicados vienen de <strong style="color:#fff">Forrester TEI, Nucleus Research y Aberdeen</strong>,
+      ajustados al sector que indicaste.
+    </p>
+
+    <div style="background:rgba(168,85,247,0.10);border:1px solid rgba(168,85,247,0.3);border-radius:12px;padding:20px;margin:20px 0">
+      <h2 style="margin:0 0 12px;font-size:16px;color:#fff">Empresa analizada</h2>
+      <p style="margin:0;font-size:14px;color:rgba(255,255,255,0.78)">
+        <strong style="color:#fff" t-out="object.partner_name or '—'"/><br/>
+        Sector y módulos en tu <a t-attf-href="{{ object.get_base_url() }}/calculadora-roi-pro" style="color:#A855F7">simulación</a>.
+      </p>
+    </div>
+
+    <div style="background:linear-gradient(180deg,rgba(168,85,247,0.10),rgba(236,72,153,0.05));border:1px solid rgba(168,85,247,0.45);border-radius:12px;padding:24px;margin:20px 0;text-align:center">
+      <p style="margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.6);font-weight:600">Próximo paso recomendado</p>
+      <h3 style="margin:0 0 8px;color:#fff;font-size:20px">Sesión 1-1 gratuita con Jeanlouis (CEO)</h3>
+      <p style="margin:0 0 16px;color:rgba(255,255,255,0.78);font-size:14px;line-height:1.6">
+        Validamos tus cifras con tu equipo, entregamos plan de implementación a 90 días<br/>y te mostramos 3 casos reales de tu sector. Sin compromiso.
+      </p>
+      <a t-attf-href="{{ object.get_base_url() }}/appointment"
+         style="display:inline-block;background:linear-gradient(135deg,#A855F7,#EC4899);color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px">
+         Reservar 30 min con Jeanlouis →
+      </a>
+    </div>
+
+    <p style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;margin:24px 0 0">
+      Si prefieres responder por email con tus números reales (facturación, sistema actual, módulos prioritarios),
+      te preparamos el análisis profesional adaptado a tu caso.
+    </p>
+
+    <p style="font-size:13px;color:rgba(255,255,255,0.65);margin:8px 0 0">
+      Un saludo,<br/>
+      <strong style="color:#fff">Jeanlouis Rodes</strong><br/>
+      CEO · Nextdoo Cloud<br/>
+      <a href="tel:+34622891192" style="color:#A855F7">+34 622 891 192</a> · <a href="mailto:jeanlouis@nextdoo.cloud" style="color:#A855F7">jeanlouis@nextdoo.cloud</a>
+    </p>
+  </div>
+
+  <div style="padding:16px 24px;background:#0A0A0A;color:#6b7280;font-size:11px;text-align:center">
+    Nextdoo Cloud · Odoo Ready Partner · Valencia, España · <a href="https://www.nextdoo.cloud/politica-privacidad" style="color:#6b7280">Política de privacidad</a>
   </div>
 </div>
 ]]></field>
