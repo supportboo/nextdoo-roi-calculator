@@ -178,7 +178,26 @@ class LeadMagnetController(http.Controller):
                 priority_map = {"3m": "2", "6m": "1", "12m": "1", "explorar": "0"}
                 priority = priority_map.get(timeline, "1")
 
-            # 5. Create lead — nombre prefijado con tier para que se vea en el listado CRM
+            # 5. Resolve stage · queremos que el lead aparezca en el Pipeline
+            #    (no en Leads escondidos). Buscamos la stage del team o, en su
+            #    defecto, una stage "Nuevo" no plegada con sequence baja.
+            stage = None
+            if team:
+                stage = env["crm.stage"].search(
+                    [("name", "=ilike", team.name)], limit=1
+                )
+            if not stage:
+                stage = env["crm.stage"].search(
+                    [("fold", "=", False), ("name", "=ilike", "Nuevo")],
+                    order="sequence asc", limit=1,
+                )
+            if not stage:
+                stage = env["crm.stage"].search(
+                    [("fold", "=", False)],
+                    order="sequence asc", limit=1,
+                )
+
+            # 6. Create OPPORTUNITY (no "lead" — aparece directo en Pipeline)
             tier_label = "[1-1] " if tier == "meeting" else "[email] "
             lead_vals = {
                 "name": f"{tier_label}{source} · {empresa}",
@@ -191,8 +210,9 @@ class LeadMagnetController(http.Controller):
                 "tag_ids": [(6, 0, tag_ids)],
                 "user_id": assignee.id if assignee else False,
                 "team_id": team.id if team else False,
+                "stage_id": stage.id if stage else False,
                 "priority": priority,
-                "type": "lead",
+                "type": "opportunity",
                 "source_id": False,
                 "medium_id": False,
             }
@@ -402,7 +422,7 @@ class LeadMagnetController(http.Controller):
         Soy Gabriel, parte del equipo Nextdoo. Si quieres, en 20 minutos revisamos contigo
         qué puntos del checklist son críticos para tu sector y tamaño. Sin compromiso, sin presión.
       </p>
-      <a href="{base}/appointment" style="display:inline-block;background:linear-gradient(135deg,#A855F7,#EC4899);color:#fff;padding:11px 22px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px">Reservar 20 min con Gabriel →</a>
+      <a href="https://www.nextdoo.cloud/appointment" style="display:inline-block;background:linear-gradient(135deg,#A855F7,#EC4899);color:#fff;padding:11px 22px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px">Reservar 20 min con Gabriel →</a>
     </div>
     <p style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;margin:24px 0 0">
       Y si prefieres responder por email contándome tu situación
@@ -417,7 +437,7 @@ class LeadMagnetController(http.Controller):
   </div>
   <div style="padding:16px 24px;background:#0A0A0A;color:#6b7280;font-size:11px;text-align:center">
     Nextdoo Cloud · Odoo Ready Partner · Valencia, España ·
-    <a href="{base}/politica-privacidad" style="color:#6b7280">Política de privacidad</a>
+    <a href="https://www.nextdoo.cloud/politica-privacidad" style="color:#6b7280">Política de privacidad</a>
   </div>
 </div>
 """.strip()
@@ -446,7 +466,7 @@ class LeadMagnetController(http.Controller):
       <p style="margin:0 0 16px;color:rgba(255,255,255,0.78);font-size:14px;line-height:1.6">
         Validamos tus cifras con tu equipo, entregamos plan de implementación a 90 días<br/>y revisamos qué módulos son críticos para tu sector. Sin compromiso.
       </p>
-      <a href="{base}/appointment" style="display:inline-block;background:linear-gradient(135deg,#A855F7,#EC4899);color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px">Reservar 30 min con Jeanlouis →</a>
+      <a href="https://www.nextdoo.cloud/appointment" style="display:inline-block;background:linear-gradient(135deg,#A855F7,#EC4899);color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px">Reservar 30 min con Jeanlouis →</a>
     </div>
     <p style="font-size:13px;color:rgba(255,255,255,0.65);margin:24px 0 0">
       Un saludo,<br/>
