@@ -325,6 +325,12 @@ table.t tr:hover td { background: rgba(255,255,255,0.02); }
 .wstep { display: none; }
 .wstep.active { display: block; animation: fadeUp .35s ease both; }
 
+/* Result preview reveal (oculto hasta wizard completo) */
+#resultPreview { display: none; }
+#resultPreview.unveiled { display: block; animation: fadeUp .65s cubic-bezier(.16,1,.3,1) both; }
+.gated.hidden-until-unlock { display: none; }
+.gated.hidden-until-unlock.shown { display: block; animation: fadeUp .5s ease both; }
+
 @media (max-width: 1024px) {
   .kpi-value { font-size: 1.8rem; }
   .sticky-results { position: static !important; max-height: none !important; }
@@ -347,18 +353,18 @@ table.t tr:hover td { background: rgba(255,255,255,0.02); }
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         2 minutos · 4 pasos
       </span>
-      <span class="badge badge-spec">Especialistas en Retail y Servicios</span>
+      <span class="badge badge-spec">Partner Odoo Retail · España</span>
     </div>
     <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05]">
-      Calcula el <span class="gradient-text">ROI real</span><br/>de migrar a Odoo
+      Tu ROI con Odoo,<br/>calculado por <span class="gradient-text">especialistas en retail</span>
     </h1>
     <p class="mt-5 text-lg text-nd-dim max-w-2xl mx-auto leading-relaxed">
-      Introduce tus números reales. Aplicamos benchmarks de <strong class="text-white">Forrester, Aberdeen y Nucleus</strong> ajustados al sector. Resultado validado por Jeanlouis (CEO Nextdoo) y entregado en 24 h.
+      Llevamos años implantando Odoo en <strong class="text-white">tiendas, ecommerce, motor, hostelería, clínicas y servicios</strong>. Sabemos qué te ahorras de verdad en tu sector — sin promesas vagas.
     </p>
     <div class="mt-6 flex items-center justify-center gap-3 text-xs text-nd-dim flex-wrap">
-      <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Sin compromiso</span>
-      <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Respuesta en el día</span>
-      <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Partner Odoo Ready oficial</span>
+      <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> VeriFactu listo</span>
+      <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Kit Digital agente digitalizador</span>
+      <span class="flex items-center gap-1.5"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Odoo Ready Partner</span>
     </div>
   </div>
 </section>
@@ -441,13 +447,17 @@ table.t tr:hover td { background: rgba(255,255,255,0.02); }
           <p class="text-nd-dim text-sm mb-6">Cuánto te cuesta hoy lo que ya tienes.</p>
           <div class="grid sm:grid-cols-2 gap-4">
             <div>
-              <label class="label">Sistema actual</label>
+              <label class="label">Sistema actual <span class="text-nd-dim">· migramos desde todos</span></label>
               <select class="select" id="sistema">
                 <option value="excel" selected>Excel + apps sueltas</option>
                 <option value="legacy">ERP antiguo / legacy</option>
-                <option value="sap">SAP · Oracle · MS Dynamics</option>
-                <option value="sage">Sage · A3 · Holded</option>
-                <option value="contaplus">Contaplus · Factusol</option>
+                <option value="sap">SAP B1 · Oracle · MS Dynamics</option>
+                <option value="sage">Sage 50 · Sage 200</option>
+                <option value="a3">A3 · Wolters Kluwer</option>
+                <option value="holded">Holded</option>
+                <option value="contaplus">ContaPlus · Factusol</option>
+                <option value="zoho">Zoho One</option>
+                <option value="bitrix">Bitrix24</option>
                 <option value="nada">Sin software de gestión</option>
               </select>
             </div>
@@ -534,12 +544,14 @@ table.t tr:hover td { background: rgba(255,255,255,0.02); }
               <div class="text-[11px] text-nd-dim mt-1.5">Precios Odoo 2026 · sin IVA. Si tienes condiciones especiales (volumen, contrato 3 años, partner) introduce el precio real.</div>
             </div>
             <div class="sm:col-span-2">
-              <label class="label flex items-center justify-between">
+              <label class="label">
                 <span class="tt" data-tt="Reducción aplicada al coste anual de licencias (ej. 10 % por compromiso 3 años, descuento partner Nextdoo).">Descuento contractual (%)</span>
-                <span class="text-nd-primary font-bold" id="descLbl">0 %</span>
               </label>
-              <input type="range" id="descuento" min="0" max="40" step="1" value="0" />
-              <div class="text-[11px] text-nd-dim mt-1">Ej.: 10 % por contrato 3 años · 15 % por compromiso 5 años · 20 % volumen partner. Ajusta según tu caso real.</div>
+              <div class="relative">
+                <input type="number" class="input" id="descuento" min="0" max="50" step="0.5" value="0" style="padding-right:2.5rem" />
+                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-nd-primary font-bold pointer-events-none">%</span>
+              </div>
+              <div class="text-[11px] text-nd-dim mt-1.5">Ej.: 10 % por contrato 3 años · 15 % por compromiso 5 años · 20 % volumen partner. Ajusta según tu caso real.</div>
             </div>
           </div>
         </div>
@@ -558,57 +570,94 @@ table.t tr:hover td { background: rgba(255,255,255,0.02); }
         </div>
       </div>
 
-      <!-- RIGHT: LIVE PREVIEW (always visible from step 1) -->
+      <!-- RIGHT: PANEL MOTIVACIONAL (sin spoilers · construye intriga) -->
       <div class="space-y-5 sticky-results" style="position: sticky; top: 1rem; align-self: start; max-height: calc(100vh - 2rem); overflow-y: auto;">
 
+        <!-- Progress motivacional -->
         <div class="card card-glow p-5">
           <div class="flex items-center justify-between mb-3">
-            <div class="badge badge-ok"><span class="glow-dot">●</span> Análisis en tiempo real</div>
-            <div class="text-xs text-nd-dim">Fiabilidad <span class="text-white font-bold" id="reliability">85</span> %</div>
+            <div class="badge badge-ok"><span class="glow-dot">●</span> Preparando tu análisis</div>
+            <div class="text-xs text-nd-dim"><span id="progressPct">25</span> %</div>
           </div>
-          <div class="pbar"><span id="reliabilityBar" style="width: 85%"></span></div>
-          <div class="mt-4 text-sm text-nd-text" id="verdict">
-            <strong class="text-white">Análisis preliminar.</strong> Ajusta los campos para refinar.
+          <div class="pbar"><span id="reliabilityBar" style="width: 25%"></span></div>
+          <div class="mt-4 space-y-2 text-sm">
+            <div class="flex items-center gap-2" id="progItem1">
+              <span class="w-4 h-4 rounded-full grid place-items-center flex-shrink-0" style="background: var(--nd-gradient);"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+              <span class="text-white">Datos de tu empresa</span>
+            </div>
+            <div class="flex items-center gap-2 text-nd-dim" id="progItem2">
+              <span class="w-4 h-4 rounded-full bg-white/10 flex-shrink-0"></span>
+              Situación actual
+            </div>
+            <div class="flex items-center gap-2 text-nd-dim" id="progItem3">
+              <span class="w-4 h-4 rounded-full bg-white/10 flex-shrink-0"></span>
+              Módulos que necesitas
+            </div>
+            <div class="flex items-center gap-2 text-nd-dim" id="progItem4">
+              <span class="w-4 h-4 rounded-full bg-white/10 flex-shrink-0"></span>
+              Ajuste fino
+            </div>
+            <div class="flex items-center gap-2 text-nd-dim" id="progItem5">
+              <span class="w-4 h-4 rounded-full bg-white/10 flex-shrink-0"></span>
+              Análisis listo
+            </div>
+          </div>
+          <!-- Verdict oculto en panel pero usado por el detalle -->
+          <span id="verdict" class="hidden"></span>
+          <span id="reliability" class="hidden">25</span>
+        </div>
+
+        <!-- Sectores donde Nextdoo ya lo ha hecho · social proof -->
+        <div class="card p-5">
+          <div class="text-xs uppercase tracking-widest text-nd-dim mb-3">Sectores que conocemos</div>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="flex items-center gap-2 text-sm">
+              <img src="https://www.nextdoo.cloud/point_of_sale/static/description/icon.png" alt="" class="w-6 h-6 rounded" />
+              <span class="text-white">Retail</span>
+            </div>
+            <div class="flex items-center gap-2 text-sm">
+              <img src="https://www.nextdoo.cloud/project/static/description/icon.png" alt="" class="w-6 h-6 rounded" />
+              <span class="text-white">Servicios</span>
+            </div>
+            <div class="flex items-center gap-2 text-sm">
+              <img src="https://www.nextdoo.cloud/sale_management/static/description/icon.png" alt="" class="w-6 h-6 rounded" />
+              <span class="text-white">Motor · auto</span>
+            </div>
+            <div class="flex items-center gap-2 text-sm">
+              <img src="https://www.nextdoo.cloud/point_of_sale/static/description/icon.png" alt="" class="w-6 h-6 rounded" />
+              <span class="text-white">Hostelería</span>
+            </div>
+            <div class="flex items-center gap-2 text-sm">
+              <img src="https://www.nextdoo.cloud/crm/static/description/icon.png" alt="" class="w-6 h-6 rounded" />
+              <span class="text-white">Clínicas</span>
+            </div>
+            <div class="flex items-center gap-2 text-sm">
+              <img src="https://www.nextdoo.cloud/stock/static/description/icon.png" alt="" class="w-6 h-6 rounded" />
+              <span class="text-white">Distribución</span>
+            </div>
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-3">
-          <div class="card p-4 text-center">
-            <div class="kpi-label">ROI año 1</div>
-            <div class="kpi-value gradient-text" id="kpiRoi1">—</div>
-            <div class="text-xs text-nd-dim mt-1">vs inversión</div>
-          </div>
-          <div class="card p-4 text-center">
-            <div class="kpi-label">Ahorro/año</div>
-            <div class="kpi-value text-nd-ok" id="kpiAhorro" style="font-size:1.6rem">—</div>
-            <div class="text-xs text-nd-dim mt-1">año 1</div>
-          </div>
-          <div class="card p-4 text-center">
-            <div class="kpi-label">Payback</div>
-            <div class="kpi-value" id="kpiPayback" style="font-size:1.6rem">—</div>
-            <div class="text-xs text-nd-dim mt-1"><span id="kpiPaybackD">— m</span> dto.</div>
-          </div>
-        </div>
-
-        <!-- Lead-gated teaser → scroll al paywall form -->
-        <div class="card p-5 text-center" style="border-color: rgba(168,85,247,0.3); background: linear-gradient(180deg, rgba(168,85,247,0.06), transparent);">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2" class="mx-auto mb-2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-          <h3 class="text-base font-bold text-white">Sesión 1-1 con Jeanlouis (CEO)</h3>
-          <p class="text-xs text-nd-dim mt-1.5">Análisis completo, plan 90 días y demo en vivo. Gratis · 30 min · hoy mismo.</p>
-          <button type="button" class="btn-primary mt-3 w-full" style="font-size:0.85rem;padding:0.6rem 1rem" onclick="document.getElementById('detailedResults').scrollIntoView({behavior:'smooth',block:'start'})">Reservar mi sesión</button>
-        </div>
-
-        <!-- Trust mini -->
-        <div class="card p-4">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full grid place-items-center flex-shrink-0" style="background: var(--nd-gradient);">
+        <!-- Trust CEO -->
+        <div class="card p-5">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-11 h-11 rounded-full grid place-items-center flex-shrink-0" style="background: var(--nd-gradient);">
               <span class="text-white font-extrabold">JR</span>
             </div>
             <div>
               <div class="text-sm font-bold text-white">Jeanlouis Rodes</div>
-              <div class="text-xs text-nd-dim">CEO Nextdoo · revisa cada análisis personalmente</div>
+              <div class="text-xs text-nd-dim">CEO Nextdoo · revisa cada análisis</div>
             </div>
           </div>
+          <p class="text-xs text-nd-dim leading-relaxed italic">"Llevamos años implantando Odoo en retail, motor y servicios en España. Cada empresa es distinta — por eso revisamos cada caso uno a uno."</p>
+        </div>
+
+        <!-- Hidden KPI containers (usados por recalc para el detalle gated) -->
+        <div class="hidden">
+          <span id="kpiRoi1"></span>
+          <span id="kpiAhorro"></span>
+          <span id="kpiPayback"></span>
+          <span id="kpiPaybackD"></span>
         </div>
       </div>
     </div>
@@ -620,7 +669,7 @@ table.t tr:hover td { background: rgba(255,255,255,0.02); }
   <div class="mx-auto max-w-5xl text-center">
     <div class="badge badge-ok mb-3"><span class="glow-dot">●</span> Tu análisis está listo</div>
     <h2 class="text-3xl sm:text-4xl font-extrabold">Estos son <span class="gradient-text">tus números</span></h2>
-    <p class="text-nd-dim mt-2 max-w-xl mx-auto text-sm">Benchmarks Forrester · Aberdeen · Nucleus aplicados a tu sector y volumen.</p>
+    <p class="text-nd-dim mt-2 max-w-xl mx-auto text-sm">Cálculo personalizado con tu sector, módulos y volumen. Listo para revisar contigo.</p>
 
     <div class="grid grid-cols-3 gap-4 mt-7 max-w-4xl mx-auto">
       <div class="card p-6">
@@ -639,11 +688,23 @@ table.t tr:hover td { background: rgba(255,255,255,0.02); }
         <div class="text-xs text-nd-dim mt-1">meses para recuperar</div>
       </div>
     </div>
+
+    <!-- Social proof real del sector elegido -->
+    <div class="mt-6 inline-flex items-center gap-2 text-sm text-nd-dim card px-4 py-2.5" style="border-color: rgba(168,85,247,0.25)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span>Ya implantado en tu sector: <strong class="text-white" id="sectorClients">—</strong></span>
+    </div>
+
+    <!-- Mini scroll cue -->
+    <div class="mt-7 flex flex-col items-center gap-2 text-xs text-nd-dim">
+      <span>Sigue bajando para ver el detalle</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="animate-bounce"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
   </div>
 </section>
 
-<!-- DETAILED RESULTS · BLURRED + INLINE FORM ON TOP -->
-<section class="px-5 sm:px-8 pb-20 gated locked" id="detailedResults">
+<!-- DETAILED RESULTS · BLURRED + INLINE FORM ON TOP (oculto hasta finalizar wizard) -->
+<section class="px-5 sm:px-8 pb-20 gated locked hidden-until-unlock" id="detailedResults">
 
   <div class="gate-overlay">
     <div class="card card-glow p-6 sm:p-8 max-w-2xl w-full slide-in" style="margin-top: 2rem;">
@@ -820,38 +881,9 @@ table.t tr:hover td { background: rgba(255,255,255,0.02); }
   </div>
 </section>
 
-<!-- METHODOLOGY -->
-<section id="metodologia" class="px-5 sm:px-8 pb-20">
-  <div class="mx-auto max-w-7xl">
-    <div class="card p-6">
-      <h2 class="text-xl font-bold mb-3">Metodología</h2>
-      <div class="grid md:grid-cols-2 gap-6 text-sm">
-        <div>
-          <h3 class="font-bold text-white mb-2">Fuentes de los benchmarks</h3>
-          <ul class="space-y-1 text-nd-text">
-            <li class="flex gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Forrester TEI — Odoo Enterprise 2024</li>
-            <li class="flex gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Nucleus Research — ERP Value Matrix 2024</li>
-            <li class="flex gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Aberdeen Group — Inventory Optimization 2023</li>
-            <li class="flex gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Panorama Consulting — ERP Report 2024</li>
-            <li class="flex gap-2"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Deloitte · PwC · APQC · Hackett · IDC</li>
-          </ul>
-        </div>
-        <div>
-          <h3 class="font-bold text-white mb-2">Coeficientes sector Nextdoo</h3>
-          <p class="text-nd-text mb-2">Ajustes verticales aplicados (★ especialidad):</p>
-          <ul class="space-y-1 text-nd-text">
-            <li>★ <strong class="text-white">Retail · ecommerce</strong> — coef. 1.15</li>
-            <li>★ <strong class="text-white">Servicios profesionales</strong> — coef. 0.85 (mayor margen en automatización)</li>
-            <li>Manufactura — coef. 1.20</li>
-            <li>Distribución — coef. 1.18</li>
-            <li>Construcción · Hostelería · Salud · Educación · Tech · Agroalimentario</li>
-          </ul>
-          <p class="text-xs text-nd-dim mt-3">Documentación completa: <a href="https://github.com/supportboo/nextdoo-roi-calculator/blob/main/docs/FORMULAS.md" class="text-nd-primary underline">FORMULAS.md</a> · <a href="https://github.com/supportboo/nextdoo-roi-calculator/blob/main/docs/BENCHMARKS.md" class="text-nd-primary underline">BENCHMARKS.md</a></p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- Sección de metodología eliminada deliberadamente.
+     Detalles del modelo se entregan en la sesión 1-1 con el cliente. -->
+
 
 <!-- Sin footer: el website.layout de Nextdoo ya incluye footer oficial -->
 
@@ -867,17 +899,41 @@ const fmt = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR',
 const fmtPct = (n, d=0) => (n*100).toLocaleString('es-ES', { maximumFractionDigits: d }) + ' %';
 
 // ----- Sectores (★ = especialidad Nextdoo) -----
+// El campo `clients` muestra casos reales del sector en el resumen final.
 const SECTORS = [
-  { id:'retail',       name:'Retail · ecommerce',  spec:true,  coef:1.15, icon:'point_of_sale', desc:'TPV + stock + ecom' },
-  { id:'servicios',    name:'Servicios profesionales', spec:true, coef:0.85, icon:'project', desc:'Horas + proyectos' },
-  { id:'distribucion', name:'Distribución · mayorista', coef:1.18, icon:'stock', desc:'Multi-almacén + B2B' },
-  { id:'manufactura',  name:'Manufactura · industria', coef:1.20, icon:'mrp', desc:'MRP + trazabilidad' },
-  { id:'construccion', name:'Construcción',  coef:1.10, icon:'project', desc:'Obra + control coste' },
-  { id:'hosteleria',   name:'Hostelería · restauración', coef:0.95, icon:'point_of_sale', desc:'TPV + cocina' },
-  { id:'salud',        name:'Salud · clínicas', coef:1.00, icon:'crm', desc:'CRM + agenda' },
-  { id:'educacion',    name:'Educación · formación', coef:0.80, icon:'website', desc:'CRM + portal' },
-  { id:'agroalim',     name:'Agroalimentario', coef:1.20, icon:'mrp', desc:'Trazabilidad + lotes' },
-  { id:'tech',         name:'Tecnología · SaaS', coef:0.90, icon:'sale_subscription', desc:'Suscripciones + soporte' }
+  { id:'retail',       name:'Retail · ecommerce',  spec:true,  coef:1.15, icon:'point_of_sale',
+    desc:'Moda · hogar · deportes · electro · alimentación',
+    clients:'Outlet Motostore · Outlet Cascos · Café Racer' },
+  { id:'servicios',    name:'Servicios profesionales', spec:true, coef:0.85, icon:'project',
+    desc:'Consultoría · marketing · IT · asesorías',
+    clients:'Marvomatic · Boomatik · agencias Valencia' },
+  { id:'motor',        name:'Motor · automoción',  spec:true,  coef:1.18, icon:'sale_management',
+    desc:'Concesionarios · talleres · recambios',
+    clients:'Outlet Motostore · Motodoo (vertical propio)' },
+  { id:'hosteleria',   name:'Hostelería · restauración', spec:true, coef:0.95, icon:'point_of_sale',
+    desc:'TPV · cocina · cadenas multi-local',
+    clients:'Bunga Burger · cadenas restauración' },
+  { id:'salud',        name:'Salud · clínicas',    coef:1.00, icon:'crm',
+    desc:'Dental · estética · veterinaria',
+    clients:'TSI Valencia · clínicas dentales' },
+  { id:'distribucion', name:'Distribución · mayorista', coef:1.18, icon:'stock',
+    desc:'B2B · multi-almacén · catálogo',
+    clients:'distribuidores Valencia · Levante' },
+  { id:'manufactura',  name:'Manufactura · industria', coef:1.20, icon:'mrp',
+    desc:'MRP · BOM · trazabilidad',
+    clients:'PYMEs industriales España' },
+  { id:'construccion', name:'Construcción',         coef:1.10, icon:'project',
+    desc:'Obras · control coste · partes',
+    clients:'constructoras pequeñas y medianas' },
+  { id:'educacion',    name:'Educación · formación', coef:0.80, icon:'website',
+    desc:'Academias · centros · portal alumno',
+    clients:'centros de formación' },
+  { id:'agroalim',     name:'Agroalimentario',       coef:1.20, icon:'mrp',
+    desc:'Lotes · trazabilidad · gourmet',
+    clients:'productores y distribuidores gourmet' },
+  { id:'tech',         name:'Tecnología · SaaS',    coef:0.90, icon:'sale_subscription',
+    desc:'Suscripciones · soporte · multi-cliente',
+    clients:'startups SaaS y agencias tech' }
 ];
 
 // ----- Módulos Odoo con iconos oficiales -----
@@ -911,15 +967,17 @@ const AREA_PCT = {
 const DEFAULT_MODS = {
   retail:['ventas','contab','inventario','pos','ecom','website'],
   servicios:['ventas','contab','crm','project','timesheet','sign'],
+  motor:['ventas','contab','inventario','crm','barcode','project'],
+  hosteleria:['pos','contab','inventario','hr'],
+  salud:['crm','contab','sign','helpdesk','documents'],
   distribucion:['ventas','contab','inventario','compras','crm','barcode'],
   manufactura:['ventas','contab','inventario','compras','mfg','barcode'],
   construccion:['ventas','contab','project','compras','sign'],
-  hosteleria:['pos','contab','inventario','hr'],
-  salud:['crm','contab','sign','helpdesk','documents'],
   educacion:['crm','contab','website','sign'],
   agroalim:['ventas','contab','inventario','mfg','barcode'],
   tech:['crm','contab','project','subs','sign']
 };
+
 
 const state = {
   currentStep: 1,
@@ -998,7 +1056,7 @@ function showStep(n) {
   document.querySelectorAll('.wstep').forEach(s => s.classList.remove('active'));
   const block = document.querySelector(`[data-stepblock="${n}"]`);
   if (block) block.classList.add('active');
-  document.getElementById('stepNum').textContent = n;
+  document.getElementById('stepNum').textContent = Math.min(n, 4);
 
   document.querySelectorAll('#stepBar .step-bar-item').forEach((p, i) => {
     p.classList.remove('active', 'done');
@@ -1006,19 +1064,48 @@ function showStep(n) {
     if (i + 1 === n) p.classList.add('active');
   });
 
-  document.getElementById('prevBtn').style.visibility = n === 1 ? 'hidden' : 'visible';
+  document.getElementById('prevBtn').style.visibility = n === 1 || n === 5 ? 'hidden' : 'visible';
   const next = document.getElementById('nextBtn');
   if (n === 4) {
     next.innerHTML = 'Ver mi resultado <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+  } else if (n === 5) {
+    next.innerHTML = 'Ajustar de nuevo <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>';
   } else {
     next.innerHTML = 'Siguiente <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
   }
 
-  if (n === 4) {
-    setTimeout(() => {
-      const target = document.getElementById('resultPreview') || document.getElementById('detailedResults');
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 400);
+  // Panel motivacional · marcar progresivamente steps tickeados
+  const pct = Math.min(100, n * 25);
+  const bar = document.getElementById('reliabilityBar');
+  const pctLbl = document.getElementById('progressPct');
+  if (bar) bar.style.width = pct + '%';
+  if (pctLbl) pctLbl.textContent = pct;
+  for (let i = 1; i <= 5; i++) {
+    const el = document.getElementById('progItem' + i);
+    if (!el) continue;
+    const done = i < n || (n === 5 && i === 5);
+    const active = i === n && n < 5;
+    el.querySelector('span:first-child').style.cssText = (done || active)
+      ? 'background: var(--nd-gradient); width:1rem; height:1rem; border-radius:9999px; display:grid; place-items:center; flex-shrink:0'
+      : 'width:1rem; height:1rem; border-radius:9999px; background:rgba(255,255,255,0.10); flex-shrink:0';
+    el.querySelector('span:first-child').innerHTML = done
+      ? '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>'
+      : '';
+    el.classList.toggle('text-nd-dim', !done && !active);
+    el.querySelector('span:last-child').classList.toggle('text-white', done || active);
+  }
+
+  // Reveal del result preview + detail blurred sólo al cerrar wizard (step 5)
+  if (n === 5) {
+    const preview = document.getElementById('resultPreview');
+    const detail = document.getElementById('detailedResults');
+    preview.classList.add('unveiled');
+    detail.classList.add('shown');
+    setTimeout(() => preview.scrollIntoView({ behavior: 'smooth', block: 'start' }), 250);
+  } else {
+    // Si vuelve al wizard ocultamos el reveal
+    document.getElementById('resultPreview').classList.remove('unveiled');
+    if (!state.unlocked) document.getElementById('detailedResults').classList.remove('shown');
   }
 }
 
@@ -1058,7 +1145,11 @@ function calc() {
 
   const coef = sectorObj ? sectorObj.coef : 1;
   const sedeMult = 1 + Math.min(sedes - 1, 24) * 0.03;
-  const sysMult = ({ excel:1.15, legacy:1.10, sap:0.85, sage:1.00, contaplus:1.05, nada:1.20 })[sistema] || 1;
+  const sysMult = ({
+    excel: 1.15, legacy: 1.10,
+    sap: 0.85, sage: 1.00, a3: 1.00, holded: 1.05, contaplus: 1.05,
+    zoho: 0.95, bitrix: 0.95, nada: 1.20
+  })[sistema] || 1;
 
   const areaSavings = {};
   let saving = 0;
@@ -1185,6 +1276,13 @@ function recalc() {
   if (kpiRoiBig) kpiRoiBig.textContent = roi1Text;
   if (kpiAhorroBig) kpiAhorroBig.textContent = ahorroText;
   if (kpiPaybackBig) kpiPaybackBig.textContent = paybackText;
+
+  // Social proof: clientes reales del sector elegido
+  const clientsEl = document.getElementById('sectorClients');
+  if (clientsEl) {
+    const sObj = SECTORS.find(s => s.id === state.selectedSector);
+    clientsEl.textContent = sObj?.clients || 'PYMEs y mediana empresa España';
+  }
   document.getElementById('kpiRoi5').textContent = state.selectedMods.size ? 'ROI 5 años: ' + fmtPct(r.roi5, 0) : '—';
   document.getElementById('kpiVan').textContent = state.selectedMods.size ? fmt.format(r.vanSum) : '—';
   document.getElementById('kpiTir').textContent = state.selectedMods.size ? fmtPct(r.tir, 1) : '—';
@@ -1530,9 +1628,10 @@ function bind() {
   });
 
   document.getElementById('nextBtn').addEventListener('click', () => {
+    if (state.currentStep === 5) { showStep(4); return; }
     if (!validateStep(state.currentStep)) return;
     if (state.currentStep < 4) showStep(state.currentStep + 1);
-    else showStep(5);
+    else if (state.currentStep === 4) showStep(5);
   });
   document.getElementById('prevBtn').addEventListener('click', () => {
     if (state.currentStep > 1) showStep(state.currentStep - 1);
