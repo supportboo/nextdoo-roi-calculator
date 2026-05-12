@@ -299,6 +299,31 @@ function showSuccess(email) {
   document.getElementById('formBlock').style.display = 'none';
   document.getElementById('successEmail').textContent = email;
   document.getElementById('successBlock').classList.add('show');
+
+  // CRO: auto-redirect a /appointment/2 tras 5 s · aprovecha pico intención.
+  // Cancelable con botón "no quiero ahora".
+  const BOOKING_URL = 'https://www.nextdoo.cloud/appointment/2';
+  const countdownEl = document.getElementById('redirectCountdown');
+  const cancelBtn = document.getElementById('cancelRedirect');
+  let seconds = 5;
+  let cancelled = false;
+
+  const tick = setInterval(() => {
+    seconds -= 1;
+    if (countdownEl) countdownEl.textContent = seconds;
+    if (seconds <= 0) {
+      clearInterval(tick);
+      if (!cancelled) window.top.location.href = BOOKING_URL;
+    }
+  }, 1000);
+
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', () => {
+      cancelled = true;
+      clearInterval(tick);
+      cancelBtn.parentElement.innerHTML = 'Ok, te dejamos · revisa tu bandeja del email';
+    });
+  }
 }
 
 document.getElementById('leadForm').addEventListener('submit', (e) => {
