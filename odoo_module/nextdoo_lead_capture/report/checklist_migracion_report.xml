@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Report definition · Checklist Migración Odoo 42 puntos -->
+    <record id="action_report_checklist_migracion" model="ir.actions.report">
+        <field name="name">Checklist migración Odoo · Nextdoo</field>
+        <field name="model">crm.lead</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">nextdoo_lead_capture.checklist_migracion_template</field>
+        <field name="report_file">nextdoo_lead_capture.checklist_migracion_template</field>
+        <field name="print_report_name">'Checklist Migracion Odoo - %s' % (object.partner_name or object.contact_name or 'lead')</field>
+        <field name="paperformat_id" ref="base.paperformat_euro"/>
+    </record>
+
+</odoo>

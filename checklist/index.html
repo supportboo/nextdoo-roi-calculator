@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Checklist Migración Odoo · 42 puntos · Nextdoo</title>
+<meta name="description" content="Descarga gratis el checklist con los 42 puntos críticos para migrar a Odoo sin sustos. Discovery, configuración, datos y go-live. Método Nextdoo." />
+<meta name="theme-color" content="#0A0A0A" />
+<meta property="og:title" content="Checklist Migración Odoo · 42 puntos" />
+<meta property="og:description" content="La guía paso a paso que aplicamos en cada implantación. Recíbelo en PDF a tu email." />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="es_ES" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: {
+  colors: { nd: { bg:'#0A0A0A', card:'rgba(255,255,255,0.03)', border:'rgba(255,255,255,0.08)', text:'rgba(255,255,255,0.78)', dim:'#9ca3af', primary:'#A855F7', secondary:'#EC4899', ok:'#10B981' } },
+  fontFamily: { body:['Inter','system-ui','sans-serif'], head:['"Plus Jakarta Sans"','Inter','sans-serif'] }
+} } }
+</script>
+
+<style>
+:root {
+  --nd-primary: #A855F7;
+  --nd-secondary: #EC4899;
+  --nd-bg: #0A0A0A;
+  --nd-card-bg: rgba(255,255,255,0.03);
+  --nd-border: rgba(255,255,255,0.08);
+  --nd-gradient: linear-gradient(135deg, #A855F7 0%, #EC4899 100%);
+}
+* { box-sizing: border-box; }
+html, body {
+  background: var(--nd-bg);
+  color: rgba(255,255,255,0.78);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+body {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(168,85,247,0.18), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 90% 30%, rgba(236,72,153,0.12), transparent 70%),
+    var(--nd-bg);
+  min-height: 100vh;
+}
+h1, h2, h3 { font-family: 'Plus Jakarta Sans', sans-serif; color: #fff; letter-spacing: -0.02em; }
+h1 { font-weight: 800; letter-spacing: -0.04em; }
+.gradient-text { background: var(--nd-gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.card {
+  background: var(--nd-card-bg);
+  border: 1px solid var(--nd-border);
+  border-radius: 1rem;
+  backdrop-filter: blur(20px) saturate(140%);
+}
+.card-glow {
+  background: linear-gradient(180deg, rgba(168,85,247,0.10), rgba(236,72,153,0.05) 60%, transparent);
+  border: 1px solid rgba(168,85,247,0.25);
+  box-shadow: 0 0 60px -10px rgba(168,85,247,0.30);
+}
+.btn-primary {
+  background: var(--nd-gradient);
+  color: #fff;
+  padding: 0.95rem 1.8rem;
+  border-radius: 0.75rem;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  border: 1px solid rgba(255,255,255,0.15);
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .25s ease, filter .2s ease;
+  box-shadow: 0 8px 30px -10px rgba(168,85,247,0.6);
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%;
+}
+.btn-primary:hover { transform: translateY(-1px); filter: brightness(1.06); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.input, .select {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--nd-border);
+  border-radius: 0.7rem;
+  color: #fff;
+  font-size: 0.95rem;
+  padding: 0.75rem 0.95rem;
+  font-family: 'Inter', sans-serif;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.input:focus, .select:focus { outline: none; border-color: var(--nd-primary); background: rgba(168,85,247,0.06); }
+.input::placeholder { color: rgba(255,255,255,0.35); }
+.select {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23A855F7' d='M1 1l5 5 5-5'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  padding-right: 2.2rem;
+  cursor: pointer;
+}
+.select option { background: #18181b !important; color: #fff !important; }
+.label { font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.6); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.06em; display: block; }
+.badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600; }
+.badge-info { background: rgba(168,85,247,0.10); color: #c4b5fd; border: 1px solid rgba(168,85,247,0.3); }
+.badge-ok { background: rgba(16,185,129,0.10); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+.phase {
+  background: var(--nd-card-bg);
+  border: 1px solid var(--nd-border);
+  border-radius: 0.85rem;
+  padding: 1.1rem 1.2rem;
+}
+.phase-num {
+  width: 32px; height: 32px;
+  border-radius: 0.55rem;
+  display: grid; place-items: center;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+.success-card { display: none; }
+.success-card.show { display: block; animation: fadeUp .5s ease both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.toast {
+  position: fixed; bottom: 1.5rem; right: 1.5rem;
+  background: #18181b; color: #fff;
+  padding: 1rem 1.2rem; border-radius: 0.7rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  border: 1px solid rgba(16,185,129,0.4);
+  z-index: 100; display: none;
+}
+.toast.show { display: flex; align-items: center; gap: 0.6rem; animation: fadeUp .35s ease both; }
+.toast.err { border-color: rgba(239,68,68,0.4); }
+</style>
+</head>
+
+<body class="antialiased">
+
+<!-- HERO -->
+<section class="px-5 sm:px-8 pt-12 pb-8">
+  <div class="mx-auto max-w-3xl text-center">
+    <div class="badge badge-info mb-5">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="14 2 14 8 20 8"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+      Recurso gratuito · PDF al instante
+    </div>
+    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05]">
+      <span class="gradient-text">42 puntos críticos</span><br/>para migrar a Odoo<br/>sin sustos
+    </h1>
+    <p class="mt-5 text-base sm:text-lg text-nd-dim max-w-2xl mx-auto leading-relaxed">
+      La guía paso a paso que <strong class="text-white">aplicamos en Nextdoo</strong> en cada implantación.
+      Cuatro fases · todos los detalles que las migraciones fallidas suelen olvidar.
+    </p>
+  </div>
+</section>
+
+<!-- 4 PHASES PREVIEW + FORM SIDE-BY-SIDE -->
+<section class="px-5 sm:px-8 pb-20">
+  <div class="mx-auto max-w-6xl grid lg:grid-cols-[1.1fr_1fr] gap-7 items-start">
+
+    <!-- LEFT: 4 fases con preview -->
+    <div class="space-y-3">
+      <div class="phase">
+        <div class="flex items-start gap-3">
+          <div class="phase-num" style="background:#A855F7">1</div>
+          <div>
+            <div class="text-xs uppercase tracking-widest text-nd-dim mb-1">Fase 1 · 10 puntos</div>
+            <h3 class="text-lg font-bold">Discovery y preparación</h3>
+            <p class="text-sm mt-1">Inventario de software actual, mapeo de procesos, comité de proyecto, política de backups, presupuesto y rollback.</p>
+          </div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="flex items-start gap-3">
+          <div class="phase-num" style="background:#EC4899">2</div>
+          <div>
+            <div class="text-xs uppercase tracking-widest text-nd-dim mb-1">Fase 2 · 11 puntos</div>
+            <h3 class="text-lg font-bold">Configuración y módulos</h3>
+            <p class="text-sm mt-1">Instancia Odoo, datos fiscales, VeriFactu/SII, pasarelas de pago, catálogo, almacenes y plantillas.</p>
+          </div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="flex items-start gap-3">
+          <div class="phase-num" style="background:#3B82F6">3</div>
+          <div>
+            <div class="text-xs uppercase tracking-widest text-nd-dim mb-1">Fase 3 · 11 puntos</div>
+            <h3 class="text-lg font-bold">Migración de datos</h3>
+            <p class="text-sm mt-1">Export, limpieza, mapeo, import de clientes/proveedores/productos/stock, históricos, reconciliación bancaria, paralelo.</p>
+          </div>
+        </div>
+      </div>
+      <div class="phase">
+        <div class="flex items-start gap-3">
+          <div class="phase-num" style="background:#10B981">4</div>
+          <div>
+            <div class="text-xs uppercase tracking-widest text-nd-dim mb-1">Fase 4 · 10 puntos</div>
+            <h3 class="text-lg font-bold">Go-live y soporte</h3>
+            <p class="text-sm mt-1">Formación, día D, soporte intensivo 48 h, cierre del primer mes, optimización tras 30 días, plan de evolución.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-5 grid grid-cols-3 gap-3 text-center text-xs text-nd-dim">
+        <div class="flex flex-col items-center gap-1"><svg width="20" height="20" stroke="#10B981" fill="none" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> PDF descargable</div>
+        <div class="flex flex-col items-center gap-1"><svg width="20" height="20" stroke="#10B981" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Cero spam</div>
+        <div class="flex flex-col items-center gap-1"><svg width="20" height="20" stroke="#10B981" fill="none" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Llega en 5 min</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: form sticky -->
+    <div class="card card-glow p-6 sm:p-7" style="position: sticky; top: 1rem;">
+      <div id="formBlock">
+        <div class="flex items-center justify-between mb-4">
+          <span class="badge badge-info">Descarga gratis</span>
+          <span class="text-xs text-nd-dim">~20 segundos</span>
+        </div>
+        <h2 class="text-2xl font-extrabold leading-tight">Recibe la guía en tu email</h2>
+        <p class="text-sm text-nd-dim mt-1.5 mb-5">Solo necesitamos tu nombre y un email donde mandar el PDF.</p>
+
+        <form id="leadForm" class="space-y-3">
+          <div>
+            <label class="label">Nombre</label>
+            <input class="input" name="nombre" required placeholder="Tu nombre" autocomplete="given-name" />
+          </div>
+          <div>
+            <label class="label">Email profesional</label>
+            <input class="input" name="email" type="email" required placeholder="tu@empresa.com" autocomplete="email" />
+          </div>
+          <div>
+            <label class="label">Empresa <span class="text-nd-dim normal-case">· opcional</span></label>
+            <input class="input" name="empresa" placeholder="Razón social" autocomplete="organization" />
+          </div>
+          <div>
+            <label class="label">Sector <span class="text-nd-dim normal-case">· opcional</span></label>
+            <select class="select" name="sector">
+              <option value="">Selecciona</option>
+              <option value="retail">Retail · ecommerce</option>
+              <option value="servicios">Servicios profesionales</option>
+              <option value="motor">Motor · automoción</option>
+              <option value="hosteleria">Hostelería</option>
+              <option value="salud">Salud · clínicas</option>
+              <option value="distribucion">Distribución · mayorista</option>
+              <option value="manufactura">Manufactura</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+          <div class="flex items-start gap-2 text-xs text-nd-dim pt-1">
+            <input type="checkbox" required class="accent-nd-primary mt-0.5" id="gdpr" />
+            <label for="gdpr">Acepto la <a href="https://www.nextdoo.cloud/politica-privacidad" class="text-nd-primary underline">política de privacidad</a> y recibir el checklist en mi email. Sin spam.</label>
+          </div>
+          <button type="submit" class="btn-primary mt-3" id="leadSubmit">
+            Enviarme el checklist
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <p class="text-center text-xs text-nd-dim">Te llega en menos de 5 minutos · Gabriel te escribe esta semana</p>
+        </form>
+      </div>
+
+      <!-- Success state -->
+      <div id="successBlock" class="success-card">
+        <div class="w-14 h-14 rounded-full grid place-items-center mx-auto mb-4" style="background: var(--nd-gradient); box-shadow: 0 10px 30px -10px rgba(168,85,247,0.6);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3 class="text-xl font-bold text-center text-white">¡Listo!</h3>
+        <p class="text-sm text-nd-dim text-center mt-2">Te hemos enviado el checklist en PDF a <strong class="text-white" id="successEmail">tu email</strong>. Revisa la bandeja de entrada en los próximos 5 minutos (mira también spam por si acaso).</p>
+
+        <div class="mt-6 p-4 rounded-xl" style="background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.25);">
+          <p class="text-sm text-white font-bold mb-1.5">¿Quieres avanzar más rápido?</p>
+          <p class="text-xs text-nd-dim mb-3">Gabriel puede revisar tu caso en 20 min. Sin compromiso.</p>
+          <a href="https://www.nextdoo.cloud/appointment" class="btn-primary" style="font-size:0.9rem;padding:0.75rem 1.2rem">
+            Reservar 20 min con Gabriel
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+const LEAD_ENDPOINT = window.NEXTDOO_LEAD_ENDPOINT || 'https://www.nextdoo.cloud/api/lead-magnet';
+
+function toast(msg, err) {
+  const t = document.getElementById('toast');
+  t.innerHTML = (err
+    ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg>'
+    : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>') + ' ' + msg;
+  t.className = 'toast show' + (err ? ' err' : '');
+  setTimeout(() => t.className = 'toast', 5000);
+}
+
+function showSuccess(email) {
+  document.getElementById('formBlock').style.display = 'none';
+  document.getElementById('successEmail').textContent = email;
+  document.getElementById('successBlock').classList.add('show');
+}
+
+document.getElementById('leadForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(e.target));
+  const payload = {
+    name: data.nombre,
+    partner_name: data.empresa || (data.email || '').split('@')[1] || 'Sin empresa',
+    email_from: data.email,
+    function: '',
+    phone: '',
+    source: 'migration-checklist',
+    tier: 'email',
+    tags: [
+      'Migration Checklist',
+      'Lead Magnet',
+      'Web',
+      data.sector ? `Sector: ${data.sector}` : 'Sector: sin especificar'
+    ],
+    urgency: 'explorar',
+    timeline: 'explorar',
+    timestamp: new Date().toISOString()
+  };
+
+  const btn = document.getElementById('leadSubmit');
+  btn.disabled = true;
+  btn.innerHTML = 'Enviando…';
+
+  // Optimistic UI: mostrar éxito al instante
+  showSuccess(data.email);
+  toast('Checklist enviado a ' + data.email);
+
+  // Cola local por si el endpoint falla
+  try {
+    const queue = JSON.parse(localStorage.getItem('nextdoo_leads_queue') || '[]');
+    queue.push(payload);
+    localStorage.setItem('nextdoo_leads_queue', JSON.stringify(queue.slice(-20)));
+  } catch (e) {}
+
+  fetch(LEAD_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+    mode: 'cors',
+    keepalive: true
+  }).then(res => {
+    if (!res.ok) throw new Error('http ' + res.status);
+    return res.json().catch(() => ({ ok: true }));
+  }).then(() => {
+    try {
+      const queue = JSON.parse(localStorage.getItem('nextdoo_leads_queue') || '[]');
+      const filtered = queue.filter(p => p.timestamp !== payload.timestamp);
+      localStorage.setItem('nextdoo_leads_queue', JSON.stringify(filtered));
+    } catch (e) {}
+  }).catch(err => {
+    console.warn('[nextdoo checklist] queued in localStorage:', err.message);
+  });
+});
+</script>
+
+</body>
+</html>

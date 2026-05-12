@@ -117,4 +117,66 @@
 ]]></field>
     </record>
 
+    <!-- Email que recibe el lead que descarga el Checklist Migración -->
+    <record id="mail_template_checklist_delivery" model="mail.template">
+        <field name="name">Nextdoo · Entrega checklist migración Odoo</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="subject">Aquí tienes tu Checklist Migración Odoo (42 puntos)</field>
+        <field name="email_from">"Gabriel · Nextdoo" &lt;gabrielrm@nextdoo.cloud&gt;</field>
+        <field name="email_to">{{ object.email_from }}</field>
+        <field name="reply_to">gabrielrm@nextdoo.cloud</field>
+        <field name="auto_delete" eval="False"/>
+        <field name="body_html" type="html"><![CDATA[
+<div style="font-family:'Inter',Arial,sans-serif;max-width:600px;margin:0 auto;background:#0A0A0A;color:#fff">
+  <div style="background:linear-gradient(135deg,#A855F7 0%,#EC4899 100%);padding:28px 24px;">
+    <h1 style="margin:0;font-size:24px;font-weight:800;color:#fff">Tu checklist de migración a Odoo</h1>
+    <p style="margin:6px 0 0;color:rgba(255,255,255,0.85);font-size:14px">42 puntos críticos · método Nextdoo · adjunto en PDF</p>
+  </div>
+
+  <div style="padding:28px 24px;background:#111114">
+    <p style="font-size:16px;color:#fff;margin:0 0 16px">Hola <strong t-out="object.contact_name or ''"/>,</p>
+
+    <p style="font-size:14px;color:rgba(255,255,255,0.78);line-height:1.65;margin:0 0 16px">
+      Gracias por descargar nuestro <strong style="color:#fff">checklist de migración a Odoo</strong>.
+      Es la guía paso a paso que usamos en cada implantación: las cuatro fases (discovery, configuración,
+      migración de datos y go-live) con los 42 puntos críticos que evitan que algo falle al cambiar de sistema.
+    </p>
+
+    <p style="font-size:14px;color:rgba(255,255,255,0.78);line-height:1.65;margin:0 0 16px">
+      <strong style="color:#fff">→ Lo tienes adjunto a este email en PDF.</strong>
+    </p>
+
+    <div style="background:rgba(168,85,247,0.10);border:1px solid rgba(168,85,247,0.3);border-radius:12px;padding:18px;margin:20px 0">
+      <h3 style="margin:0 0 8px;font-size:15px;color:#fff">¿Te ayudo a aplicarlo a tu caso?</h3>
+      <p style="font-size:13px;color:rgba(255,255,255,0.78);margin:0 0 12px;line-height:1.6">
+        Soy Gabriel, parte del equipo Nextdoo. Si quieres, en 20 minutos revisamos contigo
+        qué puntos del checklist son críticos para tu sector y tamaño. Sin compromiso, sin presión.
+      </p>
+      <a t-attf-href="{{ object.get_base_url() }}/appointment"
+         style="display:inline-block;background:linear-gradient(135deg,#A855F7,#EC4899);color:#fff;padding:11px 22px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px">
+        Reservar 20 min con Gabriel →
+      </a>
+    </div>
+
+    <p style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;margin:24px 0 0">
+      Y si prefieres responder por email contándome tu situación
+      (sistema actual, tamaño y plazo), te preparo un plan personalizado.
+    </p>
+
+    <p style="font-size:13px;color:rgba(255,255,255,0.65);margin:8px 0 0">
+      Un saludo,<br/>
+      <strong style="color:#fff">Gabriel Rodes Maganto</strong><br/>
+      Comercial · Nextdoo Cloud<br/>
+      <a href="tel:+34622891192" style="color:#A855F7">+34 622 891 192</a> · <a href="mailto:gabrielrm@nextdoo.cloud" style="color:#A855F7">gabrielrm@nextdoo.cloud</a>
+    </p>
+  </div>
+
+  <div style="padding:16px 24px;background:#0A0A0A;color:#6b7280;font-size:11px;text-align:center">
+    Nextdoo Cloud · Odoo Ready Partner · Valencia, España ·
+    <a href="https://www.nextdoo.cloud/politica-privacidad" style="color:#6b7280">Política de privacidad</a>
+  </div>
+</div>
+]]></field>
+    </record>
+
 </odoo>

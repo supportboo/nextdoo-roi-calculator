@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="checklist_migracion_template">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.external_layout">
+                <div class="page" style="font-family: 'Inter', Helvetica, Arial, sans-serif; color: #111;">
+
+                    <!-- Cover -->
+                    <div style="text-align: center; padding: 30px 0 20px;">
+                        <div style="display: inline-block; padding: 6px 14px; background: linear-gradient(135deg, #A855F7 0%, #EC4899 100%); color: white; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px;">
+                            Recurso gratuito · Nextdoo
+                        </div>
+                        <h1 style="font-size: 28px; font-weight: 800; margin: 0 0 6px; letter-spacing: -0.02em;">
+                            Checklist de migración a Odoo
+                        </h1>
+                        <p style="font-size: 14px; color: #6b7280; margin: 0;">
+                            42 puntos críticos · método Nextdoo
+                            (<t t-out="o.partner_name or o.contact_name or ''"/>)
+                        </p>
+                    </div>
+
+                    <p style="font-size: 13px; line-height: 1.7; color: #374151; margin: 16px 0 24px;">
+                        Esta es la guía paso a paso que aplicamos en Nextdoo en cada implantación.
+                        Está pensada para migrar a Odoo 19 desde sistemas como
+                        <strong>Sage, Holded, A3, ContaPlus, SAP B1, Zoho o Excel</strong>
+                        sin interrumpir tu operativa.
+                    </p>
+
+                    <!-- FASE 1 -->
+                    <h2 style="background: rgba(168,85,247,0.10); color: #6B21A8; padding: 10px 14px; border-left: 4px solid #A855F7; font-size: 16px; font-weight: 700; margin: 24px 0 12px;">
+                        Fase 1 · Discovery y preparación (puntos 1–10)
+                    </h2>
+                    <ol style="padding-left: 20px; font-size: 12.5px; line-height: 1.85; color: #1f2937;">
+                        <li>Inventario de software actual (ERP, contabilidad, ecommerce, CRM, RR. HH.).</li>
+                        <li>Listado de integraciones existentes (TPV, pasarela de pago, marketplace, EDI).</li>
+                        <li>Mapeo de procesos clave end-to-end (venta, compra, almacén, facturación).</li>
+                        <li>Listado de usuarios y roles previstos en Odoo (con permisos exactos).</li>
+                        <li>Volumen estimado de datos a migrar (clientes, productos, históricos, facturas).</li>
+                        <li>Calendario operativo: temporadas altas, cierres contables, fechas críticas.</li>
+                        <li>Comité de proyecto: sponsor, líder funcional, IT, super-usuarios por área.</li>
+                        <li>Listado de personalizaciones necesarias (campos, flujos, informes).</li>
+                        <li>Política de backups y plan de rollback si algo va mal en el go-live.</li>
+                        <li>Aprobación presupuesto + firma del project charter.</li>
+                    </ol>
+
+                    <!-- FASE 2 -->
+                    <h2 style="background: rgba(236,72,153,0.10); color: #9D174D; padding: 10px 14px; border-left: 4px solid #EC4899; font-size: 16px; font-weight: 700; margin: 24px 0 12px;">
+                        Fase 2 · Configuración y módulos (puntos 11–21)
+                    </h2>
+                    <ol start="11" style="padding-left: 20px; font-size: 12.5px; line-height: 1.85; color: #1f2937;">
+                        <li>Creación de la instancia Odoo (Odoo Online, Odoo.sh o on-premise).</li>
+                        <li>Datos de la empresa: razón social, NIF, sede fiscal, logo, plan contable.</li>
+                        <li>Configuración de moneda, idiomas y formatos (EUR, es_ES, en_US si aplica).</li>
+                        <li>Activación de módulos base (Ventas, Compras, Inventario, Contabilidad).</li>
+                        <li>Activación de módulos específicos del sector (TPV, eCommerce, MRP, Project).</li>
+                        <li>Configuración VeriFactu y SII si aplica (obligatorio en España).</li>
+                        <li>Pasarelas de pago: Redsys, Stripe, PayPal, Bizum, transferencia.</li>
+                        <li>Plantillas de email y firma corporativa.</li>
+                        <li>Reglas de numeración de pedidos, facturas y albaranes.</li>
+                        <li>Catálogo de productos: categorías, variantes, precios y políticas de impuesto.</li>
+                        <li>Estructura de almacenes y ubicaciones (multi-warehouse si procede).</li>
+                    </ol>
+
+                    <!-- FASE 3 -->
+                    <h2 style="background: rgba(59,130,246,0.10); color: #1E40AF; padding: 10px 14px; border-left: 4px solid #3B82F6; font-size: 16px; font-weight: 700; margin: 24px 0 12px;">
+                        Fase 3 · Migración de datos (puntos 22–32)
+                    </h2>
+                    <ol start="22" style="padding-left: 20px; font-size: 12.5px; line-height: 1.85; color: #1f2937;">
+                        <li>Export de clientes y contactos del sistema antiguo (CSV/Excel).</li>
+                        <li>Limpieza de duplicados y normalización de campos.</li>
+                        <li>Mapeo de campos antiguo → Odoo (template Nextdoo).</li>
+                        <li>Import de proveedores con condiciones de pago y direcciones de entrega.</li>
+                        <li>Import de productos con códigos de barras, fotos y atributos.</li>
+                        <li>Import de stock inicial valorado a fecha de corte.</li>
+                        <li>Migración del plan contable y saldos iniciales por cuenta.</li>
+                        <li>Históricos: pedidos, facturas y albaranes abiertos.</li>
+                        <li>Validación cruzada con responsable contable o asesor externo.</li>
+                        <li>Reconciliación de saldos bancarios al día del corte.</li>
+                        <li>Test de paralelo: ambos sistemas activos durante 1–2 semanas.</li>
+                    </ol>
+
+                    <!-- FASE 4 -->
+                    <h2 style="background: rgba(16,185,129,0.10); color: #065F46; padding: 10px 14px; border-left: 4px solid #10B981; font-size: 16px; font-weight: 700; margin: 24px 0 12px;">
+                        Fase 4 · Go-live y soporte (puntos 33–42)
+                    </h2>
+                    <ol start="33" style="padding-left: 20px; font-size: 12.5px; line-height: 1.85; color: #1f2937;">
+                        <li>Formación a super-usuarios (4–8 h por departamento).</li>
+                        <li>Manuales operativos cortos + vídeos por proceso clave.</li>
+                        <li>Día D: corte del sistema antiguo y arranque en Odoo.</li>
+                        <li>Soporte presencial / remoto intensivo las primeras 48 h.</li>
+                        <li>Monitoreo de incidencias en helpdesk dedicado.</li>
+                        <li>Cierre contable del primer mes en Odoo con asesor.</li>
+                        <li>Ajustes de informes, dashboards y KPIs por área.</li>
+                        <li>Optimización de flujos tras 30 días de uso real.</li>
+                        <li>Revisión trimestral con Nextdoo: nuevas funcionalidades disponibles.</li>
+                        <li>Plan de evolución: módulos adicionales según madurez del equipo.</li>
+                    </ol>
+
+                    <!-- CTA final -->
+                    <div style="margin-top: 28px; padding: 18px 20px; background: linear-gradient(135deg, rgba(168,85,247,0.08), rgba(236,72,153,0.05)); border: 1px solid rgba(168,85,247,0.30); border-radius: 10px;">
+                        <p style="font-size: 13px; font-weight: 700; color: #111; margin: 0 0 6px;">
+                            ¿Quieres aplicarlo a tu caso real?
+                        </p>
+                        <p style="font-size: 12px; color: #4b5563; margin: 0 0 10px; line-height: 1.7;">
+                            Reserva 30 minutos con nuestro equipo y revisamos contigo qué puntos
+                            del checklist son críticos para tu sector y tamaño. Sin compromiso.
+                        </p>
+                        <p style="font-size: 12px; margin: 0;">
+                            <a href="https://www.nextdoo.cloud/appointment" style="color: #A855F7; font-weight: 700; text-decoration: none;">
+                                Reservar sesión gratuita →
+                            </a>
+                            &amp;nbsp;·&amp;nbsp;
+                            <a href="tel:+34622891192" style="color: #6b7280; text-decoration: none;">+34 622 891 192</a>
+                            &amp;nbsp;·&amp;nbsp;
+                            <a href="mailto:info@nextdoo.cloud" style="color: #6b7280; text-decoration: none;">info@nextdoo.cloud</a>
+                        </p>
+                    </div>
+
+                    <p style="font-size: 10px; color: #9ca3af; margin-top: 24px; text-align: center;">
+                        © Nextdoo Cloud · Odoo Ready Partner · Valencia, España · v1.0 ·
+                        <span t-out="o.create_date and o.create_date.strftime('%d/%m/%Y') or ''"/>
+                    </p>
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+
+</odoo>

@@ -31,6 +31,8 @@ Lead magnets soportados (campo `source`):
         "security/ir.model.access.csv",
         "data/crm_tag_data.xml",
         "data/mail_template_data.xml",
+        "report/checklist_migracion_report.xml",
+        "report/checklist_migracion_template.xml",
     ],
     "installable": True,
     "application": False,

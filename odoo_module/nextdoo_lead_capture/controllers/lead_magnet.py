@@ -20,9 +20,29 @@ from odoo.http import request, Response
 
 _logger = logging.getLogger(__name__)
 
-# CEO / admin comercial que recibe los leads (Jeanlouis Rodes).
-# Fallback: primer usuario con grupo sales_manager.
+# CEO / admin comercial que recibe los leads por defecto (Jeanlouis Rodes).
 DEFAULT_ASSIGNEE_LOGIN = "jeanlouis"
+
+# Routing por landing/source · qué comercial atiende cada tipo de lead magnet.
+# Cualquier source no listado cae al DEFAULT_ASSIGNEE_LOGIN.
+ASSIGNEE_BY_SOURCE = {
+    "roi-calculator":      "jeanlouis",   # CEO maneja ROI (lead caliente)
+    "cost-calculator":     "gabrielrm",   # Gabriel · trial leads
+    "migration-checklist": "gabrielrm",   # Gabriel · seguimiento descargas
+    "retail-guide":        "gabrielrm",
+    "demo-request":        "gabrielrm",
+    "consultation-request":"jeanlouis",
+}
+
+# Sources que requieren generar y adjuntar un PDF al lead + email.
+# Mapeo source → xmlid del report y del mail template para el envío.
+ATTACHMENT_BY_SOURCE = {
+    "migration-checklist": {
+        "report_xmlid":   "nextdoo_lead_capture.action_report_checklist_migracion",
+        "filename":       "Checklist_Migracion_Odoo_Nextdoo.pdf",
+        "customer_template": "nextdoo_lead_capture.mail_template_checklist_delivery",
+    },
+}
 
 # Dominios permitidos para CORS.
 CORS_ALLOWED_ORIGINS = {
@@ -110,10 +130,14 @@ class LeadMagnetController(http.Controller):
 
         env = request.env(su=True)
         try:
-            # 1. Resolve assignee
-            assignee = env["res.users"].search(
-                [("login", "=", DEFAULT_ASSIGNEE_LOGIN)], limit=1
-            )
+            # 1. Resolve assignee por source · cada landing tiene su comercial.
+            target_login = ASSIGNEE_BY_SOURCE.get(source, DEFAULT_ASSIGNEE_LOGIN)
+            assignee = env["res.users"].search([("login", "=", target_login)], limit=1)
+            if not assignee:
+                # Fallback al default
+                assignee = env["res.users"].search(
+                    [("login", "=", DEFAULT_ASSIGNEE_LOGIN)], limit=1
+                )
             if not assignee:
                 assignee = env.ref("base.user_admin", raise_if_not_found=False)
             if not assignee:
@@ -232,8 +256,27 @@ class LeadMagnetController(http.Controller):
             except Exception as e:
                 _logger.warning("lead-magnet: email notif failed: %s", e)
 
-            # 9. Enviar análisis básico al lead (solo tier email)
-            if tier == "email":
+            # 9. Adjuntar documento descargable si la landing lo requiere
+            #    (ej. checklist migración PDF). Genera el report, lo asocia al
+            #    lead como ir.attachment, lo guarda en documents si está
+            #    instalado y dispara el email al cliente con el adjunto.
+            attached_id = self._maybe_attach_resource(env, lead, source)
+
+            # 10. Email automático al cliente
+            customer_sent = False
+            attach_cfg = ATTACHMENT_BY_SOURCE.get(source)
+            if attach_cfg and attached_id:
+                try:
+                    tpl = env.ref(attach_cfg["customer_template"], raise_if_not_found=False)
+                    if tpl:
+                        tpl.with_context(attachment_ids=[attached_id]).send_mail(
+                            lead.id, force_send=True
+                        )
+                        customer_sent = True
+                except Exception as e:
+                    _logger.warning("lead-magnet: customer pdf email failed: %s", e)
+            elif tier == "email":
+                # Path ROI calculator email tier
                 try:
                     customer_tpl = env.ref(
                         "nextdoo_lead_capture.mail_template_roi_summary_customer",
@@ -241,11 +284,21 @@ class LeadMagnetController(http.Controller):
                     )
                     if customer_tpl:
                         customer_tpl.send_mail(lead.id, force_send=True)
+                        customer_sent = True
                 except Exception as e:
                     _logger.warning("lead-magnet: customer email failed: %s", e)
 
             return _json_response(
-                {"ok": True, "lead_id": lead.id, "source": source, "tier": tier}, 200, origin
+                {
+                    "ok": True,
+                    "lead_id": lead.id,
+                    "source": source,
+                    "tier": tier,
+                    "attachment_id": attached_id,
+                    "email_sent": customer_sent,
+                },
+                200,
+                origin,
             )
 
         except Exception as e:
@@ -257,6 +310,58 @@ class LeadMagnetController(http.Controller):
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------
+
+    @staticmethod
+    def _maybe_attach_resource(env, lead, source):
+        """Si la source tiene un PDF asociado, lo genera y adjunta al lead.
+
+        Genera el report QWeb-PDF, crea un ir.attachment vinculado al lead,
+        y opcionalmente guarda copia en documents.document si el módulo
+        está instalado. Devuelve el id del attachment o None.
+        """
+        cfg = ATTACHMENT_BY_SOURCE.get(source)
+        if not cfg:
+            return None
+        try:
+            report = env.ref(cfg["report_xmlid"], raise_if_not_found=False)
+            if not report:
+                _logger.warning("attach: report %s not found", cfg["report_xmlid"])
+                return None
+
+            pdf_data, _content_type = report._render_qweb_pdf(
+                cfg["report_xmlid"], res_ids=[lead.id]
+            )
+            attachment = env["ir.attachment"].create({
+                "name": cfg["filename"],
+                "type": "binary",
+                "raw": pdf_data,
+                "mimetype": "application/pdf",
+                "res_model": "crm.lead",
+                "res_id": lead.id,
+            })
+
+            # Si documents está instalado, guardar copia (catálogo central)
+            if "documents.document" in env:
+                try:
+                    folder = env["documents.folder"].search(
+                        [("name", "=ilike", "Lead Magnets")], limit=1
+                    )
+                    if not folder:
+                        folder = env["documents.folder"].create({"name": "Lead Magnets"})
+                    env["documents.document"].create({
+                        "name": cfg["filename"],
+                        "datas": attachment.datas,
+                        "folder_id": folder.id,
+                        "mimetype": "application/pdf",
+                        "owner_id": lead.user_id.id if lead.user_id else env.user.id,
+                    })
+                except Exception as e:
+                    _logger.warning("attach: documents.document save failed: %s", e)
+
+            return attachment.id
+        except Exception as e:
+            _logger.exception("attach: pdf generation failed for source=%s", source)
+            return None
 
     @staticmethod
     def _upsert_tags(env, names):
