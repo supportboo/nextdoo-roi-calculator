@@ -39,12 +39,12 @@ ASSIGNEE_BY_SOURCE = {
 INBOUND_TEAM_NAME = "BOO NUEVO"
 
 # Sources que requieren generar y adjuntar un PDF al lead + email.
-# Mapeo source → xmlid del report y del mail template para el envío.
+# El HTML del email lo genera _html_<source>() en Python (Odoo 19 no soporta
+# {{ object.field }} en mail.template).
 ATTACHMENT_BY_SOURCE = {
     "migration-checklist": {
-        "report_xmlid":   "nextdoo_lead_capture.action_report_checklist_migracion",
-        "filename":       "Checklist_Migracion_Odoo_Nextdoo.pdf",
-        "customer_template": "nextdoo_lead_capture.mail_template_checklist_delivery",
+        "report_xmlid": "nextdoo_lead_capture.action_report_checklist_migracion",
+        "filename":     "Checklist_Migracion_Odoo_Nextdoo.pdf",
     },
 }
 
@@ -251,52 +251,16 @@ class LeadMagnetController(http.Controller):
                 subtype_xmlid="mail.mt_note",
             )
 
-            # 8. Send email notification to CEO (interno)
-            try:
-                template = env.ref(
-                    "nextdoo_lead_capture.mail_template_lead_notification",
-                    raise_if_not_found=False,
-                )
-                if template and assignee:
-                    template.with_context(
-                        lead_source=source,
-                        lead_urgency=timeline,
-                        lead_tier=tier,
-                    ).send_mail(lead.id, force_send=True)
-            except Exception as e:
-                _logger.warning("lead-magnet: email notif failed: %s", e)
-
-            # 9. Adjuntar documento descargable si la landing lo requiere
-            #    (ej. checklist migración PDF). Genera el report, lo asocia al
-            #    lead como ir.attachment, lo guarda en documents si está
-            #    instalado y dispara el email al cliente con el adjunto.
+            # 8. Generar PDF si la source lo necesita (checklist…)
             attached_id = self._maybe_attach_resource(env, lead, source)
 
-            # 10. Email automático al cliente
-            customer_sent = False
-            attach_cfg = ATTACHMENT_BY_SOURCE.get(source)
-            if attach_cfg and attached_id:
-                try:
-                    tpl = env.ref(attach_cfg["customer_template"], raise_if_not_found=False)
-                    if tpl:
-                        tpl.with_context(attachment_ids=[attached_id]).send_mail(
-                            lead.id, force_send=True
-                        )
-                        customer_sent = True
-                except Exception as e:
-                    _logger.warning("lead-magnet: customer pdf email failed: %s", e)
-            elif tier == "email":
-                # Path ROI calculator email tier
-                try:
-                    customer_tpl = env.ref(
-                        "nextdoo_lead_capture.mail_template_roi_summary_customer",
-                        raise_if_not_found=False,
-                    )
-                    if customer_tpl:
-                        customer_tpl.send_mail(lead.id, force_send=True)
-                        customer_sent = True
-                except Exception as e:
-                    _logger.warning("lead-magnet: customer email failed: %s", e)
+            # 9. Email interno al asignado (HTML pre-renderizado f-string)
+            self._send_internal_notif(env, lead, source, tier, timeline, assignee, description)
+
+            # 10. Email al cliente · con adjunto si aplica
+            customer_sent = self._send_customer_email(
+                env, lead, source, tier, attached_id
+            )
 
             return _json_response(
                 {
@@ -306,6 +270,8 @@ class LeadMagnetController(http.Controller):
                     "tier": tier,
                     "attachment_id": attached_id,
                     "email_sent": customer_sent,
+                    "team_id": team.id if team else None,
+                    "user_id": assignee.id if assignee else None,
                 },
                 200,
                 origin,
@@ -320,6 +286,181 @@ class LeadMagnetController(http.Controller):
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------
+
+    @staticmethod
+    def _send_internal_notif(env, lead, source, tier, timeline, assignee, description):
+        """Notifica al comercial asignado con HTML pre-renderizado."""
+        if not assignee or not assignee.email:
+            return
+        is_hot = tier == "meeting"
+        header_color = "#EF4444" if is_hot else "#6b7280"
+        badge_label = "HOT LEAD · sesión 1-1" if is_hot else "COLD LEAD · solo email"
+        action_label = (
+            "Acción HOY: llamar inmediatamente, lead solicitó sesión 1-1."
+            if is_hot else
+            "Follow-up en 48 h: enviar PDF + ofrecer upgrade a sesión 1-1."
+        )
+        action_bg = "#fee2e2" if is_hot else "#fef3c7"
+        action_color = "#991b1b" if is_hot else "#92400e"
+
+        base_url = env["ir.config_parameter"].sudo().get_param("web.base.url", "")
+        body_html = f"""
+<div style="font-family:'Inter',Arial,sans-serif;max-width:600px;margin:0 auto;background:#f7f7f8">
+  <div style="background:linear-gradient(135deg,{header_color} 0%,#EC4899 100%);padding:24px;color:white">
+    <div style="display:inline-block;background:rgba(255,255,255,0.2);padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px">{badge_label}</div>
+    <h1 style="margin:0;font-size:22px;font-weight:800">Nuevo lead capturado</h1>
+    <p style="margin:4px 0 0;opacity:0.9;font-size:14px">Fuente: <strong>{source}</strong> · Urgencia: <strong>{timeline}</strong></p>
+  </div>
+  <div style="padding:24px;background:white">
+    <h2 style="margin:0 0 16px;color:#111;font-size:18px">{lead.partner_name or '—'}</h2>
+    <table style="width:100%;border-collapse:collapse;font-size:14px">
+      <tr><td style="padding:8px 0;color:#6b7280">Contacto</td><td style="padding:8px 0"><strong>{lead.contact_name or '—'}</strong></td></tr>
+      <tr><td style="padding:8px 0;color:#6b7280">Email</td><td style="padding:8px 0"><a href="mailto:{lead.email_from or ''}" style="color:#A855F7">{lead.email_from or '—'}</a></td></tr>
+      <tr><td style="padding:8px 0;color:#6b7280">Teléfono</td><td style="padding:8px 0"><a href="tel:{lead.phone or ''}" style="color:#A855F7">{lead.phone or '—'}</a></td></tr>
+      <tr><td style="padding:8px 0;color:#6b7280">Prioridad</td><td style="padding:8px 0">{lead.priority} ★</td></tr>
+    </table>
+    <div style="background:#f9fafb;border-left:4px solid #A855F7;padding:12px 16px;margin-top:16px;font-family:monospace;white-space:pre-wrap;font-size:12px;color:#374151">{description}</div>
+    <div style="margin-top:24px;padding:16px;background:{action_bg};border-radius:8px;color:{action_color};font-size:14px"><strong>{action_label}</strong></div>
+    <a href="{base_url}/odoo/action-crm.crm_lead_all_leads/{lead.id}" style="display:inline-block;background:linear-gradient(135deg,#A855F7,#EC4899);color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700;margin-top:16px;font-size:14px">Abrir lead en Odoo →</a>
+  </div>
+  <div style="padding:16px 24px;background:#111;color:#9ca3af;font-size:11px;text-align:center">Nextdoo Lead Magnet Engine · {lead.id}</div>
+</div>
+""".strip()
+
+        # auto_delete=False para que quede traza en la queue si falla SMTP.
+        mail = env["mail.mail"].create({
+            "subject": f"[{tier.upper()}] {lead.partner_name} · {source}",
+            "body_html": body_html,
+            "email_from": "info@nextdoo.cloud",
+            "email_to": assignee.email,
+            "auto_delete": False,
+        })
+        try:
+            mail.send(raise_exception=False)
+        except Exception as e:
+            _logger.warning("internal notif send failed: %s", e)
+
+    @staticmethod
+    def _send_customer_email(env, lead, source, tier, attached_id):
+        """Envía email al lead. Si hay PDF asociado lo adjunta."""
+        if not lead.email_from:
+            return False
+
+        attachment_ids = [(6, 0, [attached_id])] if attached_id else False
+
+        if source == "migration-checklist":
+            subject, body_html, from_addr = LeadMagnetController._html_checklist(lead)
+        elif source == "roi-calculator" and tier == "email":
+            subject, body_html, from_addr = LeadMagnetController._html_roi_summary(lead)
+        else:
+            # No customer email para tier meeting (Jeanlouis llama directamente)
+            return False
+
+        try:
+            mail_vals = {
+                "subject": subject,
+                "body_html": body_html,
+                "email_from": from_addr,
+                "email_to": lead.email_from,
+                "reply_to": from_addr,
+                "auto_delete": False,  # mantener traza si SMTP falla
+            }
+            if attachment_ids:
+                mail_vals["attachment_ids"] = attachment_ids
+            mail = env["mail.mail"].create(mail_vals)
+            mail.send(raise_exception=False)
+            return True
+        except Exception as e:
+            _logger.warning("customer email failed: %s", e)
+            return False
+
+    @staticmethod
+    def _html_checklist(lead):
+        base = lead.env["ir.config_parameter"].sudo().get_param("web.base.url", "https://www.nextdoo.cloud")
+        contact = lead.contact_name or ""
+        subject = "Aquí tienes tu Checklist Migración Odoo (42 puntos)"
+        from_addr = '"Gabriel · Nextdoo" <gabrielrm@nextdoo.cloud>'
+        body = f"""
+<div style="font-family:'Inter',Arial,sans-serif;max-width:600px;margin:0 auto;background:#0A0A0A;color:#fff">
+  <div style="background:linear-gradient(135deg,#A855F7 0%,#EC4899 100%);padding:28px 24px">
+    <h1 style="margin:0;font-size:24px;font-weight:800;color:#fff">Tu checklist de migración a Odoo</h1>
+    <p style="margin:6px 0 0;color:rgba(255,255,255,0.85);font-size:14px">42 puntos críticos · método Nextdoo · adjunto en PDF</p>
+  </div>
+  <div style="padding:28px 24px;background:#111114">
+    <p style="font-size:16px;color:#fff;margin:0 0 16px">Hola {contact},</p>
+    <p style="font-size:14px;color:rgba(255,255,255,0.78);line-height:1.65;margin:0 0 16px">
+      Gracias por descargar nuestro <strong style="color:#fff">checklist de migración a Odoo</strong>.
+      Es la guía paso a paso que usamos en cada implantación: las cuatro fases (discovery, configuración,
+      migración de datos y go-live) con los 42 puntos críticos que evitan que algo falle al cambiar de sistema.
+    </p>
+    <p style="font-size:14px;color:rgba(255,255,255,0.78);line-height:1.65;margin:0 0 16px">
+      <strong style="color:#fff">→ Lo tienes adjunto a este email en PDF.</strong>
+    </p>
+    <div style="background:rgba(168,85,247,0.10);border:1px solid rgba(168,85,247,0.3);border-radius:12px;padding:18px;margin:20px 0">
+      <h3 style="margin:0 0 8px;font-size:15px;color:#fff">¿Te ayudo a aplicarlo a tu caso?</h3>
+      <p style="font-size:13px;color:rgba(255,255,255,0.78);margin:0 0 12px;line-height:1.6">
+        Soy Gabriel, parte del equipo Nextdoo. Si quieres, en 20 minutos revisamos contigo
+        qué puntos del checklist son críticos para tu sector y tamaño. Sin compromiso, sin presión.
+      </p>
+      <a href="{base}/appointment" style="display:inline-block;background:linear-gradient(135deg,#A855F7,#EC4899);color:#fff;padding:11px 22px;border-radius:8px;text-decoration:none;font-weight:700;font-size:13px">Reservar 20 min con Gabriel →</a>
+    </div>
+    <p style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;margin:24px 0 0">
+      Y si prefieres responder por email contándome tu situación
+      (sistema actual, tamaño y plazo), te preparo un plan personalizado.
+    </p>
+    <p style="font-size:13px;color:rgba(255,255,255,0.65);margin:8px 0 0">
+      Un saludo,<br/>
+      <strong style="color:#fff">Gabriel Rodes Maganto</strong><br/>
+      Comercial · Nextdoo Cloud<br/>
+      <a href="tel:+34622891192" style="color:#A855F7">+34 622 891 192</a> · <a href="mailto:gabrielrm@nextdoo.cloud" style="color:#A855F7">gabrielrm@nextdoo.cloud</a>
+    </p>
+  </div>
+  <div style="padding:16px 24px;background:#0A0A0A;color:#6b7280;font-size:11px;text-align:center">
+    Nextdoo Cloud · Odoo Ready Partner · Valencia, España ·
+    <a href="{base}/politica-privacidad" style="color:#6b7280">Política de privacidad</a>
+  </div>
+</div>
+""".strip()
+        return subject, body, from_addr
+
+    @staticmethod
+    def _html_roi_summary(lead):
+        base = lead.env["ir.config_parameter"].sudo().get_param("web.base.url", "https://www.nextdoo.cloud")
+        contact = lead.contact_name or ""
+        subject = "Tu análisis ROI Odoo — Nextdoo"
+        from_addr = '"Jeanlouis · Nextdoo" <jeanlouis@nextdoo.cloud>'
+        body = f"""
+<div style="font-family:'Inter',Arial,sans-serif;max-width:600px;margin:0 auto;background:#0A0A0A;color:#fff">
+  <div style="background:linear-gradient(135deg,#A855F7 0%,#EC4899 100%);padding:28px 24px">
+    <h1 style="margin:0;font-size:24px;font-weight:800;color:#fff">Tu análisis ROI Odoo</h1>
+    <p style="margin:6px 0 0;color:rgba(255,255,255,0.85);font-size:14px">Resumen automático · Nextdoo Cloud · Partner Odoo Retail España</p>
+  </div>
+  <div style="padding:28px 24px;background:#111114">
+    <p style="font-size:16px;color:#fff;margin:0 0 16px">Hola {contact},</p>
+    <p style="font-size:14px;color:rgba(255,255,255,0.78);line-height:1.65;margin:0 0 20px">
+      Gracias por usar nuestra calculadora ROI. Aquí tienes el resumen automático con tus números.
+    </p>
+    <div style="background:linear-gradient(180deg,rgba(168,85,247,0.10),rgba(236,72,153,0.05));border:1px solid rgba(168,85,247,0.45);border-radius:12px;padding:24px;margin:20px 0;text-align:center">
+      <p style="margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.6);font-weight:600">Próximo paso recomendado</p>
+      <h3 style="margin:0 0 8px;color:#fff;font-size:20px">Sesión 1-1 gratuita con Jeanlouis (CEO)</h3>
+      <p style="margin:0 0 16px;color:rgba(255,255,255,0.78);font-size:14px;line-height:1.6">
+        Validamos tus cifras con tu equipo, entregamos plan de implementación a 90 días<br/>y revisamos qué módulos son críticos para tu sector. Sin compromiso.
+      </p>
+      <a href="{base}/appointment" style="display:inline-block;background:linear-gradient(135deg,#A855F7,#EC4899);color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px">Reservar 30 min con Jeanlouis →</a>
+    </div>
+    <p style="font-size:13px;color:rgba(255,255,255,0.65);margin:24px 0 0">
+      Un saludo,<br/>
+      <strong style="color:#fff">Jeanlouis Rodes</strong><br/>
+      CEO · Nextdoo Cloud<br/>
+      <a href="tel:+34622891192" style="color:#A855F7">+34 622 891 192</a>
+    </p>
+  </div>
+  <div style="padding:16px 24px;background:#0A0A0A;color:#6b7280;font-size:11px;text-align:center">
+    Nextdoo Cloud · Odoo Ready Partner · Valencia, España
+  </div>
+</div>
+""".strip()
+        return subject, body, from_addr
 
     @staticmethod
     def _maybe_attach_resource(env, lead, source):

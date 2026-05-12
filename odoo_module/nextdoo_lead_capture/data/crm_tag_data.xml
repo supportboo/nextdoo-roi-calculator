@@ -1,56 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data noupdate="1">
-
-    <record id="tag_lead_magnet" model="crm.tag">
-        <field name="name">Lead Magnet</field>
-        <field name="color">4</field>
-    </record>
-
-    <record id="tag_roi_calculator" model="crm.tag">
-        <field name="name">ROI Calculator</field>
-        <field name="color">10</field>
-    </record>
-
-    <record id="tag_cost_calculator" model="crm.tag">
-        <field name="name">Cost Calculator</field>
-        <field name="color">11</field>
-    </record>
-
-    <record id="tag_migration_checklist" model="crm.tag">
-        <field name="name">Migration Checklist</field>
-        <field name="color">6</field>
-    </record>
-
-    <record id="tag_retail_guide" model="crm.tag">
-        <field name="name">Retail Guide</field>
-        <field name="color">2</field>
-    </record>
-
-    <record id="tag_web" model="crm.tag">
-        <field name="name">Web</field>
-        <field name="color">3</field>
-    </record>
-
-    <record id="tag_hot_lead" model="crm.tag">
-        <field name="name">Hot Lead</field>
-        <field name="color">1</field>
-    </record>
-
-    <record id="tag_cold_lead" model="crm.tag">
-        <field name="name">Cold Lead</field>
-        <field name="color">8</field>
-    </record>
-
-    <record id="tag_meeting_request" model="crm.tag">
-        <field name="name">Meeting Request</field>
-        <field name="color">10</field>
-    </record>
-
-    <record id="tag_email_only" model="crm.tag">
-        <field name="name">Email-only</field>
-        <field name="color">5</field>
-    </record>
-
+    <data>
+        <record id="tag_lead_magnet" model="crm.tag">
+            <field name="name">Lead Magnet</field>
+            <field name="color">4</field>
+        </record>
+        <record id="tag_roi_calculator" model="crm.tag">
+            <field name="name">ROI Calculator</field>
+            <field name="color">10</field>
+        </record>
+        <record id="tag_cost_calculator" model="crm.tag">
+            <field name="name">Cost Calculator</field>
+            <field name="color">11</field>
+        </record>
+        <record id="tag_migration_checklist" model="crm.tag">
+            <field name="name">Migration Checklist</field>
+            <field name="color">6</field>
+        </record>
+        <record id="tag_retail_guide" model="crm.tag">
+            <field name="name">Retail Guide</field>
+            <field name="color">2</field>
+        </record>
+        <record id="tag_web" model="crm.tag">
+            <field name="name">Web</field>
+            <field name="color">3</field>
+        </record>
+        <record id="tag_hot_lead" model="crm.tag">
+            <field name="name">Hot Lead</field>
+            <field name="color">1</field>
+        </record>
+        <record id="tag_cold_lead" model="crm.tag">
+            <field name="name">Cold Lead</field>
+            <field name="color">8</field>
+        </record>
+        <record id="tag_meeting_request" model="crm.tag">
+            <field name="name">Meeting Request</field>
+            <field name="color">10</field>
+        </record>
+        <record id="tag_email_only" model="crm.tag">
+            <field name="name">Email-only</field>
+            <field name="color">5</field>
+        </record>
     </data>
 </odoo>

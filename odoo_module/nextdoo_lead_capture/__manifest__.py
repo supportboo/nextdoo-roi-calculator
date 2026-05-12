@@ -28,9 +28,9 @@ Lead magnets soportados (campo `source`):
     "license": "LGPL-3",
     "depends": ["crm", "mail", "website"],
     "data": [
-        "security/ir.model.access.csv",
-        "data/crm_tag_data.xml",
-        "data/mail_template_data.xml",
+        # Emails se generan via mail.mail con HTML f-string (Odoo 19 ya no
+        # renderiza {{ object.field }} en mail.template). El report PDF sí
+        # usa QWeb (es un report técnico, no una mail.template).
         "report/checklist_migracion_report.xml",
         "report/checklist_migracion_template.xml",
     ],
